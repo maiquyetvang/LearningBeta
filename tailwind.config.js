@@ -3,7 +3,7 @@ const { hairlineWidth } = require("nativewind/theme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
-  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+  content: ["./src/app/**/*.{ts,tsx}", "./src/components/**/*.{ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
@@ -32,7 +32,17 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#EA8934",
+          50: "#fdf3e9",
+          100: "#fae0c2",
+          200: "#f7c48a",
+          300: "#f3a952",
+          400: "#ef8d1a",
+          500: "#EA8934",
+          600: "#c06e29",
+          700: "#96531f",
+          800: "#6c3914",
+          900: "#421f09",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -62,6 +72,16 @@ module.exports = {
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
+          50: "#e6f9e7",
+          100: "#c8f2cb",
+          200: "#a3e6a7",
+          300: "#7edb83",
+          400: "#5ad05f",
+          500: "#37c53b",
+          600: "#2ea32f",
+          700: "#258124",
+          800: "#1c6019",
+          900: "#133f0e",
         },
         error: {
           DEFAULT: "hsl(var(--error))",
