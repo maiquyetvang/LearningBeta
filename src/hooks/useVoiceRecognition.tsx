@@ -5,7 +5,7 @@ import Voice, {
   SpeechVolumeChangeEvent,
 } from "@react-native-voice/voice";
 import { PermissionsAndroid, Platform } from "react-native";
-import { SUPPORTED_VOICE_MAP } from "~/src/configs/default-language";
+import { SUPPORTED_VOICE_MAP } from "~/configs/default-language";
 
 interface IState {
   recognized?: string;

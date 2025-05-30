@@ -1,12 +1,19 @@
 import * as React from "react";
-import { Animated } from "react-native";
-import useTTS from "~/src/hooks/useTTS";
-import { Volume2 } from "~/src/lib/icons/Volume2";
-import { cn } from "~/src/lib/utils";
+import {
+  Animated,
+  Image,
+  ImageSourcePropType,
+  Pressable,
+  View,
+} from "react-native";
+import useTTS from "~/hooks/useTTS";
+import { Volume2 } from "~/lib/icons/Volume2";
+import { cn } from "~/lib/utils";
 import ThemeIcon from "../Icon";
 import { Button, ButtonProps } from "../ui/button";
 import { Text } from "../ui/text";
-import { useColorScheme } from "~/src/lib/useColorScheme";
+import { useColorScheme } from "~/lib/useColorScheme";
+
 type SpeakButtonProps = ButtonProps & {
   label?: string;
   iconSize?: number;
@@ -16,6 +23,8 @@ type SpeakButtonProps = ButtonProps & {
   buttonClassName?: string;
   hideLabel?: boolean;
   customLabel?: string;
+  disabledSpeak?: boolean;
+  image?: ImageSourcePropType;
   leftIcon?: React.ReactNode;
 };
 
@@ -36,7 +45,9 @@ const SpeakButton = React.forwardRef<
       buttonClassName,
       customLabel = "Start Listening",
       hideLabel = false,
+      disabledSpeak = false,
       variant,
+      image,
       leftIcon,
       ...props
     },
@@ -55,10 +66,12 @@ const SpeakButton = React.forwardRef<
         },
       ],
     };
+
     const handlePress = (event: any) => {
-      if (label && !isSpeaking) {
+      if (label && !isSpeaking && !disabledSpeak && language === "ko") {
         speak(label);
       }
+
       Animated.spring(buttonAnimate, {
         useNativeDriver: true,
         toValue: 2,
@@ -66,10 +79,49 @@ const SpeakButton = React.forwardRef<
       }).start(() => {
         buttonAnimate.setValue(0);
       });
+
       if (onPress) {
         onPress(event);
       }
     };
+
+    if (image) {
+      return (
+        <Animated.View style={[buttonStyle]} className={cn(className)}>
+          <Pressable
+            ref={ref}
+            onPress={handlePress}
+            className={cn(
+              "p-0 overflow-hidden flex-col border-[1px]",
+              isSelected ? "border-primary" : "border-neutral-100",
+              buttonClassName
+            )}
+            {...props}
+          >
+            <View className='w-full aspect-square'>
+              <Image
+                source={image}
+                style={{ width: "100%", height: "100%" }}
+                resizeMode='cover'
+              />
+            </View>
+
+            <View className='w-full bg-background p-2'>
+              {label && (
+                <Text className='text-foreground text-center font-medium'>
+                  {!hideLabel ? label : customLabel}
+                </Text>
+              )}
+              {showIcon && (
+                <View className='absolute right-2 top-2 bg-white/30 rounded-full p-1'>
+                  <Volume2 size={16} color='white' />
+                </View>
+              )}
+            </View>
+          </Pressable>
+        </Animated.View>
+      );
+    }
 
     return (
       <Animated.View style={[buttonStyle]} className={cn(className)}>

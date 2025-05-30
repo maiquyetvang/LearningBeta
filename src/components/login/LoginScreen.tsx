@@ -1,16 +1,16 @@
 import { Lock, Mail } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Alert, Pressable, View } from "react-native";
-import { authApi } from "~/src/api/auth.local";
-import { ELoginScreen } from "~/src/app/login";
-import { InputWithIcon } from "~/src/components/custom-ui/input-icon";
-import { Button } from "~/src/components/ui/button";
-import { Text } from "~/src/components/ui/text";
-import { H3 } from "~/src/components/ui/typography";
+import { Alert, Pressable, TextInput, View } from "react-native";
+import { authApi } from "~/api/auth.local";
+import { ELoginScreen } from "~/app/login";
+import { InputWithIcon } from "~/components/custom-ui/input-icon";
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { H3 } from "~/components/ui/typography";
 import { Checkbox } from "../ui/checkbox";
-import { useAuthStore } from "~/src/stores/auth.store";
-import { User } from "~/src/types/user.type";
+import { useAuthStore } from "~/stores/auth.store";
+import { User } from "~/types/user.type";
 import { router } from "expo-router";
 import { AnimatedScreenWrapper } from "./AnimatedScreenWrapper";
 
@@ -29,7 +29,7 @@ export function LoginStep({
   onClose?: () => void;
 }) {
   const [loading, setLoading] = useState(false);
-
+  const passwordInputRef = useRef<TextInput>(null);
   const { login, user } = useAuthStore();
 
   const {
@@ -87,6 +87,7 @@ export function LoginStep({
               keyboardType='email-address'
               editable={!loading}
               autoComplete='email'
+              onSubmitEditing={() => passwordInputRef.current?.focus()}
             />
             {errors.email && (
               <Text className='text-red-500 text-xs mt-1 ml-3'>
@@ -103,6 +104,7 @@ export function LoginStep({
         render={({ field: { onChange, value } }) => (
           <View>
             <InputWithIcon
+              ref={passwordInputRef}
               placeholder='Password'
               value={value}
               onChangeText={onChange}

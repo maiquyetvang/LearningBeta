@@ -12,7 +12,7 @@ type UserStatus =
 export type User = {
   _id?: string;
   name?: string;
-  // avatar?: string;
+  avatar?: string;
   email?: string;
 
   // language: string;

@@ -1,8 +1,8 @@
 import * as CheckboxPrimitive from "@rn-primitives/checkbox";
 import * as React from "react";
 import { Platform } from "react-native";
-import { Check } from "~/src/lib/icons/Check";
-import { cn } from "~/src/lib/utils";
+import { Check } from "~/lib/icons/Check";
+import { cn } from "~/lib/utils";
 
 const Checkbox = React.forwardRef<
   CheckboxPrimitive.RootRef,

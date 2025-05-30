@@ -1,18 +1,20 @@
 import { ArrowLeft, Check, X } from "lucide-react-native";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
-import { ELoginScreen } from "~/src/app/login";
-import { Button } from "~/src/components/ui/button";
-import { Text } from "~/src/components/ui/text";
-import { H3 } from "~/src/components/ui/typography";
+import { ELoginScreen } from "~/app/login";
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { H3 } from "~/components/ui/typography";
 import ThemeIcon from "../Icon";
 
 export function DoneStep({
   onNextStep,
   onClose,
+  data,
 }: {
   onNextStep?: (step: ELoginScreen) => void;
   onClose?: () => void;
+  data?: { email: string; verifyCode?: string };
 }) {
   return (
     <View className='gap-5 items-center justify-center '>
@@ -30,8 +32,8 @@ export function DoneStep({
       </View>
       <H3>All done!</H3>
       <Text className='text-center'>
-        You’ve completed register Kindo account with email{" "}
-        <Text className='text-primary'>email@gmail.com</Text>
+        You’ve completed register Kindo account with email
+        <Text className='text-primary'> {data?.email}</Text>
       </Text>
 
       <Button

@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useMemo } from "react";
 import { View, Animated } from "react-native";
-import { cn } from "~/src/lib/utils";
+import { cn } from "~/lib/utils";
 
 export interface ProgressStep {
   index: number;
   isFalse?: boolean;
+  duration?: number;
 }
 interface StepProgressBarProps {
   currentIndex?: number;
@@ -17,7 +18,7 @@ export default function StepProgressBar({
   progressStep,
   length,
 }: StepProgressBarProps) {
-  const stepCount = progressStep?.length || length || 0;
+  const stepCount = Math.max(progressStep?.length || 0, length || 0, 0);
 
   const animScales = useMemo(
     () => Array.from({ length: stepCount }, () => new Animated.Value(1)),
@@ -103,26 +104,27 @@ export default function StepProgressBar({
     >
       {Array.from({ length: stepCount }).map((_, i) => {
         let stepColor = "bg-neutral-100 dark:bg-neutral-800";
+        let borderClass = "";
 
         // Bước hiện tại đã có kết quả
         if (i === currentIndex && progressStep && progressStep[i]) {
           stepColor = progressStep[i].isFalse ? "bg-red-500" : "bg-green-500";
-
+          if (progressStep[i].isFalse) {
+            borderClass = "border-[1.5px] border-foreground";
+          }
           return (
             <Animated.View
               key={i}
               style={{
                 transform: [{ scale: animScales[i] }],
               }}
-              className={`h-2 rounded-sm flex-1 ${stepColor}`}
+              className={`h-2 rounded-sm flex-1 ${stepColor} ${borderClass}`}
             />
           );
         }
         // Bước hiện tại chưa có kết quả (màu đen)
         else if (i === currentIndex) {
           stepColor = "bg-black dark:bg-white";
-
-          // Thêm hiệu ứng nhảy cho bước hiện tại màu đen
           return (
             <Animated.View
               key={i}
@@ -141,8 +143,23 @@ export default function StepProgressBar({
           progressStep[i]?.isFalse
         ) {
           stepColor = "bg-red-500";
-        } else if (typeof currentIndex === "number" && i < currentIndex) {
+        } else if (
+          typeof currentIndex === "number" &&
+          i < currentIndex &&
+          progressStep &&
+          progressStep[i] &&
+          !progressStep[i].isFalse
+        ) {
           stepColor = "bg-green-500";
+        }
+        // Các bước sau currentIndex đã có kết quả (đỏ/xanh)
+        else if (
+          typeof currentIndex === "number" &&
+          i > currentIndex &&
+          progressStep &&
+          progressStep[i]
+        ) {
+          stepColor = progressStep[i].isFalse ? "bg-red-500" : "bg-green-500";
         }
 
         const isJustCompleted =

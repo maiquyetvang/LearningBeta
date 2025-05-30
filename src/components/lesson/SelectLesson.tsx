@@ -5,7 +5,7 @@ import { Text } from "../ui/text";
 import ThemeIcon from "../Icon";
 import { X } from "lucide-react-native";
 import { SpeakButton } from "../custom-ui/speak-button";
-import { Lesson } from "~/src/types/lesson.type";
+import { Lesson } from "~/types/lesson.type";
 import { CheckResultButton } from "./CheckResultButton";
 
 const SelectLesson = ({

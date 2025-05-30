@@ -1,14 +1,17 @@
-import React from "react";
-import { Pressable, TouchableOpacity, View } from "react-native";
-import { ELoginScreen } from "~/src/app/login";
-import { InputWithIcon } from "~/src/components/custom-ui/input-icon";
-import { Button } from "~/src/components/ui/button";
-import { Text } from "~/src/components/ui/text";
-import { H3, H4 } from "~/src/components/ui/typography";
-import ThemeIcon from "../Icon";
-import { Lock } from "~/src/lib/icons/Lock";
-import { Mail } from "~/src/lib/icons/Mail";
 import { ArrowLeft, X } from "lucide-react-native";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { TouchableOpacity, View } from "react-native";
+import { ELoginScreen } from "~/app/login";
+import { InputWithIcon } from "~/components/custom-ui/input-icon";
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { H3, H4 } from "~/components/ui/typography";
+import ThemeIcon from "../Icon";
+
+type VerifyFormData = {
+  verificationCode: string;
+};
 
 export function VerifyStep({
   onNextStep,
@@ -19,8 +22,20 @@ export function VerifyStep({
   onClose?: () => void;
   data?: { email: string; verifyCode?: string };
 }) {
+  const { email, verifyCode } = data || {};
   const [counter, setCounter] = React.useState(5);
   const [canResend, setCanResend] = React.useState(false);
+  const [verifyError, setVerifyError] = React.useState<string | null>(null);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<VerifyFormData>({
+    defaultValues: {
+      verificationCode: "",
+    },
+  });
 
   React.useEffect(() => {
     if (counter > 0) {
@@ -38,9 +53,14 @@ export function VerifyStep({
     // Logic to resend the verification code
   };
 
-  const handleVerifyCode = () => {
-    // Logic to verify the code
-    onNextStep?.(ELoginScreen.DONE);
+  const onSubmit = (formData: VerifyFormData) => {
+    // So sánh với verifyCode được truyền vào
+    if (formData.verificationCode === verifyCode) {
+      setVerifyError(null);
+      onNextStep?.(ELoginScreen.DONE);
+    } else {
+      setVerifyError("Invalid verification code. Please try again.");
+    }
   };
 
   return (
@@ -57,25 +77,66 @@ export function VerifyStep({
       <H4 className='font-semibold '>Verification Code</H4>
       <Text className=''>
         A 6-digit code has been sent to{" "}
-        <Text className='text-primary'>email@gmail.com</Text>.{"\n"}
+        <Text className='text-primary'>{email || "your email"}</Text>.{"\n"}
         Please enter this code to verify your email.
       </Text>
-      <InputWithIcon placeholder='Enter the verification code' />
+
+      <Controller
+        control={control}
+        name='verificationCode'
+        rules={{
+          required: "Verification code is required",
+          minLength: {
+            value: 6,
+            message: "Code must be 6 digits",
+          },
+          maxLength: {
+            value: 6,
+            message: "Code must be 6 digits",
+          },
+          pattern: {
+            value: /^[0-9]+$/,
+            message: "Code must contain only numbers",
+          },
+        }}
+        render={({ field: { onChange, value } }) => (
+          <View>
+            <InputWithIcon
+              value={value}
+              onChangeText={onChange}
+              placeholder='Enter the verification code'
+              keyboardType='number-pad'
+              maxLength={6}
+            />
+            {errors.verificationCode && (
+              <Text className='text-red-500 text-xs mt-1 ml-3'>
+                {errors.verificationCode.message}
+              </Text>
+            )}
+            {verifyError && (
+              <Text className='text-red-500 text-xs mt-1 ml-3'>
+                {verifyError}
+              </Text>
+            )}
+          </View>
+        )}
+      />
 
       <TouchableOpacity
         className='flex-row mx-auto justify-between items-center'
         onPress={handleResendCode}
+        disabled={!canResend}
       >
         <Text className={canResend ? "text-primary" : "text-gray-400"}>
           {canResend ? "Resend Code" : `Resend Code in ${counter}s`}
         </Text>
       </TouchableOpacity>
 
-      <Button onPress={handleVerifyCode}>
+      <Button onPress={handleSubmit(onSubmit)}>
         <Text>Verify</Text>
       </Button>
       <Button
-        onPress={handleResendCode}
+        onPress={() => onNextStep?.(ELoginScreen.REGISTER)}
         className='flex-row items-center justify-center'
         variant={"neutral"}
       >

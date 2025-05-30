@@ -19,7 +19,7 @@ export const authApi = {
       (acc) => acc.email === email && acc.password === password
     );
     if (!found) {
-      throw new Error("Sai tài khoản hoặc mật khẩu");
+      throw new Error("Invalid email or password");
     }
     return {
       isLoggedIn: true,

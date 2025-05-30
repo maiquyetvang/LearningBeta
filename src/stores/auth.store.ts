@@ -17,6 +17,7 @@ type AuthActions = {
   logout: () => void;
   setLoading: (loading: boolean) => void;
   setLoaded: (loaded: boolean) => void;
+  setUser: (user: Partial<User>) => void;
 };
 
 export const useAuthStore = create<AuthState & AuthActions>()(
@@ -42,6 +43,10 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         })),
       setLoading: (loading) => set(() => ({ loading })),
       setLoaded: (isLoaded) => set(() => ({ isLoaded })),
+      setUser: (user) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, ...user } : null,
+        })),
     }),
     {
       name: "auth-storage",

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Volume2 } from "~/src/lib/icons/Volume2";
-import { Lesson } from "~/src/types/lesson.type";
+import { Volume2 } from "~/lib/icons/Volume2";
+import { Lesson } from "~/types/lesson.type";
 import { SpeakButton } from "../custom-ui/speak-button";
 import { Text } from "../ui/text";
 import { CheckResultButton } from "./CheckResultButton";

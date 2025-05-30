@@ -7,40 +7,56 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+export async function ensureNotificationPermission(): Promise<boolean> {
+  const { status } = await Notifications.getPermissionsAsync();
+  if (status !== "granted") {
+    const { status: newStatus } = await Notifications.requestPermissionsAsync();
+    return newStatus === "granted";
+  }
+  return true;
+}
+
 /**
- * Gửi local notification với nội dung tuỳ ý.
- * @param title Tiêu đề thông báo
- * @param body Nội dung thông báo
- * @param data Dữ liệu kèm theo (tuỳ chọn)
+ * Send a local notification with custom content.
+ * @param title Notification title
+ * @param body Notification body
+ * @param data Optional extra data
  */
-export async function sendLocalNotification(
-  title: string,
-  body: string,
-  data?: Record<string, any>
-) {
+export async function sendLocalNotification({
+  title,
+  body,
+  data,
+}: {
+  title: string;
+  body: string;
+  data?: Record<string, any>;
+}) {
+  // const hasPermission = await ensureNotificationPermission();
+  // if (!hasPermission) return;
   await Notifications.scheduleNotificationAsync({
     content: {
       title,
       body,
       data,
     },
-    trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-      seconds: 1,
-    },
+    trigger: null,
+    // {
+    //   type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+    //   seconds: 2,
+    // },
   });
 }
 
 /**
- * Gửi mã xác thực 6 số ngẫu nhiên qua local notification.
- * @returns mã code đã gửi
+ * Send a 6-digit verification code via local notification.
+ * @returns The code that was sent
  */
 export async function sendVerifyCodeNotification(confirmCode?: string) {
   const code = Math.floor(100000 + Math.random() * 900000).toString();
-  await sendLocalNotification(
-    "Your verification code",
-    `Your code is: ${confirmCode || code}`,
-    { code: confirmCode || code }
-  );
+  await sendLocalNotification({
+    title: "Your verification code",
+    body: `Your code is: ${confirmCode || code}`,
+    data: { code: confirmCode || code },
+  });
   return code;
 }

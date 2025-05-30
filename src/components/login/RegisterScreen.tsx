@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import { ELoginScreen } from "~/src/app/login";
-import { RegisterStep } from "~/src/components/login/RegisterStep";
-import { VerifyStep } from "~/src/components/login/VerifyStep";
+import { ELoginScreen } from "~/app/login";
+import { RegisterStep } from "~/components/login/RegisterStep";
+import { VerifyStep } from "~/components/login/VerifyStep";
 import { DoneStep } from "./RegisterStepDone";
 
 export default function RegisterScreen({
@@ -27,7 +27,11 @@ export default function RegisterScreen({
     []
   );
   const handleStepChange = useCallback((step: ELoginScreen) => {
-    onNextStep?.(step);
+    if (step === ELoginScreen.LOGIN) {
+      onNextStep?.(step);
+    } else {
+      setStep(step);
+    }
   }, []);
   const handleClose = () => {
     onClose?.();
@@ -51,10 +55,20 @@ export default function RegisterScreen({
           />
         );
       case ELoginScreen.DONE:
-        return <DoneStep onNextStep={handleStepChange} onClose={handleClose} />;
+        return (
+          <DoneStep
+            data={registerData}
+            onNextStep={handleStepChange}
+            onClose={handleClose}
+          />
+        );
       default:
         return (
-          <RegisterStep onNextStep={handleStepChange} onClose={handleClose} />
+          <RegisterStep
+            onNextStep={handleStepChange}
+            onClose={handleClose}
+            onRegister={handleRegister}
+          />
         );
     }
   };

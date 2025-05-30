@@ -7,98 +7,119 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { AppImages } from "~/assets";
+import { AppImages } from "assets";
 import { Text } from "../ui/text";
+import { useLearningStore } from "~/stores/learning.store";
 
-export default function Overall({
-  learningTime: learningTime_ = 0,
-}: {
-  learningTime?: number;
-}) {
-  const prevMinute = React.useRef(0);
-  const [minute, setMinute] = React.useState(0);
-  const [learningTime, setLearningTime] = React.useState(() => learningTime_);
+const Overall = () => {
+  const { totalLearningTime, streakDays, learnedLessons, inProgressLesson } =
+    useLearningStore();
 
-  // React.useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setLearningTime((pre) => (pre || 0) + 60);
-  //   }, 3000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
-  React.useEffect(() => {
-    setLearningTime(learningTime_);
-  }, [learningTime_]);
-
-  React.useEffect(() => {
-    const minutes = Math.floor(((learningTime || 0) % 3600) / 60);
-    if (minutes !== prevMinute.current) {
-      setMinute(minutes);
-      prevMinute.current = minutes;
-    }
-  }, [learningTime]);
-
+  // --- Learning Time (minutes) ---
+  const minute = Math.floor((totalLearningTime || 0) / 60000);
   const animatedMinute = useSharedValue(minute);
 
   React.useEffect(() => {
     animatedMinute.value = withTiming(minute, { duration: 400 });
   }, [minute]);
 
-  const anim = useSharedValue(0);
+  const animMinute = useSharedValue(0);
   React.useEffect(() => {
-    anim.value = 0;
-    anim.value = withTiming(1, { duration: 500 });
+    animMinute.value = 0;
+    animMinute.value = withTiming(1, { duration: 500 });
   }, [minute]);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: 0.1 + 0.9 * anim.value,
+  const animatedMinuteStyle = useAnimatedStyle(() => ({
+    opacity: 0.1 + 0.9 * animMinute.value,
     transform: [
       {
-        translateY: interpolate(anim.value, [0, 1], [10, 0]),
+        translateY: interpolate(animMinute.value, [0, 1], [10, 0]),
       },
     ],
   }));
 
-  const animatedText = useDerivedValue(() => Math.round(animatedMinute.value));
+  const animatedMinuteText = useDerivedValue(() =>
+    Math.round(animatedMinute.value)
+  );
+
+  // --- Streak Days ---
+  const animatedStreak = useSharedValue(streakDays);
+
+  React.useEffect(() => {
+    animatedStreak.value = withTiming(streakDays, { duration: 400 });
+  }, [streakDays]);
+
+  const animStreak = useSharedValue(0);
+  React.useEffect(() => {
+    animStreak.value = 0;
+    animStreak.value = withTiming(1, { duration: 500 });
+  }, [streakDays]);
+
+  const animatedStreakStyle = useAnimatedStyle(() => ({
+    opacity: 0.1 + 0.9 * animStreak.value,
+    transform: [
+      {
+        translateY: interpolate(animStreak.value, [0, 1], [10, 0]),
+      },
+    ],
+  }));
+
+  const animatedStreakText = useDerivedValue(() =>
+    Math.round(animatedStreak.value)
+  );
 
   return (
     <View>
-      <Text className='font-semibold  text-neutral-500'>Overall</Text>
+      {/* <Text className='text-green-700'>
+        {JSON.stringify({ inProgressLesson }, null, 4)}
+      </Text>
+      <Text className='text-blue-500'>
+        {JSON.stringify(learnedLessons, null, 4)}
+      </Text> */}
+      <Text className='font-semibold  text-neutral-500 dark:text-neutral-300'>
+        Overall
+      </Text>
       <View className='p-3 pb-2 mt-3 gap-3 items-center flex-row rounded-lg bg-success-50 dark:bg-success-900'>
         <Image
           source={AppImages.chronometer}
           style={{ height: 40, width: 40 }}
         />
         <View className='justify-center'>
-          <Text className='text-success font-semibold'>Learning Time</Text>
-          <View className='flex-row gap-2 items-start '>
-            <Animated.View style={animatedStyle}>
+          <Text className='text-success-500 font-semibold'>Learning Time</Text>
+          <View className='flex-row gap-1 items-start '>
+            <Animated.View style={animatedMinuteStyle}>
               <Animated.Text
-                style={{ fontSize: 24, fontWeight: "bold", color: "#258124" }}
+                className='text-foreground'
+                style={{ fontSize: 20, fontWeight: "bold" }}
               >
-                {animatedText.value}
+                {minute < 1
+                  ? Math.floor((totalLearningTime || 0) / 1000)
+                  : minute}
               </Animated.Text>
             </Animated.View>
-            <Text className='pt-[8.5px]'>Min</Text>
+            <Text className='pt-[6px]'>{minute < 1 ? "Sec" : "Min"}</Text>
           </View>
         </View>
       </View>
-      <View className='p-3 pb-2 mt-3 gap-3 items-center flex-row rounded-lg bg-primary-50 dark:bg-primary-900'>
+      <View className='p-3 pb-3 mt-3 gap-3 items-center flex-row rounded-lg bg-primary-50 dark:bg-primary-900'>
         <Image source={AppImages.fire} style={{ height: 40, width: 40 }} />
-        <View className='justify-center'>
+        <View className='justify-center gap-1'>
           <Text className='text-primary font-semibold'>Streak Days</Text>
-          <View className='flex-row text- gap-2 items-start '>
-            <Animated.View style={animatedStyle}>
+          <View className='flex-row gap-2 items-start '>
+            <Animated.View style={animatedStreakStyle}>
               <Animated.Text
-                style={{ fontSize: 24, fontWeight: "bold", color: "#EA8934" }}
+                className='text-foreground'
+                style={{ fontSize: 20, fontWeight: "bold" }}
               >
-                {animatedText.value}
+                {animatedStreakText.value}
               </Animated.Text>
             </Animated.View>
-            <Text className='pt-[8.5px]'>Day</Text>
+            <Text className='pt-[6px]'>Day</Text>
           </View>
         </View>
       </View>
     </View>
   );
-}
+};
+
+export default Overall;

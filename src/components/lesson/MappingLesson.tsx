@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { useBoolean } from "usehooks-ts";
-import { Lesson } from "~/src/types/lesson.type";
+import { Lesson } from "~/types/lesson.type";
+import { playResultSound } from "~/utils/playSound";
 import { SpeakButton } from "../custom-ui/speak-button";
-import { H3 } from "../ui/typography";
-import { playResultSound } from "~/src/utils/playSound";
+import { H3, P } from "../ui/typography"; // Thêm P nếu chưa có
+
+// Số lần sai tối đa cho phép
+const MAX_WRONG_ATTEMPTS = 5;
 
 function shuffleArray<T>(array: T[]): T[] {
   return array
@@ -22,7 +25,8 @@ const MappingLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, selectors, answers, audioLanguage } = value.value;
+  const { question, selectors, answers, audioLanguage, questionLanguage } =
+    value.value;
   const [shuffledSelectors] = useState(() => shuffleArray(selectors ?? []));
   const [shuffledAnswers] = useState(() => shuffleArray(answers ?? []));
   const { value: disableAction, setTrue, setFalse, toggle } = useBoolean(false);
@@ -31,8 +35,10 @@ const MappingLesson = ({
   const [disabledLeft, setDisabledLeft] = useState<boolean[]>(
     Array(selectors?.length ?? 0).fill(false)
   );
-  //đếm số lần sai, tối đa 3 lần
-  const [wrongCount, setWrongCount] = useState(0);
+
+  // Số lần trả lời sai
+  const [wrongAttempts, setWrongAttempts] = useState(0);
+
   const [disabledRight, setDisabledRight] = useState<boolean[]>(
     Array(answers?.length ?? 0).fill(false)
   );
@@ -80,11 +86,14 @@ const MappingLesson = ({
           useNativeDriver: true,
         }),
       ]).start();
+
       setTrue();
+      playResultSound(!isCorrect);
+
       timeouts.push(
         setTimeout(() => {
           if (isCorrect) {
-            playResultSound();
+            // Xử lý khi trả lời đúng
             const newDisabledLeft = [...disabledLeft];
             const newDisabledRight = [...disabledRight];
             newDisabledLeft[selectedLeft] = true;
@@ -92,28 +101,32 @@ const MappingLesson = ({
             setDisabledLeft(newDisabledLeft);
             setDisabledRight(newDisabledRight);
 
-            timeouts.push(
-              setTimeout(() => {
-                if (
-                  newDisabledLeft.every(Boolean) &&
-                  newDisabledRight.every(Boolean)
-                ) {
-                  onSuccess?.(false);
-                }
-              }, 550)
-            );
+            if (
+              newDisabledLeft.every(Boolean) &&
+              newDisabledRight.every(Boolean)
+            ) {
+              onSuccess?.(false); // Hoàn thành thành công
+            }
           } else {
-            playResultSound(true);
+            // Tăng số lần trả lời sai
+            const newWrongAttempts = wrongAttempts + 1;
+            setWrongAttempts(newWrongAttempts);
+
+            // Kiểm tra nếu đã sai quá số lần cho phép
+            if (newWrongAttempts >= MAX_WRONG_ATTEMPTS) {
+              onSuccess?.(true); // Thất bại
+            }
           }
-        }, 1000)
+        }, 500)
       );
+
       timeouts.push(
         setTimeout(() => {
           setSelectedLeft(null);
           setSelectedRight(null);
           setFeedback({ left: null, right: null, isCorrect: null });
           setFalse();
-        }, 1000)
+        }, 500)
       );
     }
   }, [selectedLeft, selectedRight]);
@@ -121,6 +134,16 @@ const MappingLesson = ({
   return (
     <View className='flex-1 gap-8'>
       {!!question && <H3 className='text-primary text-center'>{question}</H3>}
+
+      {/* Hiển thị số lần sai */}
+      <View className='items-center'>
+        <P
+          className={`${wrongAttempts > 0 ? "text-red-500" : "text-neutral-500"}`}
+        >
+          Attempts remaining: {MAX_WRONG_ATTEMPTS - wrongAttempts}/5
+        </P>
+      </View>
+
       <View className='flex-row gap-8 justify-center'>
         <View style={styles.optionsContainer}>
           {shuffledSelectors.map((word, idx) => {
@@ -130,7 +153,7 @@ const MappingLesson = ({
             const isZoom = isFeedback && feedback.isCorrect !== null;
             const zoomColor =
               isZoom && feedback.isCorrect === true
-                ? "#22b934"
+                ? "#258124"
                 : isZoom && feedback.isCorrect === false
                   ? "#ef4444"
                   : undefined;
@@ -143,6 +166,7 @@ const MappingLesson = ({
                   isFeedback && {
                     transform: [{ scale: anim }],
                     backgroundColor: zoomColor,
+                    borderColor: "white",
                     borderRadius: 6,
                   },
                   { width: "100%" },
@@ -160,7 +184,8 @@ const MappingLesson = ({
                   }
                   onPress={() => handleSelectLeft(idx)}
                   disabled={isUsed}
-                  language={audioLanguage}
+                  disabledSpeak={questionLanguage !== "ko"}
+                  language={questionLanguage}
                   label={word}
                   className='transition-colors'
                 />
@@ -176,7 +201,7 @@ const MappingLesson = ({
             const isZoom = isFeedback && feedback.isCorrect !== null;
             const zoomColor =
               isZoom && feedback.isCorrect === true
-                ? "#22b934"
+                ? "#258124"
                 : isZoom && feedback.isCorrect === false
                   ? "#ef4444"
                   : undefined;
@@ -188,6 +213,7 @@ const MappingLesson = ({
                   isFeedback && {
                     transform: [{ scale: anim }],
                     backgroundColor: zoomColor,
+                    borderColor: "white",
                     borderRadius: 6,
                   },
                   { width: "100%" },
@@ -205,6 +231,7 @@ const MappingLesson = ({
                   }
                   onPress={() => handleSelectRight(idx)}
                   disabled={isUsed}
+                  disabledSpeak={audioLanguage !== "ko"}
                   language={audioLanguage}
                   label={word}
                   className='transition-colors'
@@ -217,6 +244,7 @@ const MappingLesson = ({
     </View>
   );
 };
+
 export default MappingLesson;
 
 const styles = StyleSheet.create({

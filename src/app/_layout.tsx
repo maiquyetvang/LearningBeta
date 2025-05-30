@@ -1,21 +1,15 @@
-import "~/global.css";
+import "global.css";
 
-import {
-  DarkTheme,
-  DefaultTheme,
-  Theme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { PortalHost } from "@rn-primitives/portal";
+import { DarkTheme, DefaultTheme, Theme } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { setAndroidNavigationBar } from "~/src/lib/android-navigation-bar";
-import { NAV_THEME } from "~/src/lib/constants";
-import { useColorScheme } from "~/src/lib/useColorScheme";
-import { ReactQueryProvider } from "~/src/providers/react-query.provider";
+import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
+import { NAV_THEME } from "~/lib/constants";
+import { useColorScheme } from "~/lib/useColorScheme";
+import { AppProvider } from "~/providers/app.provider";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -55,23 +49,20 @@ export default function RootLayout() {
   }
 
   return (
-    <ReactQueryProvider>
-      <GestureHandlerRootView>
-        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name='(protected)' />
-            <Stack.Screen name='login' />
-            <Stack.Screen name='welcome' options={{ animation: "fade" }} />
-          </Stack>
-          <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-          <PortalHost />
-        </ThemeProvider>
-      </GestureHandlerRootView>
-    </ReactQueryProvider>
+    <GestureHandlerRootView>
+      <AppProvider theme={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name='(protected)' />
+          <Stack.Screen name='login' />
+          <Stack.Screen name='welcome' options={{ animation: "fade" }} />
+        </Stack>
+        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+      </AppProvider>
+    </GestureHandlerRootView>
   );
 }
 

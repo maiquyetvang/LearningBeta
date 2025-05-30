@@ -5,10 +5,10 @@ import { Text } from "../ui/text";
 // import { ExpoSpeech } from "~/utils/TextToSpeech";
 import * as Speech from "expo-speech";
 import { SpeakButton } from "../custom-ui/speak-button";
-import { Lesson } from "~/src/types/lesson.type";
+import { Lesson } from "~/types/lesson.type";
 import { CheckResultButton } from "./CheckResultButton";
 import { H3 } from "../ui/typography";
-import { cn } from "~/src/lib/utils";
+import { cn } from "~/lib/utils";
 
 const SentenceLesson = ({
   value,

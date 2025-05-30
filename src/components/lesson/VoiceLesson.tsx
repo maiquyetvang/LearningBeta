@@ -1,26 +1,31 @@
 import { ArrowRightIcon } from "lucide-react-native";
 import React, { useEffect } from "react";
 import { View } from "react-native";
-import { Button } from "~/src/components/ui/button";
-import { Text } from "~/src/components/ui/text";
-import { useVoiceRecognition } from "~/src/hooks/useVoiceRecognition";
-import { Mic } from "~/src/lib/icons/Mic";
-import { Volume2 } from "~/src/lib/icons/Volume2";
-import { useColorScheme } from "~/src/lib/useColorScheme";
-import { cn } from "~/src/lib/utils";
-import { Lesson } from "~/src/types/lesson.type";
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { useVoiceRecognition } from "~/hooks/useVoiceRecognition";
+import { Mic } from "~/lib/icons/Mic";
+import { Volume2 } from "~/lib/icons/Volume2";
+import { useColorScheme } from "~/lib/useColorScheme";
+import { cn } from "~/lib/utils";
+import { Lesson } from "~/types/lesson.type";
 import { SpeakButton } from "../custom-ui/speak-button";
 import { CheckResultButton } from "./CheckResultButton";
+import { CannotSpeakButton } from "./CannotSpeakButton";
+import { useLearningStore } from "~/stores/learning.store";
 
 const VoiceMatch = ({
   value: sampleText,
   disabled,
   onSuccess,
+  onSkip,
 }: {
   value: Lesson;
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
+  onSkip?: () => void;
 }) => {
+  const { setAudioDisabled } = useLearningStore();
   const { question, selectors, answer, audioLanguage } = sampleText.value;
   const { isDarkColorScheme } = useColorScheme();
   const [isSuccess, setIsSuccess] = React.useState(false);
@@ -111,6 +116,11 @@ const VoiceMatch = ({
     }
   };
 
+  const handleSkip = () => {
+    setAudioDisabled(true);
+    onSkip?.();
+  };
+
   return (
     <View className='flex-1 gap-8'>
       <Text className='font-light text-center text-sm italic'>
@@ -171,9 +181,7 @@ const VoiceMatch = ({
         {/* <Text>{JSON.stringify({ ...state, audioLanguage }, null, 2)}</Text> */}
       </View>
       <View className='mt-auto gap-2'>
-        <Button variant='ghost' className='border-none '>
-          <Text>I can't speak right now</Text>
-        </Button>
+        <CannotSpeakButton onPress={handleSkip} />
         <CheckResultButton disabled={true} />
       </View>
     </View>

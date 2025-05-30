@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import { Image, Pressable, View } from "react-native";
-import { AppImages } from "~/assets";
-import { personalizeStepDetail } from "~/src/app/(protected)/(tabs)/(home)/personalize";
-import { ChevronLeft } from "~/src/lib/icons/ChevronLeft";
-import { ChevronRight } from "~/src/lib/icons/ChevronRight";
-import { cn } from "~/src/lib/utils";
+import { AppImages } from "assets";
+import { personalizeStepDetail } from "~/app/(protected)/(_tabs)/(_home)/personalize";
+import { ChevronLeft } from "~/lib/icons/ChevronLeft";
+import { ChevronRight } from "~/lib/icons/ChevronRight";
+import { cn } from "~/lib/utils";
+import { AnimatedScreenWrapper } from "../login/AnimatedScreenWrapper";
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
 import { H3 } from "../ui/typography";
-import { set } from "react-hook-form";
-import { AnimatedScreenWrapper } from "../login/AnimatedScreenWrapper";
 
 type Props = {
   stepIndex: number;
@@ -131,7 +130,6 @@ export default function PersonalizeStepScreen({
       })}
 
       <View className='mt-auto gap-2'>
-        <Text>{value}</Text>
         {stepIndex > 1 && (
           <Button
             className='flex-row gap-2'

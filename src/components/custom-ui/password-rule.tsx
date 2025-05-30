@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "~/src/components/ui/text";
+import { Text } from "~/components/ui/text";
 
 interface PasswordRulesProps {
   password: string;

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Tts, { Options } from "react-native-tts";
-import { SUPPORTED_VOICE_MAP } from "~/src/configs/default-language";
+import { SUPPORTED_VOICE_MAP } from "~/configs/default-language";
 
 const useTTS = (language: string = "en") => {
   const [isSpeaking, setIsSpeaking] = useState(false);

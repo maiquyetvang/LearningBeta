@@ -2,6 +2,7 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { AppImages } from "assets";
 import React, { useCallback } from "react";
 import {
   Image,
@@ -12,17 +13,11 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { AppImages } from "~/assets";
-import { LoginStep } from "~/src/components/login/LoginScreen";
-import { RegisterStep } from "~/src/components/login/RegisterStep";
-import { VerifyStep } from "~/src/components/login/VerifyStep";
-import { Button } from "~/src/components/ui/button";
-import { Text } from "~/src/components/ui/text";
-import { useLessonBottomSheet } from "~/src/hooks/useLessonBottomSheet";
-import { useColorScheme } from "~/src/lib/useColorScheme";
-import { DoneStep } from "../components/login/RegisterStepDone";
-import { AnimatedScreenWrapper } from "../components/login/AnimatedScreenWrapper";
-import { usePushNotification } from "../hooks/usePushNotification";
+import { LoginStep } from "~/components/login/LoginScreen";
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { useLessonBottomSheet } from "~/hooks/useLessonBottomSheet";
+import { useColorScheme } from "~/lib/useColorScheme";
 import RegisterScreen from "../components/login/RegisterScreen";
 
 export enum ELoginScreen {
@@ -69,7 +64,7 @@ export default function LoginScreen() {
         <View className='p-5 gap-5 flex-1 justify-center items-center'>
           <View className=' flex-1 justify-center items-center '>
             <Image
-              source={require("~/assets/images/splash-icon.png")}
+              source={require("assets/images/splash-icon.png")}
               style={styles.image}
               resizeMode='contain'
             />

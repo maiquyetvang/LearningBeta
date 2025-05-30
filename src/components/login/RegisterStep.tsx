@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, Pressable, TouchableOpacity, View } from "react-native";
-import { InputWithIcon } from "~/src/components/custom-ui/input-icon";
-import { Button } from "~/src/components/ui/button";
-import { Text } from "~/src/components/ui/text";
-import { H3 } from "~/src/components/ui/typography";
+import { InputWithIcon } from "~/components/custom-ui/input-icon";
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { H3 } from "~/components/ui/typography";
 import ThemeIcon from "../Icon";
-import { Lock } from "~/src/lib/icons/Lock";
-import { Mail } from "~/src/lib/icons/Mail";
+import { Lock } from "~/lib/icons/Lock";
+import { Mail } from "~/lib/icons/Mail";
 import { ArrowLeft, X } from "lucide-react-native";
 import { AnimatedScreenWrapper } from "./AnimatedScreenWrapper";
-import { ELoginScreen } from "~/src/app/login";
+import { ELoginScreen } from "~/app/login";
 import { PasswordRules, checkPasswordRules } from "../custom-ui/password-rule";
-import { authApi } from "~/src/api/auth.local";
+import { authApi } from "~/api/auth.local";
 import { LoginForm } from "./LoginScreen";
-import { sendVerifyCodeNotification } from "~/src/utils/notification";
+import { sendVerifyCodeNotification } from "~/utils/notification";
 
 type RegisterForm = {
   email: string;

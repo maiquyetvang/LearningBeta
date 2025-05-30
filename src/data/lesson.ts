@@ -1,6 +1,52 @@
-import { ELessonType, Lesson } from "~/src/types/lesson.type";
+import { LessonImages } from "assets";
+import { ELessonType, Lesson, LessonGroup } from "~/types/lesson.type";
 
-export const sampleLesson: Lesson[] = [
+export const lessonGroups: LessonGroup[] = [
+  {
+    id: "level-test",
+    title: "Level Test",
+    description: "Test your Korean level",
+    courseId: "course-0",
+    image: LessonImages[1],
+  },
+  {
+    id: "course-1-1",
+    title: "회사원이 아니에요 1",
+    description: "I'm not a company employee",
+    courseId: "course-1",
+    image: LessonImages[1],
+  },
+  {
+    id: "course-1-2",
+    title: "회사원이 아니에요 2",
+    description: "I'm not a company employee",
+    courseId: "course-1",
+    image: LessonImages[2],
+  },
+  {
+    id: "course-1-3",
+    title: "회사원이 아니에요 3",
+    description: "I'm not a company employee",
+    courseId: "course-1",
+    image: LessonImages[3],
+  },
+  {
+    id: "course-1-4",
+    title: "회사원이 아니에요 4",
+    description: "I'm not a company employee",
+    courseId: "course-1",
+    image: LessonImages[4],
+  },
+  {
+    id: "course-1-5",
+    title: "회사원이 아니에요 5",
+    description: "I'm not a company employee",
+    courseId: "course-1",
+    image: LessonImages[5],
+  },
+];
+
+export const levelTestLessons: Lesson[] = [
   {
     type: ELessonType.SingleChoose,
     value: {
@@ -46,14 +92,7 @@ export const sampleLesson: Lesson[] = [
       audioLanguage: "ko",
     },
   },
-  {
-    type: ELessonType.WriteOnlyWord,
-    value: {
-      question: "학교",
-      answer: "학교",
-      audioLanguage: "ko",
-    },
-  },
+
   {
     type: ELessonType.WriteWord,
     value: {
@@ -80,21 +119,194 @@ export const sampleLesson: Lesson[] = [
       audioLanguage: "ko",
     },
   },
-  // {
-  //   type: ELessonType.Sentence,
-  //   value: {
-  //     question: "이 사람은 선생님입니다.",
-  //     selectors: ["is", "This", "apple", "student", "person", "a", "teacher"],
-  //     answers: ["This", "person", "is", "a", "teacher"],
-  //   },
-  // },
 
   {
     type: ELessonType.Mapping,
     value: {
       selectors: ["Apple", "Banana", "Orange", "Grapes"],
       answers: ["사과", "바나나", "오렌지", "포도"],
+      questionLanguage: "en",
       audioLanguage: "ko",
     },
   },
-].reverse();
+  {
+    type: ELessonType.WriteOnlyWord,
+    value: {
+      question: "학교",
+      answer: "학교",
+      audioLanguage: "ko",
+    },
+  },
+];
+// .reverse()
+// .slice(0, 5);
+export const Course1Unit2: Lesson[] = [
+  {
+    type: ELessonType.SingleImageChoose,
+    value: {
+      question: "아버지",
+      imageSelectors: [
+        { image: LessonImages.FamilyDad, label: "Father" },
+        { image: LessonImages.FamilyMom, label: "Mother" },
+        {
+          image: LessonImages.FamilyYoungBrother,
+          label: "Young Brother/Sister",
+        },
+        { image: LessonImages.FamilyBrother, label: "Brother" },
+      ],
+      answer: "Father",
+      audioLanguage: "en",
+    },
+  },
+  {
+    type: ELessonType.SingleChoose,
+    value: {
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/1200px-Flag_of_South_Korea.svg.png",
+      selectors: ["미국", "한국", "사과"],
+      audioLanguage: "ko",
+      answer: "한국",
+    },
+  },
+  {
+    type: ELessonType.SingleChoose,
+    value: {
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png",
+      selectors: ["미국", "한국", "중국"],
+      audioLanguage: "ko",
+      answer: "미국",
+    },
+  },
+  {
+    type: ELessonType.Mapping,
+    value: {
+      selectors: ["미국", "멕시코", "중국"],
+      answers: ["United States", "Mexico", "China"],
+      questionLanguage: "ko",
+      audioLanguage: "en",
+    },
+  },
+  {
+    type: ELessonType.Listening,
+    value: {
+      selectors: ["선생님", "학생", "의사"],
+      audioLanguage: "ko",
+      answer: "선생님",
+    },
+  },
+  {
+    type: ELessonType.SingleChoose,
+    value: {
+      image: "https://www.pallikkutam.com/uploads/webzines/1735619741.jpg",
+      // question: "저는 학생이에요.",
+      selectors: ["선생님", "학생"],
+      answer: "학생",
+      audioLanguage: "ko",
+    },
+  },
+  {
+    type: ELessonType.WriteOnlyWord,
+    value: {
+      question: "한국 사람",
+      answer: "한국 사람",
+      audioLanguage: "ko",
+    },
+  },
+  {
+    type: ELessonType.SingleChoose,
+    value: {
+      question: "한국 사람.",
+      selectors: ["American", "Korean", "Korean Doctor"],
+      answer: "Korean",
+      audioLanguage: "en",
+    },
+  },
+
+  {
+    type: ELessonType.Sentence,
+    value: {
+      question: "I am a student.",
+      selectors: ["이에요", "사람이에요", "학생", "선생님", "저는", "학생"],
+      answers: ["저는", "사람이에요"],
+      audioLanguage: "ko",
+    },
+  },
+  {
+    type: ELessonType.SingleChoose,
+    value: {
+      question: "저는 한국 ______",
+      selectors: ["이에요", "예요", "사람이에요"],
+      answer: "사람이에요",
+      audioLanguage: "ko",
+    },
+  },
+  {
+    type: ELessonType.WriteWord,
+    value: {
+      hint: "I am American.",
+      question: "___ 사람이에요.",
+      answer: "미국",
+    },
+  },
+  {
+    type: ELessonType.Listening,
+    value: {
+      selectors: ["저는 학생이에요.", "저는 선생님이에요.", "선생님은 저예요."],
+      audioLanguage: "ko",
+      answer: "저는 선생님이에요.",
+    },
+  },
+  {
+    type: ELessonType.SingleChoose,
+    value: {
+      question: "박지훈____________ 선생님이에요.",
+      selectors: ["은", "는"],
+      audioLanguage: "ko",
+      answer: "은",
+    },
+  },
+  {
+    type: ELessonType.Sentence,
+    value: {
+      question: "I am American.",
+      selectors: ["이에요", "선생님은", "학생", "한국", "저는", "사람이에요"],
+      answers: ["저는", "사람이에요"],
+      audioLanguage: "ko",
+    },
+  },
+  {
+    type: ELessonType.SingleChoose,
+    value: {
+      question: "안녕하세요?",
+      selectors: ["Goodbye", "Thanks", "Hello"],
+      audioLanguage: "en",
+      answer: "Hello",
+    },
+  },
+  {
+    type: ELessonType.Voice,
+    value: {
+      question: "안녕하세요?",
+      answer: "안녕하세요?",
+      audioLanguage: "ko",
+    },
+  },
+  {
+    type: ELessonType.Voice,
+    value: {
+      question: "저는 민준이에요",
+      answer: "저는 민준이에요",
+      audioLanguage: "ko",
+    },
+  },
+  {
+    type: ELessonType.Voice,
+    value: {
+      question: "저는 베트남 사람이에요.",
+      answer: "저는 베트남 사람이에요.",
+      audioLanguage: "ko",
+    },
+  },
+];
+// .slice(0, 4);

@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Volume2 } from "~/src/lib/icons/Volume2";
-import { Lesson } from "~/src/types/lesson.type";
+import { Volume2 } from "~/lib/icons/Volume2";
+import { Lesson } from "~/types/lesson.type";
 import { SpeakButton } from "../custom-ui/speak-button";
 import { Text } from "../ui/text";
+import { CannotListenButton } from "./CannotListenButton";
 import { CheckResultButton } from "./CheckResultButton";
+import { useLearningStore } from "~/stores/learning.store";
+import { set } from "react-hook-form";
 
 const ListeningLesson = ({
   value,
   disabled,
   onSuccess,
+  onSkip,
 }: {
   value: Lesson;
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
+  onSkip?: () => void;
 }) => {
+  const { setSpeechDisabled } = useLearningStore();
   const { question, selectors, answer, image, audioLanguage } = value.value;
   const [selected, setSelected] = useState<string | null>();
   const handleSelectWord = (value: string) => {
@@ -23,6 +29,10 @@ const ListeningLesson = ({
   const handleCheckResults = () => {
     const isCorrect = !!answer && answer === selected;
     onSuccess?.(!isCorrect);
+  };
+  const handleSkip = () => {
+    setSpeechDisabled(true);
+    onSkip?.();
   };
   return (
     <View className='flex-1 gap-8'>
@@ -60,7 +70,10 @@ const ListeningLesson = ({
             );
           })}
       </View>
-      <CheckResultButton disabled={!selected} onCheck={handleCheckResults} />
+      <View className='mt-auto gap-2'>
+        <CannotListenButton onPress={handleSkip} />
+        <CheckResultButton disabled={!selected} onCheck={handleCheckResults} />
+      </View>
     </View>
   );
 };

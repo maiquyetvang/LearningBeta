@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Input } from "../ui/input";
-import { Eye, EyeOff } from "lucide-react-native";
+import { Eye, EyeClosed, EyeOff } from "lucide-react-native";
 
 type InputWithIconProps = Omit<React.ComponentProps<typeof Input>, "style"> & {
   leftIcon?: React.ReactNode;
@@ -41,8 +41,8 @@ export const InputWithIcon = React.forwardRef<any, InputWithIconProps>(
             onPress={() => setShowPassword((v) => !v)}
             hitSlop={10}
           >
-            {showPassword ? (
-              <EyeOff size={20} color='#888' />
+            {!showPassword ? (
+              <EyeClosed size={20} color='#888' />
             ) : (
               <Eye size={20} color='#888' />
             )}
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     justifyContent: "center",
     alignItems: "center",
+    alignContent: "center",
     height: "100%",
   },
   rightIcon: {
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     justifyContent: "center",
     alignItems: "center",
+    alignContent: "center",
     height: "100%",
   },
   input: {
