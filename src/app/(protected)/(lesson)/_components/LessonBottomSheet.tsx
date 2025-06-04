@@ -6,6 +6,25 @@ import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { useColorScheme } from "~/lib/useColorScheme";
 
+// Mảng các tiêu đề cho trường hợp thành công
+const SUCCESS_TITLES = [
+  "Congratulations!",
+  "Well done!",
+  "Excellent!",
+  "Great job!",
+  "Perfect!",
+  "Awesome!",
+  "Brilliant!",
+  "Fantastic!",
+  "Impressive!",
+  "Outstanding!",
+  "Superb!",
+  "Amazing work!",
+  "You got it!",
+  "That's correct!",
+  "Spot on!",
+];
+
 const LessonBottomSheet = ({
   isFalse: isFalse_,
   isSkip,
@@ -27,6 +46,15 @@ const LessonBottomSheet = ({
 }) => {
   const { isDarkColorScheme } = useColorScheme();
   const [isFalse, setIsFalse] = useState<boolean | undefined>(isFalse_);
+  const [successTitle, setSuccessTitle] = useState<string>("");
+
+  useEffect(() => {
+    if (!isFalse_ && !isSkip) {
+      const randomIndex = Math.floor(Math.random() * SUCCESS_TITLES.length);
+      setSuccessTitle(SUCCESS_TITLES[randomIndex]);
+    }
+  }, [isFalse_, isSkip]);
+
   useEffect(() => {
     setIsFalse(isFalse_);
   }, [isFalse_]);
@@ -36,11 +64,13 @@ const LessonBottomSheet = ({
     <CheckIcon
       size={30}
       className='text-success'
-      stroke={isDarkColorScheme ? "#26732f" : "#22b934"}
+      stroke={isDarkColorScheme ? "#22b934" : "#22b934"}
       strokeWidth={5}
     />
   );
-  let titleText = "Congratulation!";
+
+  // Sử dụng successTitle nếu là trạng thái thành công
+  let titleText = successTitle || "Congratulations!";
   let titleClass = "text-success";
 
   if (isSkip) {
@@ -65,7 +95,7 @@ const LessonBottomSheet = ({
         strokeWidth={5}
       />
     );
-    titleText = "Good luck!";
+    titleText = "Not correct!";
     titleClass = "text-error";
   }
 
@@ -104,7 +134,11 @@ const LessonBottomSheet = ({
             </View>
             <Button
               className={`rounded-xl border-r-2 border-l-[0px] border-b-2 active:border-b-[1px] active:border-r-[1px] ${
-                isSkip ? "bg-yellow-400" : !isFalse ? "bg-success" : "bg-error"
+                isSkip
+                  ? "bg-yellow-400"
+                  : !isFalse
+                    ? "bg-success dark:bg-success-700"
+                    : "bg-error"
               }`}
               onPress={onNextStep}
             >
@@ -118,6 +152,7 @@ const LessonBottomSheet = ({
     </BottomSheet>
   );
 };
+
 LessonBottomSheet.displayName = "LessonBottomSheet";
 
 export default LessonBottomSheet;

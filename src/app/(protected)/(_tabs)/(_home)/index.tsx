@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PullToRefreshWrapper from "~/components/common/PullToRefreshWrapper";
 import LearningPath from "~/components/homepage/LearningPath";
 import Overall from "~/components/homepage/Overall";
+import TestVoice from "~/components/homepage/TestVoice";
 import TodayLesson from "~/components/homepage/TodayLesson";
 
 const HomeScreen: React.FC = () => {

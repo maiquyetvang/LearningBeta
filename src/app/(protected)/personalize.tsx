@@ -1,20 +1,11 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Image, SafeAreaView, View } from "react-native";
-import StepProgressBar from "~/components/custom-ui/progress";
-import ListeningLesson from "~/components/lesson/ListeningLesson";
-import MappingLesson from "~/components/lesson/MappingLesson";
-import SelectLesson from "~/components/lesson/SelectLesson";
-import SimpleSentenceLesson from "~/components/lesson/SimpleSentenceLesson";
-import SingleChooseLesson from "~/components/lesson/SingleChooseLesson";
-import VoiceMatch from "~/components/lesson/VoiceLesson";
-import WriteOnlyWordLesson from "~/components/lesson/WriteOnlyWordLesson";
-import WriteWordLesson from "~/components/lesson/WriteWordLesson";
+import StepProgressBar, { ProgressStep } from "~/components/custom-ui/progress";
 import { AnimatedScreenWrapper } from "~/components/login/AnimatedScreenWrapper";
 import PersonalizeStepScreen from "~/components/personalize/PersonalizeStepScreen";
 import { Text } from "~/components/ui/text";
-import { H2, H3 } from "~/components/ui/typography";
-import { ELessonType } from "~/types/lesson.type";
+import { H3 } from "~/components/ui/typography";
 
 export type PersonalizeStep =
   | { type: "welcome" }
@@ -116,6 +107,7 @@ const PersonalizeScreen: React.FC = () => {
   const [personalizeValues, setPersonalizeValues] = useState<
     Record<string, string>
   >({});
+  const [progress, setProgress] = useState<ProgressStep[]>([]);
 
   const renderTitle = (index: number) => {
     if (index >= personalizeStepDetail.length || index === 0) return <></>;
@@ -156,6 +148,18 @@ const PersonalizeScreen: React.FC = () => {
       }
       return;
     }
+    setProgress((prev) => {
+      const exists = prev.some((step) => step.index === currentIndex);
+      let updated;
+      if (exists) {
+        updated = prev.map((step) =>
+          step.index === currentIndex ? { ...step } : step
+        );
+      } else {
+        updated = [...prev, { index: currentIndex }];
+      }
+      return updated.sort((a, b) => a.index - b.index);
+    });
   };
   const handleUndo = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev));
@@ -179,13 +183,13 @@ const PersonalizeScreen: React.FC = () => {
 
   return (
     <SafeAreaView className='flex-1'>
-      <View className='flex-1 gap-5 p-5'>
+      <View className='flex-1 gap-5 p-5 pt-0'>
         {currentIndex !== 0 && (
-          <View className='gap-5'>
-            <H3>Level Test</H3>
+          <View>
             <StepProgressBar
               currentIndex={currentIndex - 1}
               length={personalizeStepDetail.length - 1}
+              progressStep={progress.slice(1)}
             />
           </View>
         )}

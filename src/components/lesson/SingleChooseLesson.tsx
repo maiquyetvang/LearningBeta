@@ -31,11 +31,16 @@ const SingleChooseLesson = ({
         </Text>
       )}
       {image && (
-        <Image
-          src={image}
-          alt='Apple Logo'
-          style={{ flex: 1, maxHeight: 200, objectFit: "contain" }}
-        />
+        <View className='items-center justify-center'>
+          <Image
+            source={typeof image === "string" ? { uri: image } : image}
+            resizeMode='contain'
+            style={{
+              width: "100%",
+              height: 200,
+            }}
+          />
+        </View>
       )}
       <View style={styles.optionsContainer}>
         {selectors &&

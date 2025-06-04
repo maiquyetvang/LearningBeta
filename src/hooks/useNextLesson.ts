@@ -9,25 +9,8 @@ export function useNextLesson(course?: Course) {
   const checkIsCompleted = (lessonId: string) =>
     completedUnit?.some((unit) => unit.lessonId === lessonId);
 
-  const hasCompletedLevelTest = checkIsCompleted("level-test");
+  // const hasCompletedLevelTest = checkIsCompleted("level-test");
 
-  // if (!hasCompletedLevelTest && levelTestLesson) {
-  //   return {
-  //     checkIsCompleted,
-  //     lessonGroups: [],
-  //     lastCompletedIndex: -1,
-  //     nextLesson: {
-  //       ...levelTestLesson,
-  //       isCompleted: false,
-  //     } as LessonGroup & { isCompleted: boolean },
-  //     totalLessons: course?.lessonGroups?.length || 0,
-  //     progress: 0,
-  //     isAllCompleted: false,
-  //     isLevelTest: true, // Flag để biết đây là level test
-  //   };
-  // }
-
-  // Code hiện tại nếu đã hoàn thành level-test
   const lessonGroups = (course?.lessonGroups ?? [])
     .filter((lesson) => lesson.courseId === course?.id)
     .map((lesson) => ({
@@ -39,14 +22,8 @@ export function useNextLesson(course?: Course) {
     .map((lesson) => lesson.isCompleted)
     .lastIndexOf(true);
 
-  const nextLesson =
-    !hasCompletedLevelTest && levelTestLesson
-      ? ({
-          ...levelTestLesson,
-          isCompleted: false,
-        } as LessonGroup & { isCompleted: boolean })
-      : ((lessonGroups[lastCompletedIndex + 1] ??
-          lessonGroups.find((lesson) => !lesson.isCompleted)) as LessonGroup);
+  const nextLesson = (lessonGroups[lastCompletedIndex + 1] ??
+    lessonGroups.find((lesson) => !lesson.isCompleted)) as LessonGroup;
 
   const totalLessons = lessonGroups.length || 0;
   const progress =

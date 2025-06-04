@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ELoginScreen } from "~/app/login";
+import { ELoginScreen } from "~/app/(auth)/login";
 import { RegisterStep } from "~/components/login/RegisterStep";
 import { VerifyStep } from "~/components/login/VerifyStep";
 import { DoneStep } from "./RegisterStepDone";

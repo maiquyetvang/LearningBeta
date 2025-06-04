@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, Pressable, TextInput, View } from "react-native";
 import { authApi } from "~/api/auth.local";
-import { ELoginScreen } from "~/app/login";
+import { ELoginScreen } from "~/app/(auth)/login";
 import { InputWithIcon } from "~/components/custom-ui/input-icon";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
@@ -28,9 +28,9 @@ export function LoginStep({
   onNextStep?: (step: ELoginScreen) => void;
   onClose?: () => void;
 }) {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const passwordInputRef = useRef<TextInput>(null);
-  const { login, user } = useAuthStore();
+  const { login, user, loading, setLoading } = useAuthStore();
 
   const {
     control,
@@ -48,14 +48,21 @@ export function LoginStep({
 
   const onSubmit = async (data: LoginForm) => {
     setLoading(true);
+    // timeout
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
     try {
       const result = await authApi.login(data);
       login({
         email: result.email,
         remember: data.remember,
         stayLogin: data.stayLogin,
+        isFirstLogin: result.isFirstLogin,
       } as User);
-      router.replace("/");
+      if (result.isFirstLogin) {
+        router.replace("/(protected)/personalize");
+      } else {
+        router.replace("/");
+      }
     } catch (e: any) {
       Alert.alert("Login Failed", e.message);
     } finally {

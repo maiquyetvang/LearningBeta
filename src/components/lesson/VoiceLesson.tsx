@@ -13,7 +13,7 @@ import { SpeakButton } from "../custom-ui/speak-button";
 import { CheckResultButton } from "./CheckResultButton";
 import { CannotSpeakButton } from "./CannotSpeakButton";
 import { useLearningStore } from "~/stores/learning.store";
-
+import { Loader2 } from "~/lib/icons/Loader2";
 const VoiceMatch = ({
   value: sampleText,
   disabled,
@@ -39,25 +39,13 @@ const VoiceMatch = ({
   const spokenWords =
     !!state?.results && !!state ? state.results[0]?.split(" ") : [];
 
-  const checkAllMatch = () =>
-    sampleWords.every((word, index) => {
-      const spokenWord = !!spokenWords ? spokenWords[index] : "";
-      return (
-        !!word &&
-        !!spokenWords &&
-        spokenWords.some((v) => v.toLowerCase() === word.toLowerCase())
-      );
-    });
+  const normalize = (str: string) => str.replace(/\s/g, "");
 
   const checkMatchPercent = () => {
     if (!sampleWords.length) return false;
-    const matchCount = sampleWords.filter(
-      (word) =>
-        !!spokenWords &&
-        word &&
-        spokenWords.some((v) => v.toLowerCase() === word.toLowerCase())
-    ).length;
-    return matchCount / sampleWords.length >= 0.6;
+    const normalizedSample = normalize(sampleWords.join(""));
+    const normalizedSpoken = normalize(state.results?.[0] ?? "");
+    return normalizedSpoken.includes(normalizedSample);
   };
 
   useEffect(() => {
@@ -79,7 +67,7 @@ const VoiceMatch = ({
     return () => {
       clearTimeout(timer);
     };
-  }, [state.results]);
+  }, [state.results?.[0]]);
 
   const renderWords = sampleWords.map((word, index) => {
     const spokenWord = !!spokenWords ? spokenWords[index] : "";
@@ -121,6 +109,11 @@ const VoiceMatch = ({
     onSkip?.();
   };
 
+  useEffect(() => {
+    // startListening();
+    // stopListening();
+  }, []);
+
   return (
     <View className='flex-1 gap-8'>
       <Text className='font-light text-center text-sm italic'>
@@ -153,10 +146,8 @@ const VoiceMatch = ({
       </View>
       <View className='flex-col gap-2'>
         <Button
-          // disabled={isSuccess}
           className=' flex-row  h-fit gap-2  transition-colors'
           variant={state.isRecording ? "destructive" : "default"}
-          // style={{ backgroundColor: borderColor, borderWidth: 3 }}
           onPressIn={handleClickButton}
           disabled={disabled}
         >

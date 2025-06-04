@@ -17,8 +17,8 @@ type InProgressLesson = {
   lessonId: string;
   currentIndex: number;
   progress: ProgressStep[];
-  startTime: number;
   totalLesson: number;
+  reviewIndexes?: number[];
 };
 
 type LearningState = {

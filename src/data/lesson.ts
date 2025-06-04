@@ -4,7 +4,7 @@ import { ELessonType, Lesson, LessonGroup } from "~/types/lesson.type";
 export const lessonGroups: LessonGroup[] = [
   {
     id: "level-test",
-    title: "Level Test",
+    title: "Placement Test",
     description: "Test your Korean level",
     courseId: "course-0",
     image: LessonImages[1],
@@ -50,8 +50,7 @@ export const levelTestLessons: Lesson[] = [
   {
     type: ELessonType.SingleChoose,
     value: {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Apple_Computer_Logo_rainbow.svg/250px-Apple_Computer_Logo_rainbow.svg.png",
+      image: LessonImages.Apple,
       selectors: ["바나나", "우유", "사과", "밥"],
       audioLanguage: "ko",
       answer: "우유",
@@ -73,17 +72,26 @@ export const levelTestLessons: Lesson[] = [
   {
     type: ELessonType.Listening,
     value: {
-      // question: "___ are the gifts.",
-      selectors: [
-        "Hello, nice to meet you",
-        "My name is Minho",
-        "Goodbye, see you",
-        "Thanks a lot",
-      ],
-      audioLanguage: "en",
-      answer: "Hello, nice to meet you",
+      selectors: ["불", "물", "문", "몰"],
+      audioLanguage: "ko",
+      answer: "물",
     },
   },
+  // {
+  //   type: ELessonType.Listening,
+  //   value: {
+  //     question: "안녕하세요, 만나서 반갑습니다.",
+  //     questionLanguage: "ko",
+  //     selectors: [
+  //       "Hello, nice to meet you",
+  //       "My name is Minho",
+  //       "Goodbye, see you",
+  //       "Thanks a lot",
+  //     ],
+  //     audioLanguage: "en",
+  //     answer: "Hello, nice to meet you",
+  //   },
+  // },
   {
     type: ELessonType.Voice,
     value: {
@@ -92,13 +100,46 @@ export const levelTestLessons: Lesson[] = [
       audioLanguage: "ko",
     },
   },
-
+  {
+    type: ELessonType.Voice,
+    value: {
+      question: "저는 수진입니다",
+      answer: "저는 수진입니다",
+      audioLanguage: "ko",
+    },
+  },
+  {
+    type: ELessonType.WriteOnlyWord,
+    value: {
+      question: "학교",
+      answer: "학교",
+      audioLanguage: "ko",
+    },
+  },
   {
     type: ELessonType.WriteWord,
     value: {
       hint: "I eat rice",
       question: "저는 ___ 먹어요",
       answer: "밥",
+    },
+  },
+  {
+    type: ELessonType.Sentence,
+    value: {
+      question: "이 사람은 선생님입니다.",
+      selectors: [
+        "is",
+        "This",
+        "a",
+        "student",
+        "teacher",
+        "the",
+        "person",
+        "Apple",
+      ],
+      answers: ["This", "person", "is", "the", "teacher"],
+      audioLanguage: "en",
     },
   },
   {
@@ -123,23 +164,54 @@ export const levelTestLessons: Lesson[] = [
   {
     type: ELessonType.Mapping,
     value: {
-      selectors: ["Apple", "Banana", "Orange", "Grapes"],
-      answers: ["사과", "바나나", "오렌지", "포도"],
+      selectors: ["밥", "선생님", "학생", "물"],
+      answers: ["Rice", "Teacher", "Student", "Water"],
+      questionLanguage: "ko",
+      audioLanguage: "en",
+    },
+  },
+  {
+    type: ELessonType.Mapping,
+    value: {
+      selectors: ["Hello", "School", "Book", "Apple"],
+      answers: ["안녕하세요", "학교", "책", "사과"],
       questionLanguage: "en",
       audioLanguage: "ko",
     },
   },
+];
+// .slice(0, 2);
+// .reverse()
+// .slice(0, 5);
+
+export const course1Unit1: Lesson[] = [
   {
-    type: ELessonType.WriteOnlyWord,
+    type: ELessonType.SingleImageChoose,
     value: {
-      question: "학교",
-      answer: "학교",
-      audioLanguage: "ko",
+      question: "아버지",
+      imageSelectors: [
+        { image: LessonImages.FamilyDad, label: "Father" },
+        { image: LessonImages.FamilyMom, label: "Mother" },
+        {
+          image: LessonImages.FamilyYoungBrother,
+          label: "Young Brother/Sister",
+        },
+        { image: LessonImages.FamilyBrother, label: "Brother" },
+      ],
+      answer: "Father",
+      audioLanguage: "en",
+    },
+  },
+  {
+    type: ELessonType.WriteWord,
+    value: {
+      hint: "I am American.",
+      question: "___ 사람이에요.",
+      answer: "미국",
     },
   },
 ];
-// .reverse()
-// .slice(0, 5);
+
 export const Course1Unit2: Lesson[] = [
   {
     type: ELessonType.SingleImageChoose,
@@ -222,7 +294,6 @@ export const Course1Unit2: Lesson[] = [
       audioLanguage: "en",
     },
   },
-
   {
     type: ELessonType.Sentence,
     value: {
@@ -232,15 +303,15 @@ export const Course1Unit2: Lesson[] = [
       audioLanguage: "ko",
     },
   },
-  {
-    type: ELessonType.SingleChoose,
-    value: {
-      question: "저는 한국 ______",
-      selectors: ["이에요", "예요", "사람이에요"],
-      answer: "사람이에요",
-      audioLanguage: "ko",
-    },
-  },
+  // {
+  //   type: ELessonType.SingleChoose,
+  //   value: {
+  //     question: "저는 한국 ______",
+  //     selectors: ["이에요", "예요", "사람이에요"],
+  //     answer: "사람이에요",
+  //     audioLanguage: "ko",
+  //   },
+  // },
   {
     type: ELessonType.WriteWord,
     value: {
@@ -278,7 +349,7 @@ export const Course1Unit2: Lesson[] = [
   {
     type: ELessonType.SingleChoose,
     value: {
-      question: "안녕하세요?",
+      question: "안녕하세요",
       selectors: ["Goodbye", "Thanks", "Hello"],
       audioLanguage: "en",
       answer: "Hello",
@@ -292,6 +363,22 @@ export const Course1Unit2: Lesson[] = [
       audioLanguage: "ko",
     },
   },
+  // {
+  //   type: ELessonType.Listening,
+  //   value: {
+  //     question: "안녕하세요, 만나서 반갑습니다.",
+  //     questionLanguage: "ko",
+
+  //     selectors: [
+  //       "Hello, nice to meet you",
+  //       "My name is Minho",
+  //       "Goodbye, see you",
+  //       "Thanks a lot",
+  //     ],
+  //     audioLanguage: "ko",
+  //     answer: "Hello, nice to meet you",
+  //   },
+  // },
   {
     type: ELessonType.Voice,
     value: {
@@ -309,4 +396,10 @@ export const Course1Unit2: Lesson[] = [
     },
   },
 ];
+// .reverse()
+// .slice(0, 3)
+// .reverse();
+// .reverse()
+// .slice(0, 3)
+// .reverse();
 // .slice(0, 4);

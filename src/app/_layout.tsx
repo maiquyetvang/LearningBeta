@@ -56,9 +56,8 @@ export default function RootLayout() {
             headerShown: false,
           }}
         >
+          <Stack.Screen name='(auth)' />
           <Stack.Screen name='(protected)' />
-          <Stack.Screen name='login' />
-          <Stack.Screen name='welcome' options={{ animation: "fade" }} />
         </Stack>
         <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
       </AppProvider>

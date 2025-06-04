@@ -2,7 +2,7 @@ import { ArrowLeft, X } from "lucide-react-native";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
-import { ELoginScreen } from "~/app/login";
+import { ELoginScreen } from "~/app/(auth)/login";
 import { InputWithIcon } from "~/components/custom-ui/input-icon";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";

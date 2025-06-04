@@ -10,7 +10,7 @@ import { Lock } from "~/lib/icons/Lock";
 import { Mail } from "~/lib/icons/Mail";
 import { ArrowLeft, X } from "lucide-react-native";
 import { AnimatedScreenWrapper } from "./AnimatedScreenWrapper";
-import { ELoginScreen } from "~/app/login";
+import { ELoginScreen } from "~/app/(auth)/login";
 
 type SwitchAccountForm = {
   email: string;

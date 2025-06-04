@@ -9,6 +9,10 @@ const AppImages = {
   avatar_placeholder: require("./images/avatar-placeholder.png"),
   lock: require("./images/lock.png"),
   profile: require("./images/profile.png"),
+  streak_lv1: require("./images/streak/lv1.png"),
+  streak_lv2: require("./images/streak/lv2.png"),
+  streak_lv3: require("./images/streak/lv3.png"),
+  streak_lv4: require("./images/streak/lv4.png"),
 };
 
 const LessonImages = {
@@ -21,6 +25,7 @@ const LessonImages = {
   FamilyMom: require("./images/lessons/family-mom.png"),
   FamilyBrother: require("./images/lessons/family-brother.png"),
   FamilyYoungBrother: require("./images/lessons/family-young-brother.png"),
+  Apple: require("./images/lessons/apple.png"),
 };
 const AchievementImages = {
   "1": require("./images/achievements/1.png"),
@@ -35,4 +40,4 @@ const Lottie = {
   sad: require("./lottie/sad.json"),
   welcome: require("./lottie/welcome.json"),
 };
-export { AppImages, LessonImages, AchievementImages, Lottie };
+export { AchievementImages, AppImages, LessonImages, Lottie };

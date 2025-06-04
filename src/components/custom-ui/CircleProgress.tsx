@@ -52,6 +52,7 @@ const CircleProgress = ({
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap='round'
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
       </Svg>
       <View
@@ -63,8 +64,9 @@ const CircleProgress = ({
           height: size,
         }}
       >
-        <Text style={{ color: textColor, fontWeight: "bold", fontSize: 12 }}>
-          {value}/{total}
+        <Text style={{ color: textColor, fontWeight: "bold", fontSize: 10 }}>
+          {Math.round((value * 100) / total)}
+          <Text style={{ fontSize: 6, color: textColor }}>%</Text>
         </Text>
       </View>
     </View>

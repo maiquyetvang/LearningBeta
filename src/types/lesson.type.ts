@@ -14,7 +14,7 @@ export enum ELessonType {
 export interface LessonValue {
   question?: string;
   hint?: string;
-  image?: string;
+  image?: ImageSourcePropType | string;
   answer?: string;
   answers?: string[];
   selectors?: string[];

@@ -1,10 +1,11 @@
 import { router } from "expo-router";
 import React from "react";
 import { Image, View } from "react-native";
-import { AppImages } from "assets";
+import { AppImages, Lottie } from "assets";
 import { ProgressStep } from "~/components/custom-ui/progress";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
+import LottieView from "lottie-react-native";
 
 const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
   const countResult = (progress: ProgressStep[]) => {
@@ -32,7 +33,7 @@ const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
     <View className='flex-1 gap-3 justify-center items-center text-center text-2xl '>
       <View className='mx-10 gap-2 bg-neutral-50  dark:bg-neutral-900 rounded-2xl p-3 shadow-sm shadow-neutral-500/50'>
         <Text className='text-center text-2xl font-semibold text-primary'>
-          {isGoodResult() ? "Amazing!" : "Don't worry!"}
+          {isGoodResult() ? "Amazing! " : "Don't worry! "}
           <Text className='text-center text-2xl'>
             {isGoodResult()
               ? "You’ve finished today lesson"
@@ -40,10 +41,16 @@ const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
           </Text>
         </Text>
       </View>
-      <Image
+      <LottieView
+        source={isGoodResult() ? Lottie.cheer : Lottie.sad}
+        style={{ height: 240, width: "100%" }}
+        autoPlay
+        loop
+      />
+      {/* <Image
         source={isGoodResult() ? AppImages.kindo_congrats : AppImages.kindo_sad}
         style={{ width: 240, height: 240, objectFit: "cover" }}
-      />
+      /> */}
       <Text className='text-center font-semibold '>Your result</Text>
       <Text className={`text-center text-2xl font-semibold ${resultColor()}`}>
         {countResult(progress)}/{progress?.length}

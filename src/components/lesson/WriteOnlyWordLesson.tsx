@@ -59,11 +59,11 @@ const WriteOnlyWordLesson = ({
       <Input
         style={{
           minWidth: 50,
-          width: "auto",
+          // width: "auto",
           textAlign: "center",
           paddingHorizontal: 20,
         }}
-        className='w-fit'
+        // className='w-fit'
         placeholder='Type the answer here'
         onChangeText={handleSelectWord}
         value={selected}

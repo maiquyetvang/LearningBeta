@@ -1,16 +1,20 @@
 import { router } from "expo-router";
 import LottieView from "lottie-react-native";
 import { Home } from "lucide-react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Lottie } from "assets";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
+import { playCongratsSound } from "~/utils/playSound";
 
 const CompleteLesson = () => {
   const handleBackHome = () => {
     router.replace("/(protected)/(_tabs)/(_home)");
   };
+  useEffect(() => {
+    playCongratsSound();
+  }, []);
   return (
     <View className='flex-1'>
       <View

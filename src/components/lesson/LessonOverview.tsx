@@ -1,13 +1,11 @@
-import React from "react";
-import { View, Image, TouchableOpacity } from "react-native";
-import { Text } from "../ui/text";
-import { Progress } from "../ui/progress";
-import { Button } from "../ui/button";
-import { ChevronLeft } from "~/lib/icons/ChevronLeft";
 import { router } from "expo-router";
-import { LessonGroup } from "~/types/lesson.type";
+import React from "react";
+import { Image, TouchableOpacity, View } from "react-native";
+import { ChevronLeft } from "~/lib/icons/ChevronLeft";
 import { useLearningStore } from "~/stores/learning.store";
+import { LessonGroup } from "~/types/lesson.type";
 import ProgressBar from "../common/ProgressBar";
+import { Text } from "../ui/text";
 
 export default function LessonOverview({
   lesson,
@@ -88,12 +86,6 @@ export default function LessonOverview({
           ))}
         </View>
       )}
-      {/* Button */}
-      <View className='mt-auto'>
-        <Button className='bg-primary w-full' onPress={onStart}>
-          <Text className='text-white font-semibold'>Let's Learn</Text>
-        </Button>
-      </View>
     </View>
   );
 }

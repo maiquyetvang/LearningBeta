@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Kindo",
-    "slug": "Kindo",
-    "version": "1.0.0",
+    "slug": "LearningBeta",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "kindo",
@@ -17,10 +17,17 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dudaji.kindo",
+      "buildNumber": "4",
+      "icon": "./assets/images/icon-ios.png",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "Kindo needs access to your photo library to allow you to select and share photos in the app"
       },
-      "icon": "./assets/images/icon.png"
+      "splash": {
+        "image": "./assets/images/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +35,10 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.dudaji.kindo",
-      "permissions": ["android.permission.RECORD_AUDIO"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -72,6 +82,7 @@
       "eas": {
         "projectId": "290c425c-3fac-4a88-a78d-0279015a00c2"
       }
-    }
+    },
+    "owner": "maiquyetvang"
   }
 }

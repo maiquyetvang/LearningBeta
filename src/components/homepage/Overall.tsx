@@ -10,12 +10,18 @@ import Animated, {
 import { AppImages } from "assets";
 import { Text } from "../ui/text";
 import { useLearningStore } from "~/stores/learning.store";
+import { useAuthStore } from "~/stores/auth.store";
 
 const Overall = () => {
-  const { totalLearningTime, streakDays, learnedLessons, inProgressLesson } =
-    useLearningStore();
+  const {
+    totalLearningTime,
+    streakDays,
+    learnedLessons,
+    inProgressLesson,
+    lastLearnedDate,
+  } = useLearningStore();
+  const user = useAuthStore((state) => state.user);
 
-  // --- Learning Time (minutes) ---
   const minute = Math.floor((totalLearningTime || 0) / 60000);
   const animatedMinute = useSharedValue(minute);
 
@@ -68,17 +74,19 @@ const Overall = () => {
     Math.round(animatedStreak.value)
   );
 
+  const getStreakImage = (streakDays: number) => {
+    if (streakDays === 0) return AppImages.streak_lv1;
+    if (streakDays <= 2) return AppImages.streak_lv2;
+    if (streakDays <= 4) return AppImages.streak_lv3;
+    if (streakDays <= 7) return AppImages.streak_lv4;
+    return AppImages.streak_lv4;
+  };
   return (
     <View>
-      {/* <Text className='text-green-700'>
-        {JSON.stringify({ inProgressLesson }, null, 4)}
-      </Text>
-      <Text className='text-blue-500'>
-        {JSON.stringify(learnedLessons, null, 4)}
-      </Text> */}
       <Text className='font-semibold  text-neutral-500 dark:text-neutral-300'>
         Overall
       </Text>
+
       <View className='p-3 pb-2 mt-3 gap-3 items-center flex-row rounded-lg bg-success-50 dark:bg-success-900'>
         <Image
           source={AppImages.chronometer}
@@ -102,7 +110,10 @@ const Overall = () => {
         </View>
       </View>
       <View className='p-3 pb-3 mt-3 gap-3 items-center flex-row rounded-lg bg-primary-50 dark:bg-primary-900'>
-        <Image source={AppImages.fire} style={{ height: 40, width: 40 }} />
+        <Image
+          source={getStreakImage(streakDays)}
+          style={{ height: 40, width: 40 }}
+        />
         <View className='justify-center gap-1'>
           <Text className='text-primary font-semibold'>Streak Days</Text>
           <View className='flex-row gap-2 items-start '>

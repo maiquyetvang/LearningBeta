@@ -37,6 +37,7 @@ export const useVoiceRecognition = (language: string = "en") => {
       results: [],
       partialResults: [],
       isRecording: false,
+      pitch: 0,
     });
   }, []);
   const requestPermission = async () => {
@@ -72,7 +73,6 @@ export const useVoiceRecognition = (language: string = "en") => {
       setState((pre) => {
         return { ...pre, isRecording: true, langCode, language };
       });
-      // Start voice recognition logic here
     } catch (err) {
       setState((pre) => {
         return { ...pre, error: err?.toString() };
@@ -123,6 +123,7 @@ export const useVoiceRecognition = (language: string = "en") => {
         return { ...pre, isRecording: true };
       });
     };
+
     Voice.onSpeechEnd = () => {
       setState((pre) => {
         return { ...pre, isRecording: false };
@@ -157,6 +158,7 @@ export const useVoiceRecognition = (language: string = "en") => {
       Voice.destroy().then(Voice.removeAllListeners);
     };
   }, [language]);
+
   return {
     state,
     setState,

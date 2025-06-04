@@ -46,7 +46,7 @@ const SingleChooseImageLesson = ({
 
       {image && (
         <Image
-          src={image}
+          source={typeof image === "string" ? { uri: image } : image}
           alt='Question Image'
           style={{ flex: 1, maxHeight: 200, objectFit: "contain" }}
         />
@@ -67,7 +67,7 @@ const SingleChooseImageLesson = ({
                       handleSelectWord(item.label);
                     }}
                     disabled={disabled}
-                    style={[styles.button, isUsed && styles.selectedButton]}
+                    style={[styles.button]}
                     label={item.label}
                     image={item.image}
                     isSelected={isUsed}

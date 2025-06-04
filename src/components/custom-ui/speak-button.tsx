@@ -24,12 +24,13 @@ type SpeakButtonProps = ButtonProps & {
   hideLabel?: boolean;
   customLabel?: string;
   disabledSpeak?: boolean;
+  forceEnableSpeak?: boolean;
   image?: ImageSourcePropType;
   leftIcon?: React.ReactNode;
 };
 
 const SpeakButton = React.forwardRef<
-  React.ElementRef<typeof Button>,
+  React.ComponentRef<typeof Button>,
   SpeakButtonProps
 >(
   (
@@ -46,6 +47,7 @@ const SpeakButton = React.forwardRef<
       customLabel = "Start Listening",
       hideLabel = false,
       disabledSpeak = false,
+      forceEnableSpeak,
       variant,
       image,
       leftIcon,
@@ -68,7 +70,11 @@ const SpeakButton = React.forwardRef<
     };
 
     const handlePress = (event: any) => {
-      if (label && !isSpeaking && !disabledSpeak && language === "ko") {
+      if (
+        label &&
+        !isSpeaking &&
+        ((!disabledSpeak && language === "ko") || forceEnableSpeak)
+      ) {
         speak(label);
       }
 
@@ -93,7 +99,9 @@ const SpeakButton = React.forwardRef<
             onPress={handlePress}
             className={cn(
               "p-0 overflow-hidden flex-col border-[1px]",
-              isSelected ? "border-primary" : "border-neutral-100",
+              isSelected
+                ? "border-primary"
+                : "border-neutral-100 dark:border-neutral-800",
               buttonClassName
             )}
             {...props}

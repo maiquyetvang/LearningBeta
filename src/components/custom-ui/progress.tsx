@@ -108,9 +108,12 @@ export default function StepProgressBar({
 
         // Bước hiện tại đã có kết quả
         if (i === currentIndex && progressStep && progressStep[i]) {
-          stepColor = progressStep[i].isFalse ? "bg-red-500" : "bg-green-500";
+          // Nếu là current và isFalse thì tô màu đen
           if (progressStep[i].isFalse) {
+            stepColor = "bg-black dark:bg-white";
             borderClass = "border-[1.5px] border-foreground";
+          } else {
+            stepColor = "bg-green-500";
           }
           return (
             <Animated.View

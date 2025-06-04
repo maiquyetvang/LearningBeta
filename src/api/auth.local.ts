@@ -9,11 +9,12 @@ type AuthState = {
   message?: string;
   isSuccess?: boolean;
   confirmCode?: string;
+  isFirstLogin?: boolean;
 };
 
 export const authApi = {
   async login(loginForm: LoginForm): Promise<AuthState> {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
     const { email, password } = loginForm;
     const found = accounts.find(
       (acc) => acc.email === email && acc.password === password
@@ -25,6 +26,7 @@ export const authApi = {
       isLoggedIn: true,
       email,
       isSuccess: true,
+      isFirstLogin: true,
     };
   },
   async register(registerForm: LoginForm): Promise<AuthState> {

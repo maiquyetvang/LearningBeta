@@ -1,11 +1,10 @@
+import { Lottie } from "assets";
 import { router } from "expo-router";
 import LottieView from "lottie-react-native";
 import React from "react";
 import { View } from "react-native";
-import { Lottie } from "assets";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import { Home } from "~/lib/icons/Home";
 
 const ReviewNotCorrectLesson = ({ onReview }: { onReview?: () => void }) => {
   const handleBackHome = () => {
@@ -23,7 +22,9 @@ const ReviewNotCorrectLesson = ({ onReview }: { onReview?: () => void }) => {
         <View className='mx-10 gap-2 bg-neutral-50  dark:bg-neutral-900 rounded-2xl p-3 shadow-sm shadow-neutral-500/50'>
           <Text className='text-center text-2xl font-semibold '>
             Let’s review{"\n"}
-            <Text className='text-center text-2xl text-error'>Not Correct</Text>
+            <Text className='text-center text-2xl text-error'>
+              Not Correct
+            </Text>{" "}
             answer
           </Text>
         </View>
@@ -34,22 +35,12 @@ const ReviewNotCorrectLesson = ({ onReview }: { onReview?: () => void }) => {
           loop
         />
       </View>
-      <View className='gap-2'>
-        <Button
-          variant='neutral'
-          className='w-full flex-row items-center gap-2'
-          onPress={handleBackHome}
-        >
-          <Home size={20} className='text-foreground' />
-          <Text>Back to Homepage</Text>
-        </Button>
-        <Button
-          className='w-full flex-row items-center gap-2'
-          onPress={handleReview}
-        >
-          <Text>OK! Try again</Text>
-        </Button>
-      </View>
+      <Button
+        className='w-full flex-row items-center gap-2'
+        onPress={handleReview}
+      >
+        <Text>OK! Try again</Text>
+      </Button>
     </View>
   );
 };

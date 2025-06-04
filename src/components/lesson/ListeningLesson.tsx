@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Volume2 } from "~/lib/icons/Volume2";
+import { useLearningStore } from "~/stores/learning.store";
 import { Lesson } from "~/types/lesson.type";
 import { SpeakButton } from "../custom-ui/speak-button";
 import { Text } from "../ui/text";
 import { CannotListenButton } from "./CannotListenButton";
 import { CheckResultButton } from "./CheckResultButton";
-import { useLearningStore } from "~/stores/learning.store";
-import { set } from "react-hook-form";
 
 const ListeningLesson = ({
   value,
@@ -21,7 +20,8 @@ const ListeningLesson = ({
   onSkip?: () => void;
 }) => {
   const { setSpeechDisabled } = useLearningStore();
-  const { question, selectors, answer, image, audioLanguage } = value.value;
+  const { question, questionLanguage, selectors, answer, audioLanguage } =
+    value.value;
   const [selected, setSelected] = useState<string | null>();
   const handleSelectWord = (value: string) => {
     setSelected(value);
@@ -36,16 +36,17 @@ const ListeningLesson = ({
   };
   return (
     <View className='flex-1 gap-8'>
-      {!!question && <Text>{question}</Text>}
       <Text className='font-light text-center text-sm italic'>
         * You can slow down the audio&apos;s speed
+        {JSON.stringify(questionLanguage)}
       </Text>
       <SpeakButton
-        label={answer}
+        label={question || answer}
         className='w-full'
         showIcon
-        language={audioLanguage}
+        language={questionLanguage || audioLanguage}
         variant={"default"}
+        disabled={disabled}
         buttonClassName='justify-center text-xl font-bold'
         hideLabel
         leftIcon={<Volume2 className='text-white' size={20} />}
@@ -65,6 +66,7 @@ const ListeningLesson = ({
                 style={{ borderWidth: isUsed ? 1 : 2 }}
                 label={word}
                 isSelected={isUsed}
+                disabledSpeak={audioLanguage !== "ko"}
                 language={audioLanguage}
               />
             );

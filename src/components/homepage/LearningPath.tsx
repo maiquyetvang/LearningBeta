@@ -160,7 +160,6 @@ const RenderLesson = ({
   );
   const [showDialog, setShowDialog] = useState(false);
 
-  // Kiểm tra có lesson đang dở và khác lesson hiện tại
   const hasOtherInProgress =
     inProgressLesson &&
     inProgressLesson.lessonId &&
@@ -231,7 +230,7 @@ const RenderLesson = ({
           </Text>
         </View>
 
-        {completedResult &&
+        {/* {completedResult &&
           completedResult.correctAnswers &&
           completedResult.totalQuestions && (
             <View>
@@ -245,7 +244,7 @@ const RenderLesson = ({
                 strokeWidth={4}
               />
             </View>
-          )}
+          )} */}
       </View>
       <Button
         variant={isCompleted ? "neutral" : "default"}

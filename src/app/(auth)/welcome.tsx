@@ -1,3 +1,4 @@
+import { Lottie } from "assets";
 import { router } from "expo-router";
 import LottieView from "lottie-react-native";
 import React, { useRef, useState } from "react";
@@ -5,16 +6,14 @@ import {
   Dimensions,
   FlatList,
   Image,
-  Pressable,
   SafeAreaView,
   StyleSheet,
   View,
 } from "react-native";
-import { Lottie } from "assets";
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
 import { ArrowRight } from "~/lib/icons/ArrowRight";
 import { ChevronLeft } from "~/lib/icons/ChevronLeft";
-import { Text } from "~/components/ui/text";
-import { Button } from "~/components/ui/button";
 
 const { width } = Dimensions.get("window");
 

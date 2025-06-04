@@ -18,7 +18,7 @@ import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { useLessonBottomSheet } from "~/hooks/useLessonBottomSheet";
 import { useColorScheme } from "~/lib/useColorScheme";
-import RegisterScreen from "../components/login/RegisterScreen";
+import RegisterScreen from "../../components/login/RegisterScreen";
 
 export enum ELoginScreen {
   LOGIN = "login",

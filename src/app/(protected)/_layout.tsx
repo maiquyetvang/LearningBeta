@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useAuthStore } from "~/stores/auth.store";
 
 export default function ProtectedLayout() {
-  const { isAuthentication, user, logout } = useAuthStore();
+  const { isAuthentication, user, logout, login } = useAuthStore();
 
   useEffect(() => {
     if (user && !user.stayLogin && isAuthentication) {
@@ -15,6 +15,10 @@ export default function ProtectedLayout() {
   if (!isAuthentication || !user) {
     return <Redirect href='/welcome' />;
   }
+
+  // if (user?.isFirstLogin) {
+  //   // return <Redirect href='/(protected)/personalize' />;
+  // }
   return (
     <Stack>
       <Stack.Screen
@@ -30,7 +34,7 @@ export default function ProtectedLayout() {
         }}
       />
       <Stack.Screen
-        name='achievementDetails'
+        name='personalize'
         options={{
           headerShown: false,
         }}

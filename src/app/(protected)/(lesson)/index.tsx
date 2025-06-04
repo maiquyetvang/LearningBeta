@@ -19,7 +19,7 @@ import WriteWordLesson from "~/components/lesson/WriteWordLesson";
 import { Text } from "~/components/ui/text";
 import { useGetLessonGroup } from "~/hooks/useGetLessonById";
 import { useLearningStore } from "~/stores/learning.store";
-import { ELessonType } from "~/types/lesson.type";
+import { ELessonType, Lesson } from "~/types/lesson.type";
 import { playResultSound } from "~/utils/playSound";
 import CompleteLesson from "./_components/CompleteLesson";
 import CompleteLevelTest from "./_components/CompleteLevelTest";
@@ -28,6 +28,9 @@ import ReviewNotCorrectLesson from "./_components/ReviewNotCorrectLesson";
 
 const LessonDetailScreen: React.FC = () => {
   const { lessonId } = useLocalSearchParams<{ lessonId: string }>();
+  const queryClient = useQueryClient();
+  const isLevelTest = lessonId === "level-test";
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const {
     totalLearningTime,
     streakDays,
@@ -46,23 +49,21 @@ const LessonDetailScreen: React.FC = () => {
   const data = lessonGroup?.lessons;
 
   const [currentIndex, setCurrentIndex] = useState<number>(
-    inProgressLesson?.currentIndex || 0
+    inProgressLesson?.lessonId === lessonId
+      ? inProgressLesson?.currentIndex || 0
+      : 0
   );
   const [progress, setProgress] = useState<ProgressStep[]>(
-    inProgressLesson?.progress || []
+    inProgressLesson?.lessonId === lessonId
+      ? inProgressLesson?.progress || []
+      : []
   );
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
-
   const [disabled, setDisabled] = useState<boolean | undefined>();
   const [isFalse, setIsFalse] = useState<boolean | undefined>();
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const queryClient = useQueryClient();
-
-  const [startTime, setStartTime] = useState<number>(() => Date.now());
   const [stepStartTime, setStepStartTime] = useState<number>(() => Date.now());
 
   const [reviewMode, setReviewMode] = useState(false);
-
   const [reviewIndexes, setReviewIndexes] = useState<number[]>([]);
   const [reviewCurrent, setReviewCurrent] = useState(0);
 
@@ -106,8 +107,10 @@ const LessonDetailScreen: React.FC = () => {
       setIsFalse(isFalse);
       setDisabled(true);
       setStepStartTime(Date.now());
-      openBottomSheet();
-      playResultSound(isFalse);
+      if (!isSkip) {
+        openBottomSheet();
+        playResultSound(isFalse);
+      }
     },
     [
       data,
@@ -161,7 +164,7 @@ const LessonDetailScreen: React.FC = () => {
   };
 
   const renderTitle = (index: number) => {
-    if (!data || index >= data.length) return null;
+    if (!data || index >= data.length || !data[index]) return null;
     const text = lessonTitleMap[data[index].type];
     return (
       <View
@@ -192,7 +195,7 @@ const LessonDetailScreen: React.FC = () => {
   };
 
   const renderStep = (index: number) => {
-    if (!data || index >= data.length) return null;
+    if (!data || index >= data.length || !data[index]) return null;
     const LessonComponent = lessonComponentMap[data[index].type];
     if (!LessonComponent) return null;
     return (
@@ -205,6 +208,7 @@ const LessonDetailScreen: React.FC = () => {
       />
     );
   };
+
   const renderReviewStep = () => {
     if (
       !reviewMode ||
@@ -214,6 +218,7 @@ const LessonDetailScreen: React.FC = () => {
     )
       return null;
     const index = reviewIndexes[reviewCurrent];
+    if (index === undefined || !data[index]) return null;
     const LessonComponent = lessonComponentMap[data[index].type];
     if (!LessonComponent) return null;
     return (
@@ -227,10 +232,10 @@ const LessonDetailScreen: React.FC = () => {
     );
   };
   const renderCompleteScreen = () => {
-    if (totalLearningTime === 0 && streakDays === 0) {
+    if (isLevelTest) {
       return <CompleteLevelTest progress={progress} />;
     }
-    if (!reviewMode && progress.some((p) => p.isFalse)) {
+    if (progress.some((p) => p.isFalse)) {
       return <ReviewNotCorrectLesson onReview={handleReview} />;
     }
     return <CompleteLesson />;
@@ -245,11 +250,12 @@ const LessonDetailScreen: React.FC = () => {
     setCurrentIndex(incorrectIndexes[0]);
     setReviewCurrent(0);
     setReviewMode(true);
+    setAudioDisabled(false);
+    setSpeechDisabled(false);
   };
 
   // Check if the lesson is completed
   useEffect(() => {
-    setStartTime(Date.now());
     if (reviewMode) {
       if (reviewCurrent >= reviewIndexes.length) {
         setIsCompleted(true);
@@ -267,10 +273,11 @@ const LessonDetailScreen: React.FC = () => {
 
   // Check if the lesson is skipped
   useEffect(() => {
-    if (checkIsSkip(currentIndex)) {
+    if (checkIsSkip(reviewMode ? reviewIndexes[reviewCurrent] : currentIndex)) {
       handleSuccess(true, true);
+      handleNextStep();
     }
-  }, [currentIndex, isAudioDisabled, isSpeechDisabled]);
+  }, [currentIndex, reviewCurrent]);
 
   useEffect(() => {
     return () => {
@@ -281,7 +288,11 @@ const LessonDetailScreen: React.FC = () => {
 
   //Handle save completed lesson
   useEffect(() => {
-    if (isCompleted && lessonId) {
+    if (
+      isCompleted &&
+      lessonId &&
+      (isLevelTest || !progress.some((p) => p.isFalse))
+    ) {
       const duration = progress.reduce(
         (acc, step) => acc + (step.duration || 0),
         0
@@ -302,7 +313,7 @@ const LessonDetailScreen: React.FC = () => {
       );
       clearInProgressLesson();
     }
-  }, [isCompleted, lessonId]);
+  }, [isCompleted, lessonId, progress]);
 
   // handle saving in-progress lesson
   useEffect(() => {
@@ -311,24 +322,48 @@ const LessonDetailScreen: React.FC = () => {
         lessonId,
         currentIndex: progress.length,
         progress,
-        startTime,
         totalLesson: data.length,
+        reviewIndexes,
       });
     }
-  }, [lessonId, currentIndex, progress, startTime, isCompleted]);
+  }, [lessonId, currentIndex, progress, isCompleted, reviewIndexes]);
+  useEffect(() => {
+    if (
+      inProgressLesson?.progress &&
+      data &&
+      inProgressLesson?.progress.length === data?.length &&
+      inProgressLesson.progress.length > 0
+    ) {
+      handleReview();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // useEffect(() => {
-  //   if (
-  //     !!inProgressLesson &&
-  //     lessonId !== inProgressLesson?.lessonId &&
-  //     !isCompleted
-  //   ) {
-  //     clearInProgressLesson();
-  //     setCurrentIndex(0);
-  //     setProgress([]);
-  //     setIsCompleted(false);
-  //   }
-  // }, [lessonId, inProgressLesson, clearInProgressLesson]);
+  const getDescription = (
+    data: Lesson[],
+    isFalse: boolean | undefined,
+    currentIndex: number
+  ) => {
+    if (data && isFalse && data[currentIndex]) {
+      if (data[currentIndex].type === ELessonType.Mapping) {
+        return data[currentIndex].value.selectors?.reduce(
+          (acc, selector, idx) => {
+            return (
+              acc +
+              `\n${idx + 1}. ${selector} - ${data[currentIndex].value.answers?.[idx] || "No answer"}`
+            );
+          },
+          "Correct answer: "
+        );
+        // return "Please try again to match the correct pairs.";
+      }
+      const answer =
+        data[currentIndex].value.answer ||
+        data[currentIndex].value.answers?.join(" ");
+      return `Correct answer: ${answer}`;
+    }
+    return "Great job!";
+  };
 
   return (
     <SafeAreaView className='flex-1 gap-5 px-4 '>
@@ -350,6 +385,7 @@ const LessonDetailScreen: React.FC = () => {
           />
         </View>
       </View>
+
       {!data || data.length === 0 ? (
         <View className='flex-1 items-center justify-center'>
           <Text className='text-lg font-semibold'>No lessons available</Text>
@@ -364,33 +400,23 @@ const LessonDetailScreen: React.FC = () => {
             : isCompleted
               ? renderCompleteScreen()
               : renderStep(currentIndex)}
-
           <LessonBottomSheet
             ref={bottomSheetRef}
             onChange={handleSheetChanges}
-            isSkip={checkIsSkip(currentIndex)}
+            isSkip={checkIsSkip(
+              reviewMode ? reviewIndexes[reviewCurrent] : currentIndex
+            )}
             isFalse={isFalse}
             onNextStep={handleNextStep}
             isLast={data && currentIndex === data.length - 1}
-            description={
-              data && isFalse && data[currentIndex]
-                ? `Correct answer: ${data[currentIndex].value.answer || data[currentIndex].value.answers?.join(" ")}`
-                : "Great job!"
-            }
+            description={getDescription(
+              data,
+              isFalse,
+              reviewMode ? reviewIndexes[reviewCurrent] : currentIndex
+            )}
           />
         </>
       )}
-      <View>
-        {/* <Text>
-          {JSON.stringify(
-            { reviewIndexes, reviewCurrent, isCompleted, progress },
-            null
-          )}
-        </Text> */}
-        {/* <Text>
-          {JSON.stringify({ reviewCurrent, currentIndex, progress }, null, 2)}
-        </Text> */}
-      </View>
     </SafeAreaView>
   );
 };

@@ -10,7 +10,7 @@ import { Lock } from "~/lib/icons/Lock";
 import { Mail } from "~/lib/icons/Mail";
 import { ArrowLeft, X } from "lucide-react-native";
 import { AnimatedScreenWrapper } from "./AnimatedScreenWrapper";
-import { ELoginScreen } from "~/app/login";
+import { ELoginScreen } from "~/app/(auth)/login";
 import { PasswordRules, checkPasswordRules } from "../custom-ui/password-rule";
 import { authApi } from "~/api/auth.local";
 import { LoginForm } from "./LoginScreen";

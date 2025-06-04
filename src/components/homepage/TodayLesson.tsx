@@ -1,26 +1,18 @@
 import React from "react";
-import { Image, ImageSourcePropType, Pressable, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { LessonImages } from "assets";
+import { useGetCourse, useGetLessonGroup } from "~/hooks/useGetLessonById";
+import { useNextLesson } from "~/hooks/useNextLesson";
+import { useLearningStore } from "~/stores/learning.store";
+import { LessonGroup } from "~/types/lesson.type";
+import ProgressBar from "../common/ProgressBar";
+import { AnimatedButton } from "../custom-ui/animate-button";
 import { Button } from "../ui/button";
-import { Progress } from "../ui/progress";
 import { Text } from "../ui/text";
 import { H4 } from "../ui/typography";
-import ProgressBar from "../common/ProgressBar";
-import { useLearningStore } from "~/stores/learning.store";
-import { useGetCourse, useGetLessonGroup } from "~/hooks/useGetLessonById";
-import { LessonGroup } from "~/types/lesson.type";
-import { useNextLesson } from "~/hooks/useNextLesson";
-
-type Lesson = {
-  id: string;
-  title: string;
-  description: string;
-  image: ImageSourcePropType;
-};
 
 export default function TodayLesson({
   courseId,
@@ -32,9 +24,8 @@ export default function TodayLesson({
   onOverview?: (id: string) => void;
 }) {
   const { data: course } = useGetCourse(courseId);
-  const { nextLesson, lessonGroups, progress } = useNextLesson(course);
-  const { inProgressLesson, clearInProgressLesson, resetLearning } =
-    useLearningStore();
+  const { nextLesson } = useNextLesson(course);
+  const { inProgressLesson } = useLearningStore();
   const currentLesson = inProgressLesson?.lessonId || nextLesson?.id;
   const { data: lesson } = useGetLessonGroup(currentLesson);
   if (!lesson) {
@@ -55,8 +46,7 @@ const LessonCard: React.FC<{
   onOverview?: (id: string) => void;
   onLearn?: (id: string) => void;
 }> = ({ lesson, onLearn, onOverview }) => {
-  const { saveInProgressLesson, inProgressLesson, clearInProgressLesson } =
-    useLearningStore();
+  const { inProgressLesson } = useLearningStore();
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: 1,
@@ -66,17 +56,15 @@ const LessonCard: React.FC<{
       },
     ],
   }));
-  // if (!inProgressLesson) {
-  //   return <></>;
-  // }
 
   const progress = inProgressLesson
-    ? (inProgressLesson.progress.length / inProgressLesson.totalLesson) * 100
+    ? (inProgressLesson.progress.filter((item) => !item.isFalse).length /
+        inProgressLesson.totalLesson) *
+      100
     : 0;
 
   return (
     <Animated.View style={animatedStyle}>
-      {/* <Text>{JSON.stringify(inProgressLesson, null, 2)}</Text> */}
       <Pressable
         className='bg-neutral-50 dark:bg-neutral-900 rounded-lg'
         onPress={() => onOverview?.(lesson.id)}

@@ -18,13 +18,6 @@ export function useLessonBottomSheet() {
     setIsSheetOpen(false);
   }, []);
 
-  // const toggleBottomSheet = useCallback(() => {
-  //   if (bottomSheetRef.current?.getCurrentIndex() === 0) {
-  //     bottomSheetRef.current?.close();
-  //   } else {
-  //     bottomSheetRef.current?.expand();
-  //   }
-  // }, []);
   return {
     bottomSheetRef,
     openBottomSheet,

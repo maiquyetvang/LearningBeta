@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Image, Pressable, View } from "react-native";
 import { AppImages } from "assets";
-import { personalizeStepDetail } from "~/app/(protected)/(_tabs)/(_home)/personalize";
+import { personalizeStepDetail } from "~/app/(protected)/personalize";
 import { ChevronLeft } from "~/lib/icons/ChevronLeft";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
 import { cn } from "~/lib/utils";
@@ -9,6 +9,8 @@ import { AnimatedScreenWrapper } from "../login/AnimatedScreenWrapper";
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
 import { H3 } from "../ui/typography";
+import { AnimatedPressable } from "../custom-ui/animate-pressable";
+import { AnimatedButton } from "../custom-ui/animate-button";
 
 type Props = {
   stepIndex: number;
@@ -72,10 +74,10 @@ export default function PersonalizeStepScreen({
         const isSelected = selectedValue === option.label;
         return (
           <AnimatedScreenWrapper delay={idx * 75} key={`${stepIndex}-${idx}`}>
-            <Pressable
+            <AnimatedPressable
               className={`flex-row rounded-lg border items-center gap-3 p-3 ${
                 isSelected
-                  ? " border-primary bg-orange-50 dark:bg-primary/50"
+                  ? " border-primary bg-orange-50 dark:bg-primary/20"
                   : "border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900"
               }`}
               onPress={() => handleSelect(option.label)}
@@ -101,7 +103,7 @@ export default function PersonalizeStepScreen({
                 <Text className='font-light'>{option.subDescription}</Text>
               )}
               {"recommend" in option && option.recommend && (
-                <Text className='text-xs bg-neutral-800 p-1  text-background absolute top-1 right-1  rounded-[4px] ml-2'>
+                <Text className='text-xs bg-neutral-800 p-1 text-background absolute top-1 right-1 rounded-[4px] ml-2 dark:bg-neutral-200'>
                   👍 Recommend
                 </Text>
               )}
@@ -117,37 +119,37 @@ export default function PersonalizeStepScreen({
                           i === 0 && "rounded-l-2xl",
                           i <= idx
                             ? "!bg-primary"
-                            : "bg-neutral-200 dark:bg-neutral-800"
+                            : "bg-neutral-200 dark:bg-neutral-700"
                         )}
                       />
                     );
                   })}
                 </View>
               )}
-            </Pressable>
+            </AnimatedPressable>
           </AnimatedScreenWrapper>
         );
       })}
 
       <View className='mt-auto gap-2'>
         {stepIndex > 1 && (
-          <Button
+          <AnimatedButton
             className='flex-row gap-2'
             variant='ghost'
             onPress={handlePrevious}
           >
             <ChevronLeft size={20} className='text-foreground' />
             <Text>{step?.button || "Previous Question"}</Text>
-          </Button>
+          </AnimatedButton>
         )}
-        <Button
+        <AnimatedButton
           className='flex-row gap-2'
           disabled={!selectedValue}
           onPress={handleNext}
         >
           <Text>{step?.button || "Next"}</Text>
           <ChevronRight color={"white"} size={20} />
-        </Button>
+        </AnimatedButton>
       </View>
     </View>
   );

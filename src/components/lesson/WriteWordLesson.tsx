@@ -24,6 +24,9 @@ const WriteWordLesson = ({
     setSelected(value);
   };
   const handleCheckResults = () => {
+    if (!answer || !selected) {
+      return;
+    }
     const isCorrect = !!answer && answer === selected;
     onSuccess?.(!isCorrect);
   };
@@ -43,7 +46,7 @@ const WriteWordLesson = ({
         {index + 1 < parts.length && (
           <Input
             style={{
-              minWidth: 50,
+              minWidth: 80,
               width: "auto",
               textAlign: "center",
             }}
