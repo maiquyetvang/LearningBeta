@@ -16,12 +16,12 @@ export const authApi = {
   async login(loginForm: LoginForm): Promise<AuthState> {
     // await new Promise((resolve) => setTimeout(resolve, 1000));
     const { email, password } = loginForm;
-    const found = accounts.find(
-      (acc) => acc.email === email && acc.password === password
-    );
-    if (!found) {
-      throw new Error("Invalid email or password");
-    }
+    // const found = accounts.find(
+    //   (acc) => acc.email === email && acc.password === password
+    // );
+    // if (!found) {
+    //   throw new Error("Invalid email or password");
+    // }
     return {
       isLoggedIn: true,
       email,
