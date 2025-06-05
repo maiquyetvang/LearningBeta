@@ -1,5 +1,29 @@
 const { hairlineWidth } = require("nativewind/theme");
 
+const sizeScale = {
+  1: 4,
+  2: 8,
+  3: 12,
+  4: 16,
+  5: 20,
+  6: 24,
+  7: 28,
+  8: 32,
+  9: 36,
+  10: 40,
+  11: 44,
+  12: 48,
+  13: 52,
+  16: 64,
+  20: 80,
+  24: 96,
+  32: 128,
+  40: 160,
+  48: 192,
+  56: 224,
+  64: 256,
+};
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
@@ -8,23 +32,32 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        xxs: "0.625rem", // 10px
-        xs: "0.75rem", // 12px
-        sm: "0.875rem", // 14px
-        base: "1rem", // 16px
-        md: "1.0625rem", // 17px
-        lg: "1.125rem", // 18px
-        xl: "1.25rem", // 20px
-        "2xl": "1.5rem", // 24px
-        "3xl": "1.875rem", // 30px
-        "4xl": "2.25rem", // 36px
-        "5xl": "3rem", // 48px
-        "6xl": "3.75rem", // 60px
-        "7xl": "4.5rem", // 72px
-        "8xl": "6rem", // 96px
-        "9xl": "8rem", // 128px
-        huge: "10rem", // 160px
+        xxs: 10,
+        xs: 12,
+        sm: 14,
+        base: 16,
+        md: 17,
+        lg: 18,
+        xl: 20,
+        "2xl": 24,
+        "3xl": 30,
+        "4xl": 36,
+        "5xl": 48,
+        "6xl": 60,
+        "7xl": 72,
+        "8xl": 96,
+        "9xl": 128,
+        huge: 160,
       },
+      height: { ...sizeScale },
+      width: { ...sizeScale },
+      minHeight: { ...sizeScale },
+      maxHeight: { ...sizeScale },
+      minWidth: { ...sizeScale },
+      maxWidth: { ...sizeScale },
+      sizeScale: { ...sizeScale },
+      border: { ...sizeScale },
+      spacing: { ...sizeScale },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
