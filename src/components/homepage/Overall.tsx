@@ -96,16 +96,18 @@ const Overall = () => {
           <Text className='text-success-500 font-semibold'>Learning Time</Text>
           <View className='flex-row gap-1 items-start '>
             <Animated.View style={animatedMinuteStyle}>
-              <Animated.Text
-                className='text-foreground'
-                style={{ fontSize: 20, fontWeight: "bold" }}
-              >
-                {minute < 1
-                  ? Math.floor((totalLearningTime || 0) / 1000)
-                  : minute}
-              </Animated.Text>
+              <Text>
+                <Animated.Text
+                  className='text-foreground'
+                  style={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  {minute < 1
+                    ? Math.floor((totalLearningTime || 0) / 1000)
+                    : minute}
+                </Animated.Text>
+                <Text className='pt-[6px]'>{minute < 1 ? " Sec" : " Min"}</Text>
+              </Text>
             </Animated.View>
-            <Text className='pt-[6px]'>{minute < 1 ? "Sec" : "Min"}</Text>
           </View>
         </View>
       </View>
@@ -118,14 +120,16 @@ const Overall = () => {
           <Text className='text-primary font-semibold'>Streak Days</Text>
           <View className='flex-row gap-2 items-start '>
             <Animated.View style={animatedStreakStyle}>
-              <Animated.Text
-                className='text-foreground'
-                style={{ fontSize: 20, fontWeight: "bold" }}
-              >
-                {animatedStreakText.value}
-              </Animated.Text>
+              <Text>
+                <Animated.Text
+                  className='text-foreground'
+                  style={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  {animatedStreakText.value}
+                </Animated.Text>
+                <Text className='pt-[6px]'> Day</Text>
+              </Text>
             </Animated.View>
-            <Text className='pt-[6px]'>Day</Text>
           </View>
         </View>
       </View>

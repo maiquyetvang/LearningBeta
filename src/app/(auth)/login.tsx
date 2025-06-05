@@ -1,6 +1,6 @@
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetView,
+  BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import { AppImages } from "assets";
 import React, { useCallback } from "react";
@@ -19,6 +19,7 @@ import { Text } from "~/components/ui/text";
 import { useLessonBottomSheet } from "~/hooks/useLessonBottomSheet";
 import { useColorScheme } from "~/lib/useColorScheme";
 import RegisterScreen from "../../components/login/RegisterScreen";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export enum ELoginScreen {
   LOGIN = "login",
@@ -28,6 +29,7 @@ export enum ELoginScreen {
 }
 
 export default function LoginScreen() {
+  const insets = useSafeAreaInsets();
   const { isDarkColorScheme } = useColorScheme();
   const {
     bottomSheetRef,
@@ -115,10 +117,16 @@ export default function LoginScreen() {
               opacity={0.7}
             />
           )}
+          style={{ marginTop: insets.top }}
         >
-          <BottomSheetView>
-            <View className='gap-10 p-5 pt-0 pb-10'>{renderStep()}</View>
-          </BottomSheetView>
+          <BottomSheetScrollView>
+            <View
+              className='gap-10 p-5 pt-0 pb-10'
+              style={{ marginBottom: insets.top }}
+            >
+              {renderStep()}
+            </View>
+          </BottomSheetScrollView>
         </BottomSheet>
       </SafeAreaView>
     </KeyboardAvoidingView>

@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { useLearningStore } from "~/stores/learning.store";
 import { AnimatedButton } from "../custom-ui/animate-button";
+import { playCongratsSound } from "~/utils/playSound";
 
 const TestVoice = () => {
   const { clearInProgressLesson, resetLearning } = useLearningStore();
@@ -33,6 +34,15 @@ const TestVoice = () => {
           wrapperClassName='flex-1'
         >
           Reset
+        </AnimatedButton>
+        <AnimatedButton
+          onPress={() => {
+            playCongratsSound(true);
+          }}
+          variant='secondary'
+          wrapperClassName='flex-1'
+        >
+          Congrats
         </AnimatedButton>
       </View>
     </View>
