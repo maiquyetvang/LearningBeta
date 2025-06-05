@@ -2,7 +2,7 @@
   "expo": {
     "name": "Kindo",
     "slug": "LearningBeta",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "kindo",
@@ -17,7 +17,6 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dudaji.kindo",
-      "buildNumber": "4",
       "icon": "./assets/images/icon-ios.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
@@ -84,5 +83,10 @@
       }
     },
     "owner": "maiquyetvang"
+  },
+  "build": {
+    "production": {
+      "autoIncrement": true
+    }
   }
 }
