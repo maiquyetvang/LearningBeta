@@ -43,6 +43,7 @@ const LessonDetailScreen: React.FC = () => {
     isSpeechDisabled,
     setAudioDisabled,
     setSpeechDisabled,
+    addLearningTime,
   } = useLearningStore();
 
   const { data: lessonGroup } = useGetLessonGroup(lessonId);
@@ -90,7 +91,7 @@ const LessonDetailScreen: React.FC = () => {
       const now = Date.now();
       const duration = now - stepStartTime;
       const index = reviewMode ? reviewIndexes[reviewCurrent] : currentIndex;
-
+      addLearningTime(duration);
       setProgress((prev) => {
         const exists = prev.some((step) => step.index === index);
         let updated;
@@ -293,10 +294,10 @@ const LessonDetailScreen: React.FC = () => {
       lessonId &&
       (isLevelTest || !progress.some((p) => p.isFalse))
     ) {
-      const duration = progress.reduce(
-        (acc, step) => acc + (step.duration || 0),
-        0
-      );
+      // const duration = progress.reduce(
+      //   (acc, step) => acc + (step.duration || 0),
+      //   0
+      // );
       const correctAnswers = progress.filter((p) => !p.isFalse).length;
       const totalQuestions = progress.length;
       const courseId = lessonGroup?.courseId;
@@ -308,7 +309,6 @@ const LessonDetailScreen: React.FC = () => {
         lessonId,
         correctAnswers,
         totalQuestions,
-        duration,
         courseId
       );
       clearInProgressLesson();
@@ -327,6 +327,7 @@ const LessonDetailScreen: React.FC = () => {
       });
     }
   }, [lessonId, currentIndex, progress, isCompleted, reviewIndexes]);
+
   useEffect(() => {
     if (
       inProgressLesson?.progress &&

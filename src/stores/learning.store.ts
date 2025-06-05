@@ -10,7 +10,7 @@ export type CompletedUnit = {
   learnedAt: number;
   correctAnswers: number;
   totalQuestions: number;
-  duration: number;
+  // duration: number;
 };
 
 type InProgressLesson = {
@@ -38,7 +38,7 @@ type LearningActions = {
     lessonId: string,
     correctAnswers: number,
     totalQuestions: number,
-    duration: number,
+    // duration: number,
     pathId?: string
   ) => void;
   setCurrentLesson: (lessonId: string) => void;
@@ -48,6 +48,7 @@ type LearningActions = {
   clearInProgressLesson: () => void;
   setAudioDisabled: (value: boolean) => void;
   setSpeechDisabled: (value: boolean) => void;
+  addLearningTime: (duration: number) => void;
 };
 
 function getTodayString() {
@@ -71,7 +72,7 @@ export const useLearningStore = create<LearningState & LearningActions>()(
         lessonId,
         correctAnswers,
         totalQuestions,
-        duration,
+        // duration,
         pathId
       ) =>
         set((state) => {
@@ -100,12 +101,12 @@ export const useLearningStore = create<LearningState & LearningActions>()(
                       learnedAt: now,
                       correctAnswers,
                       totalQuestions,
-                      duration,
+                      // duration,
                       courseId: pathId,
                     }
                   : l
               ),
-              totalLearningTime: state.totalLearningTime + duration,
+              // totalLearningTime: state.totalLearningTime + duration,
               streakDays: newStreak,
               lastLearnedDate: today,
             };
@@ -119,10 +120,10 @@ export const useLearningStore = create<LearningState & LearningActions>()(
                 learnedAt: now,
                 correctAnswers,
                 totalQuestions,
-                duration,
+                // duration,
               },
             ],
-            totalLearningTime: state.totalLearningTime + duration,
+            // totalLearningTime: state.totalLearningTime + duration,
             streakDays: newStreak,
             lastLearnedDate: today,
           };
@@ -158,6 +159,10 @@ export const useLearningStore = create<LearningState & LearningActions>()(
       setSpeechDisabled: (value) =>
         set(() => ({
           isSpeechDisabled: value,
+        })),
+      addLearningTime: (duration) =>
+        set((state) => ({
+          totalLearningTime: state.totalLearningTime + duration,
         })),
     }),
     {
