@@ -103,7 +103,7 @@ const Achievements = () => {
         }}
       >
         {selectedItem && (
-          <DialogContent className='mx-5 rounded-2xl'>
+          <DialogContent className='mx-3 rounded-2xl'>
             <View className='rounded-2xl items-center  gap-5'>
               <Text className='text-2xl font-bold text-primary'>
                 {selectedItem.name}

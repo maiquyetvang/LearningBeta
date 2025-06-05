@@ -68,7 +68,7 @@ export const personalizeStepDetail = [
     options: [
       { label: "Study Supports", subDescription: "📖" },
       { label: "Work Supports", subDescription: "💼" },
-      { label: "Travelling", subDescription: "✈️" },
+      { label: "Traveling", subDescription: "✈️" },
       { label: "Hobby", subDescription: "❤️" },
       { label: "Others", subDescription: "💬" },
     ],
@@ -123,7 +123,7 @@ const PersonalizeScreen: React.FC = () => {
           style={{ width: 52, height: 60 }}
           resizeMode='contain'
         />
-        <View className='flex-1 px-5 py-5 rounded-3xl shadow-popover shadow-sm bg-neutral-50 dark:bg-neutral-900'>
+        <View className='flex-1 px-5 py-3 rounded-[28px] shadow-popover shadow-sm bg-neutral-50 dark:bg-neutral-900'>
           <AnimatedScreenWrapper>
             <Text className='text-xl font-medium text-foreground'>
               {step.title}

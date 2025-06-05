@@ -60,7 +60,7 @@ export default function LearningPath({
   const handleReview = (id: string) => {
     onReview?.(id);
   };
-  const isCompleted = completedUnit?.length === totalLessons;
+  const isCompleted = progress === 100;
   useEffect(() => {
     setCurrentCourse(course);
   }, [course]);
@@ -109,28 +109,26 @@ export default function LearningPath({
         {/* On Process Lessons */}
         <View className='gap-3'>
           {progress > 0 && <Title title='Completed' />}
-          {lessonGroups
-            // .filter((lesson) => !lesson.isCompleted)
-            .map((lesson, index) => {
-              const isCompleted = checkIsCompleted(lesson.id);
-              const isCurrentLesson = lesson.id === nextLesson?.id;
-              return (
-                <View key={lesson.id} className='gap-3'>
-                  {isCurrentLesson && <Title title='On Process' />}
-                  <RenderLesson
-                    index={(index + 1).toString()}
-                    lesson={lesson}
-                    allowLeaning={isCurrentLesson || isCompleted}
-                    onLearn={handleLearn}
-                    onReview={handleLearn}
-                    isFinalLesson={lesson.id === lastLessonId}
-                  />
-                  {index !== lessonGroups.length - 1 && isCurrentLesson && (
-                    <Title title='Up Next' />
-                  )}
-                </View>
-              );
-            })}
+          {lessonGroups.map((lesson, index) => {
+            const isCompleted = checkIsCompleted(lesson.id);
+            const isCurrentLesson = lesson.id === nextLesson?.id;
+            return (
+              <View key={lesson.id} className='gap-3'>
+                {isCurrentLesson && <Title title='On Process' />}
+                <RenderLesson
+                  index={(index + 1).toString()}
+                  lesson={lesson}
+                  allowLeaning={isCurrentLesson || isCompleted}
+                  onLearn={handleLearn}
+                  onReview={handleLearn}
+                  isFinalLesson={lesson.id === lastLessonId}
+                />
+                {index !== lessonGroups.length - 1 && isCurrentLesson && (
+                  <Title title='Up Next' />
+                )}
+              </View>
+            );
+          })}
         </View>
       </View>
     </View>

@@ -38,7 +38,7 @@ const ListeningLesson = ({
     <View className='flex-1 gap-8'>
       <Text className='font-light text-center text-sm italic'>
         * You can slow down the audio&apos;s speed
-        {JSON.stringify(questionLanguage)}
+        {JSON.stringify({ questionLanguage })}
       </Text>
       <SpeakButton
         label={question || answer}
@@ -66,8 +66,8 @@ const ListeningLesson = ({
                 style={{ borderWidth: isUsed ? 1 : 2 }}
                 label={word}
                 isSelected={isUsed}
-                disabledSpeak={audioLanguage !== "ko"}
-                language={audioLanguage}
+                disabledSpeak={questionLanguage === "ko"}
+                language={audioLanguage || questionLanguage}
               />
             );
           })}

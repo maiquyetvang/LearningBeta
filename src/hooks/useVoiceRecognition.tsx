@@ -64,19 +64,27 @@ export const useVoiceRecognition = (language: string = "en") => {
   };
   const startListening = useCallback(async () => {
     try {
-      // requestPermission();
+      const hasPermission = await requestPermission();
+      if (!hasPermission) {
+        setState((pre) => ({ ...pre, error: "Microphone permission denied" }));
+        return;
+      }
       resetState();
       const langCode =
         SUPPORTED_VOICE_MAP[language as keyof typeof SUPPORTED_VOICE_MAP] ||
         SUPPORTED_VOICE_MAP["en"];
       await Voice.start(langCode);
-      setState((pre) => {
-        return { ...pre, isRecording: true, langCode, language };
-      });
+      setState((pre) => ({
+        ...pre,
+        isRecording: true,
+        langCode,
+        language,
+      }));
     } catch (err) {
-      setState((pre) => {
-        return { ...pre, error: err?.toString() };
-      });
+      setState((pre) => ({
+        ...pre,
+        error: err?.toString(),
+      }));
     }
   }, [language]);
 
@@ -144,11 +152,11 @@ export const useVoiceRecognition = (language: string = "en") => {
         return { ...pre, isRecording: true };
       });
     };
-    Voice.onSpeechPartialResults = (event: SpeechResultsEvent) => {
-      setState((pre) => {
-        return { ...pre, partialResults: event.value };
-      });
-    };
+    // Voice.onSpeechPartialResults = (event: SpeechResultsEvent) => {
+    //   setState((pre) => {
+    //     return { ...pre, partialResults: event.value };
+    //   });
+    // };
     Voice.onSpeechVolumeChanged = (event: SpeechVolumeChangeEvent) => {
       setState((pre) => {
         return { ...pre, pitch: event.value };

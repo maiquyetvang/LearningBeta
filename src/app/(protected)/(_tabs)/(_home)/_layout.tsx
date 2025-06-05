@@ -18,12 +18,6 @@ export default function HomeLayout() {
           presentation: "fullScreenModal",
         }}
       />
-      <Stack.Screen
-        name='personalize'
-        options={{
-          presentation: "fullScreenModal",
-        }}
-      />
     </Stack>
   );
 }

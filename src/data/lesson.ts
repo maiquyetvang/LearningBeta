@@ -77,23 +77,22 @@ export const levelTestLessons: Lesson[] = [
       answer: "물",
     },
   },
-  // {
-  //   type: ELessonType.Listening,
-  //   value: {
-  //     question: "안녕하세요, 만나서 반갑습니다.",
-  //     questionLanguage: "ko",
-  //     selectors: [
-  //       "Hello, nice to meet you",
-  //       "My name is Minho",
-  //       "Goodbye, see you",
-  //       "Thanks a lot",
-  //     ],
-  //     audioLanguage: "en",
-  //     answer: "Hello, nice to meet you",
-  //   },
-  // },
   {
-    type: ELessonType.Voice,
+    type: ELessonType.Listening,
+    value: {
+      question: "안녕하세요, 만나서 반갑습니다.",
+      questionLanguage: "ko",
+      selectors: [
+        "Hello, nice to meet you",
+        "My name is Minho",
+        "Goodbye, see you",
+        "Thanks a lot",
+      ],
+      answer: "Hello, nice to meet you",
+    },
+  },
+  {
+    type: ELessonType.Speaking,
     value: {
       question: "안녕하세요",
       answer: "안녕하세요",
@@ -101,7 +100,7 @@ export const levelTestLessons: Lesson[] = [
     },
   },
   {
-    type: ELessonType.Voice,
+    type: ELessonType.Speaking,
     value: {
       question: "저는 수진입니다",
       answer: "저는 수진입니다",
@@ -180,8 +179,8 @@ export const levelTestLessons: Lesson[] = [
     },
   },
 ];
-// .slice(0, 2);
-// .reverse()
+// .slice(0, 2)
+// .reverse();
 // .slice(0, 5);
 
 export const course1Unit1: Lesson[] = [
@@ -331,7 +330,7 @@ export const Course1Unit2: Lesson[] = [
   {
     type: ELessonType.SingleChoose,
     value: {
-      question: "박지훈____________ 선생님이에요.",
+      question: "박지훈____ 선생님이에요.",
       selectors: ["은", "는"],
       audioLanguage: "ko",
       answer: "은",
@@ -356,31 +355,16 @@ export const Course1Unit2: Lesson[] = [
     },
   },
   {
-    type: ELessonType.Voice,
+    type: ELessonType.Speaking,
     value: {
       question: "안녕하세요?",
       answer: "안녕하세요?",
       audioLanguage: "ko",
     },
   },
-  // {
-  //   type: ELessonType.Listening,
-  //   value: {
-  //     question: "안녕하세요, 만나서 반갑습니다.",
-  //     questionLanguage: "ko",
 
-  //     selectors: [
-  //       "Hello, nice to meet you",
-  //       "My name is Minho",
-  //       "Goodbye, see you",
-  //       "Thanks a lot",
-  //     ],
-  //     audioLanguage: "ko",
-  //     answer: "Hello, nice to meet you",
-  //   },
-  // },
   {
-    type: ELessonType.Voice,
+    type: ELessonType.Speaking,
     value: {
       question: "저는 민준이에요",
       answer: "저는 민준이에요",
@@ -388,7 +372,7 @@ export const Course1Unit2: Lesson[] = [
     },
   },
   {
-    type: ELessonType.Voice,
+    type: ELessonType.Speaking,
     value: {
       question: "저는 베트남 사람이에요.",
       answer: "저는 베트남 사람이에요.",

@@ -1,7 +1,7 @@
 import { ImageSourcePropType } from "react-native";
 
 export enum ELessonType {
-  Voice = "voice",
+  Speaking = "voice",
   Select = "select",
   Sentence = "sentence",
   SingleChoose = "single-choose",

@@ -15,9 +15,6 @@ const useTTS = (language: string = "en") => {
           SUPPORTED_VOICE_MAP[language as keyof typeof SUPPORTED_VOICE_MAP] ||
           SUPPORTED_VOICE_MAP["en"];
         await Tts.setDefaultLanguage(langCode);
-        // Bạn có thể set thêm tốc độ/pitch mặc định ở đây nếu muốn
-        // await Tts.setDefaultRate(0.5);
-        // await Tts.setDefaultPitch(1.0);
       } catch (e) {}
     };
     initTTS();
@@ -38,16 +35,13 @@ const useTTS = (language: string = "en") => {
     };
   }, [language]);
 
-  const speak = useCallback(
-    (text: string, options?: Options) => {
-      try {
-        Tts.speak(text, options);
-      } catch (error) {
-        console.error("TTS Error:", error);
-      }
-    },
-    [language]
-  );
+  const speak = useCallback((text: string, options?: Options) => {
+    try {
+      Tts.speak(text, options);
+    } catch (error) {
+      console.error("TTS Error:", error);
+    }
+  }, []);
 
   const stop = useCallback(() => {
     try {

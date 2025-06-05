@@ -132,6 +132,14 @@ export default function PersonalizeStepScreen({
       })}
 
       <View className='mt-auto gap-2'>
+        <AnimatedButton
+          className='flex-row gap-2'
+          disabled={!selectedValue}
+          onPress={handleNext}
+        >
+          <Text>{step?.button || "Next"}</Text>
+          <ChevronRight color={"white"} size={20} />
+        </AnimatedButton>
         {stepIndex > 1 && (
           <AnimatedButton
             className='flex-row gap-2'
@@ -142,14 +150,6 @@ export default function PersonalizeStepScreen({
             <Text>{step?.button || "Previous Question"}</Text>
           </AnimatedButton>
         )}
-        <AnimatedButton
-          className='flex-row gap-2'
-          disabled={!selectedValue}
-          onPress={handleNext}
-        >
-          <Text>{step?.button || "Next"}</Text>
-          <ChevronRight color={"white"} size={20} />
-        </AnimatedButton>
       </View>
     </View>
   );

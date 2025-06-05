@@ -13,7 +13,7 @@ import SelectLesson from "~/components/lesson/SelectLesson";
 import SimpleSentenceLesson from "~/components/lesson/SimpleSentenceLesson";
 import SingleChooseImageLesson from "~/components/lesson/SingleChooseImageLesson";
 import SingleChooseLesson from "~/components/lesson/SingleChooseLesson";
-import VoiceMatch from "~/components/lesson/VoiceLesson";
+import SpeakingLesson from "~/components/lesson/SpeakingLesson";
 import WriteOnlyWordLesson from "~/components/lesson/WriteOnlyWordLesson";
 import WriteWordLesson from "~/components/lesson/WriteWordLesson";
 import { Text } from "~/components/ui/text";
@@ -124,7 +124,7 @@ const LessonDetailScreen: React.FC = () => {
   const checkIsSkip = (currentIndex: number) => {
     const type = data && data[currentIndex]?.type;
     if (!type) return false;
-    if (type === ELessonType.Voice) {
+    if (type === ELessonType.Speaking) {
       if (isAudioDisabled) {
         return true;
       }
@@ -152,7 +152,7 @@ const LessonDetailScreen: React.FC = () => {
   };
 
   const lessonTitleMap: Record<ELessonType, string> = {
-    [ELessonType.Voice]: "Read out the sentence below",
+    [ELessonType.Speaking]: "Read out the sentence below",
     [ELessonType.Sentence]: "Translate this sentence",
     [ELessonType.Select]: "Complete the sentence below",
     [ELessonType.SingleImageChoose]: "Choose the right translation",
@@ -183,7 +183,7 @@ const LessonDetailScreen: React.FC = () => {
     );
   };
   const lessonComponentMap = {
-    [ELessonType.Voice]: VoiceMatch,
+    [ELessonType.Speaking]: SpeakingLesson,
     [ELessonType.Select]: SelectLesson,
     [ELessonType.Sentence]: SimpleSentenceLesson,
     [ELessonType.SingleChoose]: SingleChooseLesson,
@@ -366,9 +366,9 @@ const LessonDetailScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView className='flex-1 gap-5 px-4 '>
+    <SafeAreaView className='flex-1 gap-5 px-5 pb-5'>
       <View className='gap-2'>
-        <View className='gap-2 w-full flex-row items-center justify-between'>
+        <View className='gap-2 w-full flex-row items-center justify-between '>
           <TouchableOpacity onPress={handleReset}>
             <ThemeIcon Icon={X} size={28} />
           </TouchableOpacity>

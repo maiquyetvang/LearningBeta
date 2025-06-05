@@ -8,13 +8,13 @@ import { Mic } from "~/lib/icons/Mic";
 import { Volume2 } from "~/lib/icons/Volume2";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { cn } from "~/lib/utils";
-import { Lesson } from "~/types/lesson.type";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { CheckResultButton } from "./CheckResultButton";
-import { CannotSpeakButton } from "./CannotSpeakButton";
 import { useLearningStore } from "~/stores/learning.store";
-import { Loader2 } from "~/lib/icons/Loader2";
-const VoiceMatch = ({
+import { Lesson } from "~/types/lesson.type";
+import { playResultSound } from "~/utils/playSound";
+import { SpeakButton } from "../custom-ui/speak-button";
+import { CannotSpeakButton } from "./CannotSpeakButton";
+import { CheckResultButton } from "./CheckResultButton";
+const SpeakingLesson = ({
   value: sampleText,
   disabled,
   onSuccess,
@@ -29,6 +29,8 @@ const VoiceMatch = ({
   const { question, selectors, answer, audioLanguage } = sampleText.value;
   const { isDarkColorScheme } = useColorScheme();
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const [isReady, setIsReady] = React.useState(false);
+  const [textDetected, setTextDetection] = React.useState<string | undefined>();
   const { state, startListening, stopListening, destroyRecognition } =
     useVoiceRecognition(audioLanguage);
   const sampleWords =
@@ -49,11 +51,15 @@ const VoiceMatch = ({
   };
 
   useEffect(() => {
+    if (isSuccess) {
+      return;
+    }
+    setTextDetection(state.results?.[0] || "");
     const isMatchEnough = checkMatchPercent();
     if (isMatchEnough) {
       setIsSuccess(true);
       stopListening();
-      setIsSuccess(false);
+      // setIsSuccess(false);
       onSuccess?.(!isMatchEnough);
     } else {
       setIsSuccess(false);
@@ -62,19 +68,16 @@ const VoiceMatch = ({
       if (state.isRecording) {
         stopListening();
         setIsSuccess(false);
+        if (!isMatchEnough) playResultSound(!isMatchEnough);
       }
     }, 2000);
     return () => {
       clearTimeout(timer);
     };
-  }, [state.results?.[0]]);
+  }, [state.results?.[0], state.isRecording]);
 
   const renderWords = sampleWords.map((word, index) => {
-    const spokenWord = !!spokenWords ? spokenWords[index] : "";
-    // const isMatch =
-    //   !!word && !!spokenWord
-    //     ? word.toLowerCase() === spokenWord.toLowerCase()
-    //     : false;
+    const spokenWord = spokenWords ? spokenWords[index] : "";
     const isMatch =
       !!word && !!spokenWords
         ? spokenWords.some((v) => v.toLowerCase() === word.toLowerCase()) // word.toLowerCase() === spokenWord.toLowerCase()
@@ -89,7 +92,7 @@ const VoiceMatch = ({
         }}
         className={cn(
           "text-foreground",
-          isMatch ? "text-green-500" : "text-gray-400"
+          isMatch ? "text-success" : spokenWord ? "text-error" : "text-gray-400"
         )}
       >
         {word}
@@ -110,12 +113,15 @@ const VoiceMatch = ({
   };
 
   useEffect(() => {
-    // startListening();
-    // stopListening();
-  }, []);
+    if (state.isRecording && state.pitch && state.pitch > 0) {
+      setIsReady(true);
+    } else {
+      setIsReady(false);
+    }
+  }, [state.isRecording, state.pitch]);
 
   return (
-    <View className='flex-1 gap-8'>
+    <View className='flex-1 gap-5'>
       <Text className='font-light text-center text-sm italic'>
         * You can click the speaker to hear the sample
       </Text>
@@ -130,7 +136,7 @@ const VoiceMatch = ({
           {renderWords}
         </View>
 
-        <Text className='text-neutral-500'>{state.results}</Text>
+        <Text className='text-neutral-500'>{textDetected}</Text>
         <SpeakButton
           label={answer}
           className='w-fit '
@@ -144,32 +150,19 @@ const VoiceMatch = ({
           leftIcon={<Volume2 size={20} className='text-foreground' />}
         />
       </View>
+
       <View className='flex-col gap-2'>
         <Button
           className=' flex-row  h-fit gap-2  transition-colors'
-          variant={state.isRecording ? "destructive" : "default"}
+          variant={isReady ? "destructive" : "default"}
           onPressIn={handleClickButton}
           disabled={disabled}
         >
-          {!state.isRecording && !isSuccess && (
-            <Text className=''>Speaks </Text>
-          )}
-          {state.isRecording && !isSuccess && (
-            <Text className='animate-pulse'>Listening ...</Text>
-          )}
-          {isSuccess && <Text className='text-green-500'>Next</Text>}
-          {isSuccess ? (
-            <ArrowRightIcon
-              className='transition-colors'
-              color={isDarkColorScheme ? "black" : "white"}
-              size={20}
-              strokeWidth={1.75}
-            />
-          ) : (
-            <Mic className='text-white' size={20} strokeWidth={1.75} />
-          )}
+          {!isReady && <Text className=''>Speaks </Text>}
+          {isReady && <Text className='animate-pulse'>Listening ...</Text>}
+
+          <Mic className='text-white' size={20} strokeWidth={1.75} />
         </Button>
-        {/* <Text>{JSON.stringify({ ...state, audioLanguage }, null, 2)}</Text> */}
       </View>
       <View className='mt-auto gap-2'>
         <CannotSpeakButton onPress={handleSkip} />
@@ -179,4 +172,4 @@ const VoiceMatch = ({
   );
 };
 
-export default VoiceMatch;
+export default SpeakingLesson;
