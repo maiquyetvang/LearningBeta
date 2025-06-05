@@ -1,11 +1,12 @@
+import { Lottie } from "assets";
 import { router } from "expo-router";
-import React from "react";
-import { Image, View } from "react-native";
-import { AppImages, Lottie } from "assets";
+import LottieView from "lottie-react-native";
+import React, { useEffect } from "react";
+import { View } from "react-native";
 import { ProgressStep } from "~/components/custom-ui/progress";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import LottieView from "lottie-react-native";
+import { playCongratsSound } from "~/utils/playSound";
 
 const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
   const countResult = (progress: ProgressStep[]) => {
@@ -28,6 +29,14 @@ const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
     if (!totalCount) return false;
     const ratio = correctCount / totalCount;
     return ratio >= 0.5;
+  };
+
+  useEffect(() => {
+    const isGoodResultValue = isGoodResult();
+    playCongratsSound(!isGoodResultValue);
+  }, []);
+  const handleBack = () => {
+    router.replace("/(protected)/(_tabs)/(_home)");
   };
   return (
     <View className='flex-1 gap-3 justify-center items-center text-center text-2xl '>
@@ -59,7 +68,7 @@ const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
         You've completed the test. We will provide the fittest learning path
         base on your result
       </Text>
-      <Button onPress={() => router.back()}>
+      <Button onPress={handleBack}>
         <Text>Back home</Text>
       </Button>
     </View>
