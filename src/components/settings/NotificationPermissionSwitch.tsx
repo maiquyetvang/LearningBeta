@@ -12,13 +12,14 @@ export default function NotificationPermissionSwitch() {
   const fetchPermission = React.useCallback(async () => {
     setLoading(true);
     const settings = await Notifications.getPermissionsAsync();
-    setEnabled(
+    const isEnabled =
       settings.granted ||
-        (Platform.OS === "ios" &&
-          settings.ios?.status ===
-            Notifications.IosAuthorizationStatus.PROVISIONAL)
-    );
+      (Platform.OS === "ios" &&
+        settings.ios?.status ===
+          Notifications.IosAuthorizationStatus.PROVISIONAL);
+    setEnabled(isEnabled);
     setLoading(false);
+    return isEnabled;
   }, []);
 
   useFocusEffect(
@@ -40,8 +41,8 @@ export default function NotificationPermissionSwitch() {
     setLoading(true);
     if (value) {
       await Notifications.requestPermissionsAsync();
-      await fetchPermission();
-      if (!enabled) Linking.openSettings();
+      const status = await fetchPermission();
+      if (!status) Linking.openSettings();
     } else {
       Linking.openSettings();
     }

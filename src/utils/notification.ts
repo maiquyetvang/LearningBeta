@@ -31,8 +31,10 @@ export async function sendLocalNotification({
   body: string;
   data?: Record<string, any>;
 }) {
-  // const hasPermission = await ensureNotificationPermission();
-  // if (!hasPermission) return;
+  const hasPermission = await ensureNotificationPermission();
+  if (!hasPermission) {
+    await Notifications.requestPermissionsAsync();
+  }
   await Notifications.scheduleNotificationAsync({
     content: {
       title,

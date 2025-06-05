@@ -79,13 +79,13 @@ function SwitchNative({
     <Animated.View
       style={animatedRootStyle}
       className={cn(
-        "h-8 !w-[46px] rounded-full ",
+        "h-8 !w-[50px] rounded-full ",
         props.disabled && "opacity-50"
       )}
     >
       <SwitchPrimitives.Root
         className={cn(
-          "flex-row h-8 !w-[46px] shrink-0 items-center rounded-full border-2 ",
+          "flex-row h-8 !w-[50px] shrink-0 items-center rounded-full border-2 ",
           checked ? "bg-primary border-primary" : "bg-input border-input",
           className
         )}
