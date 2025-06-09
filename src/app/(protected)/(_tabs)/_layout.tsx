@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { TabBarIcon } from '~/components/tab-bar-icon';
 import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
@@ -24,6 +25,16 @@ export default function TabLayout() {
               name={focused ? 'home-variant' : 'home-variant-outline'}
               size={size}
             />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="practice"
+        options={{
+          title: 'Practice',
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => (
+            <TabBarIcon name="Speech" color={color} size={size} focused={focused} />
           ),
         }}
       />

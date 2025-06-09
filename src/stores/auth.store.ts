@@ -1,9 +1,10 @@
-import { use } from 'react';
-import { removeFromStorage } from './../utils/storage';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { User } from '../types/user.type';
+import { createJSONStorage, persist } from 'zustand/middleware';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { User } from '../types/user.type';
+import { create } from 'zustand';
+import { removeFromStorage } from './../utils/storage';
+import { use } from 'react';
 
 type AuthState = {
   isAuthentication: boolean;
@@ -50,19 +51,20 @@ export const useAuthStore = create<AuthState & AuthActions>()(
     }),
     {
       name: 'auth-storage',
-      storage: {
-        getItem: async (name) => {
-          const value = await AsyncStorage.getItem(name);
-          const parsedValue = value ? JSON.parse(value) : null;
-          return parsedValue;
-        },
-        setItem: async (name, value) => {
-          await AsyncStorage.setItem(name, JSON.stringify(value));
-        },
-        removeItem: async (name) => {
-          await AsyncStorage.removeItem(name);
-        },
-      },
+      storage: createJSONStorage(() => AsyncStorage),
+      // storage: {
+      //   getItem: async (name) => {
+      //     const value = await AsyncStorage.getItem(name);
+      //     const parsedValue = value ? JSON.parse(value) : null;
+      //     return parsedValue;
+      //   },
+      //   setItem: async (name, value) => {
+      //     await AsyncStorage.setItem(name, JSON.stringify(value));
+      //   },
+      //   removeItem: async (name) => {
+      //     await AsyncStorage.removeItem(name);
+      //   },
+      // },
     },
   ),
 );

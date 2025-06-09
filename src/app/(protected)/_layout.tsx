@@ -41,6 +41,12 @@ export default function ProtectedLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="practice"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }
