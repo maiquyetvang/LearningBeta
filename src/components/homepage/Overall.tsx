@@ -1,25 +1,20 @@
-import React from "react";
-import { Image, View } from "react-native";
+import React from 'react';
+import { Image, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withTiming,
-} from "react-native-reanimated";
-import { AppImages } from "assets";
-import { Text } from "../ui/text";
-import { useLearningStore } from "~/stores/learning.store";
-import { useAuthStore } from "~/stores/auth.store";
+} from 'react-native-reanimated';
+import { AppImages } from 'assets';
+import { Text } from '../ui/text';
+import { useLearningStore } from '~/stores/learning.store';
+import { useAuthStore } from '~/stores/auth.store';
 
 const Overall = () => {
-  const {
-    totalLearningTime,
-    streakDays,
-    learnedLessons,
-    inProgressLesson,
-    lastLearnedDate,
-  } = useLearningStore();
+  const { totalLearningTime, streakDays, learnedLessons, inProgressLesson, lastLearnedDate } =
+    useLearningStore();
   const user = useAuthStore((state) => state.user);
 
   const minute = Math.floor((totalLearningTime || 0) / 60000);
@@ -44,9 +39,7 @@ const Overall = () => {
     ],
   }));
 
-  const animatedMinuteText = useDerivedValue(() =>
-    Math.round(animatedMinute.value)
-  );
+  const animatedMinuteText = useDerivedValue(() => Math.round(animatedMinute.value));
 
   // --- Streak Days ---
   const animatedStreak = useSharedValue(streakDays);
@@ -70,9 +63,7 @@ const Overall = () => {
     ],
   }));
 
-  const animatedStreakText = useDerivedValue(() =>
-    Math.round(animatedStreak.value)
-  );
+  const animatedStreakText = useDerivedValue(() => Math.round(animatedStreak.value));
 
   const getStreakImage = (streakDays: number) => {
     if (streakDays === 0) return AppImages.streak_lv1;
@@ -83,51 +74,41 @@ const Overall = () => {
   };
   return (
     <View>
-      <Text className='font-semibold  text-neutral-500 dark:text-neutral-300'>
-        Overall
-      </Text>
+      <Text className="font-semibold  text-neutral-500 dark:text-neutral-300">Overall</Text>
 
-      <View className='p-3 pb-2 mt-3 gap-3 items-center flex-row rounded-lg bg-success-50 dark:bg-success-900'>
-        <Image
-          source={AppImages.chronometer}
-          style={{ height: 40, width: 40 }}
-        />
-        <View className='justify-center'>
-          <Text className='text-success-500 font-semibold'>Learning Time</Text>
-          <View className='flex-row gap-1 items-start '>
+      <View className="p-3 pb-2 mt-3 gap-3 items-center flex-row rounded-lg bg-success-50 dark:bg-success-900">
+        <Image source={AppImages.chronometer} style={{ height: 40, width: 40 }} />
+        <View className="justify-center">
+          <Text className="text-success-500 font-semibold">Learning Time</Text>
+          <View className="flex-row gap-1 items-start ">
             <Animated.View style={animatedMinuteStyle}>
               <Text>
                 <Animated.Text
-                  className='text-foreground'
-                  style={{ fontSize: 20, fontWeight: "bold" }}
+                  className="text-foreground"
+                  style={{ fontSize: 20, fontWeight: 'bold' }}
                 >
-                  {minute < 1
-                    ? Math.floor((totalLearningTime || 0) / 1000)
-                    : minute}
+                  {minute < 1 ? Math.floor((totalLearningTime || 0) / 1000) : minute}
                 </Animated.Text>
-                <Text className='pt-[6px]'>{minute < 1 ? " Sec" : " Min"}</Text>
+                <Text className="pt-[6px]">{minute < 1 ? ' Sec' : ' Min'}</Text>
               </Text>
             </Animated.View>
           </View>
         </View>
       </View>
-      <View className='p-3 pb-3 mt-3 gap-3 items-center flex-row rounded-lg bg-primary-50 dark:bg-primary-900'>
-        <Image
-          source={getStreakImage(streakDays)}
-          style={{ height: 40, width: 40 }}
-        />
-        <View className='justify-center gap-1'>
-          <Text className='text-primary font-semibold'>Streak Days</Text>
-          <View className='flex-row gap-2 items-start '>
+      <View className="p-3 pb-3 mt-3 gap-3 items-center flex-row rounded-lg bg-primary-50 dark:bg-primary-900">
+        <Image source={getStreakImage(streakDays)} style={{ height: 40, width: 40 }} />
+        <View className="justify-center gap-1">
+          <Text className="text-primary font-semibold">Streak Days</Text>
+          <View className="flex-row gap-2 items-start ">
             <Animated.View style={animatedStreakStyle}>
               <Text>
                 <Animated.Text
-                  className='text-foreground'
-                  style={{ fontSize: 20, fontWeight: "bold" }}
+                  className="text-foreground"
+                  style={{ fontSize: 20, fontWeight: 'bold' }}
                 >
                   {animatedStreakText.value}
                 </Animated.Text>
-                <Text className='pt-[6px]'> Day</Text>
+                <Text className="pt-[6px]"> Day</Text>
               </Text>
             </Animated.View>
           </View>

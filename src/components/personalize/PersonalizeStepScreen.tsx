@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-import { Image, Pressable, View } from "react-native";
-import { AppImages } from "assets";
-import { personalizeStepDetail } from "~/app/(protected)/personalize";
-import { ChevronLeft } from "~/lib/icons/ChevronLeft";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { cn } from "~/lib/utils";
-import { AnimatedScreenWrapper } from "../login/AnimatedScreenWrapper";
-import { Button } from "../ui/button";
-import { Text } from "../ui/text";
-import { H3 } from "../ui/typography";
-import { AnimatedPressable } from "../custom-ui/animate-pressable";
-import { AnimatedButton } from "../custom-ui/animate-button";
+import React, { useEffect } from 'react';
+import { Image, Pressable, View } from 'react-native';
+import { AppImages } from 'assets';
+import { personalizeStepDetail } from '~/app/(protected)/personalize';
+import { ChevronLeft } from '~/lib/icons/ChevronLeft';
+import { ChevronRight } from '~/lib/icons/ChevronRight';
+import { cn } from '~/lib/utils';
+import { AnimatedScreenWrapper } from '../login/AnimatedScreenWrapper';
+import { Button } from '../ui/button';
+import { Text } from '../ui/text';
+import { H3 } from '../ui/typography';
+import { AnimatedPressable } from '../custom-ui/animate-pressable';
+import { AnimatedButton } from '../custom-ui/animate-button';
 
 type Props = {
   stepIndex: number;
@@ -19,16 +19,9 @@ type Props = {
   onPrevious?: () => void;
 };
 
-export default function PersonalizeStepScreen({
-  stepIndex,
-  value,
-  onNext,
-  onPrevious,
-}: Props) {
+export default function PersonalizeStepScreen({ stepIndex, value, onNext, onPrevious }: Props) {
   const step = personalizeStepDetail[stepIndex];
-  const [selectedValue, setSelectedValue] = React.useState<
-    string | undefined
-  >();
+  const [selectedValue, setSelectedValue] = React.useState<string | undefined>();
   useEffect(() => {
     setSelectedValue(value);
   }, [value, stepIndex]);
@@ -45,23 +38,17 @@ export default function PersonalizeStepScreen({
 
   if (!step) return null;
 
-  if (step.type === "welcome") {
+  if (step.type === 'welcome') {
     return (
-      <View className='flex-1'>
-        <View
-          className='flex-1 items-center gap-5 justify-center '
-          style={{ marginTop: "auto" }}
-        >
-          <View className='mx-10 gap-2 bg-neutral-50  dark:bg-neutral-900 rounded-2xl p-3 shadow-sm shadow-neutral-500/50'>
-            <H3 className='text-center text-primary'>{step.title}</H3>
-            <Text className='text-center'>{step.description}</Text>
+      <View className="flex-1">
+        <View className="flex-1 items-center gap-5 justify-center " style={{ marginTop: 'auto' }}>
+          <View className="mx-10 gap-2 bg-neutral-50  dark:bg-neutral-900 rounded-2xl p-3 shadow-sm shadow-neutral-500/50">
+            <H3 className="text-center text-primary">{step.title}</H3>
+            <Text className="text-center">{step.description}</Text>
           </View>
-          <Image
-            source={AppImages.kindo_stand}
-            style={{ width: 170, height: 240 }}
-          />
+          <Image source={AppImages.kindo_stand} style={{ width: 170, height: 240 }} />
         </View>
-        <Button className='w-full' onPress={() => onNext("")}>
+        <Button className="w-full" onPress={() => onNext('')}>
           <Text>{step.button}</Text>
         </Button>
       </View>
@@ -69,7 +56,7 @@ export default function PersonalizeStepScreen({
   }
 
   return (
-    <View className='flex-1 gap-3'>
+    <View className="flex-1 gap-3">
       {step.options?.map((option, idx) => {
         const isSelected = selectedValue === option.label;
         return (
@@ -77,49 +64,43 @@ export default function PersonalizeStepScreen({
             <AnimatedPressable
               className={`flex-row rounded-lg border items-center gap-3 p-3 ${
                 isSelected
-                  ? " border-primary bg-orange-50 dark:bg-primary/20"
-                  : "border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900"
+                  ? ' border-primary bg-orange-50 dark:bg-primary/20'
+                  : 'border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900'
               }`}
               onPress={() => handleSelect(option.label)}
             >
-              <View className='rounded-full border border-neutral-200 h-[20px] w-[20px] justify-center items-center'>
-                {isSelected && (
-                  <View className='h-4 w-4 self-center bg-primary rounded-full' />
-                )}
+              <View className="rounded-full border border-neutral-200 h-[20px] w-[20px] justify-center items-center">
+                {isSelected && <View className="h-4 w-4 self-center bg-primary rounded-full" />}
               </View>
-              <View className='mr-auto  gap-1'>
+              <View className="mr-auto  gap-1">
                 <Text
-                  className={`text-base  font-medium ${"description" in option && option.description ? "!text-primary" : ""}`}
+                  className={`text-base  font-medium ${'description' in option && option.description ? '!text-primary' : ''}`}
                 >
                   {option.label}
                 </Text>
-                {"description" in option && option.description && (
-                  <Text className='text-sm font-light'>
-                    {option.description}
-                  </Text>
+                {'description' in option && option.description && (
+                  <Text className="text-sm font-light">{option.description}</Text>
                 )}
               </View>
-              {"subDescription" in option && option.subDescription && (
-                <Text className='font-light'>{option.subDescription}</Text>
+              {'subDescription' in option && option.subDescription && (
+                <Text className="font-light">{option.subDescription}</Text>
               )}
-              {"recommend" in option && option.recommend && (
-                <Text className='text-xs bg-neutral-800 p-1 text-background absolute top-1 right-1 rounded-[4px] ml-2 dark:bg-neutral-200'>
+              {'recommend' in option && option.recommend && (
+                <Text className="text-xs bg-neutral-800 p-1 text-background absolute top-1 right-1 rounded-[4px] ml-2 dark:bg-neutral-200">
                   👍 Recommend
                 </Text>
               )}
               {stepIndex === 1 && (
-                <View className='flex-row w-fit gap-0.5 '>
+                <View className="flex-row w-fit gap-0.5 ">
                   {Array.from({ length: 3 }).map((_, i) => {
                     return (
                       <View
                         key={i}
                         className={cn(
-                          "h-5 w-5  rounded-sm  ",
-                          i === 2 && "rounded-r-2xl",
-                          i === 0 && "rounded-l-2xl",
-                          i <= idx
-                            ? "!bg-primary"
-                            : "bg-neutral-200 dark:bg-neutral-700"
+                          'h-5 w-5  rounded-sm  ',
+                          i === 2 && 'rounded-r-2xl',
+                          i === 0 && 'rounded-l-2xl',
+                          i <= idx ? '!bg-primary' : 'bg-neutral-200 dark:bg-neutral-700',
                         )}
                       />
                     );
@@ -131,23 +112,15 @@ export default function PersonalizeStepScreen({
         );
       })}
 
-      <View className='mt-auto gap-2'>
-        <AnimatedButton
-          className='flex-row gap-2'
-          disabled={!selectedValue}
-          onPress={handleNext}
-        >
-          <Text>{step?.button || "Next"}</Text>
-          <ChevronRight color={"white"} size={20} />
+      <View className="mt-auto gap-2">
+        <AnimatedButton className="flex-row gap-2" disabled={!selectedValue} onPress={handleNext}>
+          <Text>{step?.button || 'Next'}</Text>
+          <ChevronRight color={'white'} size={20} />
         </AnimatedButton>
         {stepIndex > 1 && (
-          <AnimatedButton
-            className='flex-row gap-2'
-            variant='ghost'
-            onPress={handlePrevious}
-          >
-            <ChevronLeft size={20} className='text-foreground' />
-            <Text>{step?.button || "Previous Question"}</Text>
+          <AnimatedButton className="flex-row gap-2" variant="ghost" onPress={handlePrevious}>
+            <ChevronLeft size={20} className="text-foreground" />
+            <Text>{step?.button || 'Previous Question'}</Text>
           </AnimatedButton>
         )}
       </View>

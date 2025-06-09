@@ -1,4 +1,4 @@
-import * as Notifications from "expo-notifications";
+import * as Notifications from 'expo-notifications';
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowBanner: true,
@@ -9,9 +9,9 @@ Notifications.setNotificationHandler({
 });
 export async function ensureNotificationPermission(): Promise<boolean> {
   const { status } = await Notifications.getPermissionsAsync();
-  if (status !== "granted") {
+  if (status !== 'granted') {
     const { status: newStatus } = await Notifications.requestPermissionsAsync();
-    return newStatus === "granted";
+    return newStatus === 'granted';
   }
   return true;
 }
@@ -56,7 +56,7 @@ export async function sendLocalNotification({
 export async function sendVerifyCodeNotification(confirmCode?: string) {
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   await sendLocalNotification({
-    title: "Your verification code",
+    title: 'Your verification code',
     body: `Your code is: ${confirmCode || code}`,
     data: { code: confirmCode || code },
   });

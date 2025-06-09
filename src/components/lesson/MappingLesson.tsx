@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Animated, StyleSheet, View } from "react-native";
-import { useBoolean } from "usehooks-ts";
-import { Lesson } from "~/types/lesson.type";
-import { playResultSound } from "~/utils/playSound";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { H3, P } from "../ui/typography"; // Thêm P nếu chưa có
+import React, { useEffect, useState } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
+import { useBoolean } from 'usehooks-ts';
+import { Lesson } from '~/types/lesson.type';
+import { playResultSound } from '~/utils/playSound';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { H3, P } from '../ui/typography'; // Thêm P nếu chưa có
 
 // Số lần sai tối đa cho phép
 const MAX_WRONG_ATTEMPTS = 5;
@@ -25,22 +25,21 @@ const MappingLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, selectors, answers, audioLanguage, questionLanguage } =
-    value.value;
+  const { question, selectors, answers, audioLanguage, questionLanguage } = value.value;
   const [shuffledSelectors] = useState(() => shuffleArray(selectors ?? []));
   const [shuffledAnswers] = useState(() => shuffleArray(answers ?? []));
   const { value: disableAction, setTrue, setFalse, toggle } = useBoolean(false);
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
   const [selectedRight, setSelectedRight] = useState<number | null>(null);
   const [disabledLeft, setDisabledLeft] = useState<boolean[]>(
-    Array(selectors?.length ?? 0).fill(false)
+    Array(selectors?.length ?? 0).fill(false),
   );
 
   // Số lần trả lời sai
   const [wrongAttempts, setWrongAttempts] = useState(0);
 
   const [disabledRight, setDisabledRight] = useState<boolean[]>(
-    Array(answers?.length ?? 0).fill(false)
+    Array(answers?.length ?? 0).fill(false),
   );
   const [feedback, setFeedback] = useState<{
     left: number | null;
@@ -101,10 +100,7 @@ const MappingLesson = ({
             setDisabledLeft(newDisabledLeft);
             setDisabledRight(newDisabledRight);
 
-            if (
-              newDisabledLeft.every(Boolean) &&
-              newDisabledRight.every(Boolean)
-            ) {
+            if (newDisabledLeft.every(Boolean) && newDisabledRight.every(Boolean)) {
               onSuccess?.(false); // Hoàn thành thành công
             }
           } else {
@@ -117,7 +113,7 @@ const MappingLesson = ({
               onSuccess?.(true); // Thất bại
             }
           }
-        }, 500)
+        }, 500),
       );
 
       timeouts.push(
@@ -126,25 +122,23 @@ const MappingLesson = ({
           setSelectedRight(null);
           setFeedback({ left: null, right: null, isCorrect: null });
           setFalse();
-        }, 500)
+        }, 500),
       );
     }
   }, [selectedLeft, selectedRight]);
 
   return (
-    <View className='flex-1 gap-8'>
-      {!!question && <H3 className='text-primary text-center'>{question}</H3>}
+    <View className="flex-1 gap-8">
+      {!!question && <H3 className="text-primary text-center">{question}</H3>}
 
       {/* Hiển thị số lần sai */}
-      <View className='items-center'>
-        <P
-          className={`${wrongAttempts > 0 ? "text-red-500" : "text-neutral-500"}`}
-        >
+      <View className="items-center">
+        <P className={`${wrongAttempts > 0 ? 'text-red-500' : 'text-neutral-500'}`}>
           Attempts remaining: {MAX_WRONG_ATTEMPTS - wrongAttempts}/5
         </P>
       </View>
 
-      <View className='flex-row gap-8 justify-center'>
+      <View className="flex-row gap-8 justify-center">
         <View style={styles.optionsContainer}>
           {shuffledSelectors.map((word, idx) => {
             const isFeedback = feedback.left === idx;
@@ -153,41 +147,41 @@ const MappingLesson = ({
             const isZoom = isFeedback && feedback.isCorrect !== null;
             const zoomColor =
               isZoom && feedback.isCorrect === true
-                ? "#258124"
+                ? '#258124'
                 : isZoom && feedback.isCorrect === false
-                  ? "#ef4444"
+                  ? '#ef4444'
                   : undefined;
 
             return (
               <Animated.View
                 key={idx}
-                className={"transition-colors"}
+                className={'transition-colors'}
                 style={[
                   isFeedback && {
                     transform: [{ scale: anim }],
                     backgroundColor: zoomColor,
-                    borderColor: "white",
+                    borderColor: 'white',
                     borderRadius: 6,
                   },
-                  { width: "100%" },
+                  { width: '100%' },
                 ]}
               >
                 <SpeakButton
                   variant={
                     isUsed
-                      ? "success"
+                      ? 'success'
                       : isSelected
                         ? zoomColor
-                          ? "ghost"
-                          : "secondary"
-                        : "outline"
+                          ? 'ghost'
+                          : 'secondary'
+                        : 'outline'
                   }
                   onPress={() => handleSelectLeft(idx)}
                   disabled={isUsed}
-                  disabledSpeak={questionLanguage !== "ko"}
+                  disabledSpeak={questionLanguage !== 'ko'}
                   language={questionLanguage}
                   label={word}
-                  className='transition-colors'
+                  className="transition-colors"
                 />
               </Animated.View>
             );
@@ -201,9 +195,9 @@ const MappingLesson = ({
             const isZoom = isFeedback && feedback.isCorrect !== null;
             const zoomColor =
               isZoom && feedback.isCorrect === true
-                ? "#258124"
+                ? '#258124'
                 : isZoom && feedback.isCorrect === false
-                  ? "#ef4444"
+                  ? '#ef4444'
                   : undefined;
 
             return (
@@ -213,28 +207,28 @@ const MappingLesson = ({
                   isFeedback && {
                     transform: [{ scale: anim }],
                     backgroundColor: zoomColor,
-                    borderColor: "white",
+                    borderColor: 'white',
                     borderRadius: 6,
                   },
-                  { width: "100%" },
+                  { width: '100%' },
                 ]}
               >
                 <SpeakButton
                   variant={
                     isUsed
-                      ? "success"
+                      ? 'success'
                       : isSelected
                         ? zoomColor
-                          ? "ghost"
-                          : "secondary"
-                        : "outline"
+                          ? 'ghost'
+                          : 'secondary'
+                        : 'outline'
                   }
                   onPress={() => handleSelectRight(idx)}
                   disabled={isUsed}
-                  disabledSpeak={audioLanguage !== "ko"}
+                  disabledSpeak={audioLanguage !== 'ko'}
                   language={audioLanguage}
                   label={word}
-                  className='transition-colors'
+                  className="transition-colors"
                 />
               </Animated.View>
             );
@@ -253,8 +247,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sentenceContainer: {
-    flexDirection: "column",
-    flexWrap: "wrap",
+    flexDirection: 'column',
+    flexWrap: 'wrap',
     marginBottom: 50,
     flex: 1,
   },
@@ -263,17 +257,17 @@ const styles = StyleSheet.create({
     // marginRight: 4,
   },
   blankText: {
-    fontWeight: "500",
+    fontWeight: '500',
     // fontSize: 18,
   },
   optionsContainer: {
-    flexDirection: "column",
-    flexWrap: "wrap",
+    flexDirection: 'column',
+    flexWrap: 'wrap',
     gap: 8,
     flex: 1,
   },
   wordButton: {
-    backgroundColor: "#EEE",
+    backgroundColor: '#EEE',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 12,

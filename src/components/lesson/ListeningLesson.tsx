@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Volume2 } from "~/lib/icons/Volume2";
-import { useLearningStore } from "~/stores/learning.store";
-import { Lesson } from "~/types/lesson.type";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { Text } from "../ui/text";
-import { CannotListenButton } from "./CannotListenButton";
-import { CheckResultButton } from "./CheckResultButton";
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Volume2 } from '~/lib/icons/Volume2';
+import { useLearningStore } from '~/stores/learning.store';
+import { Lesson } from '~/types/lesson.type';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { Text } from '../ui/text';
+import { CannotListenButton } from './CannotListenButton';
+import { CheckResultButton } from './CheckResultButton';
 
 const ListeningLesson = ({
   value,
@@ -20,8 +20,7 @@ const ListeningLesson = ({
   onSkip?: () => void;
 }) => {
   const { setSpeechDisabled } = useLearningStore();
-  const { question, questionLanguage, selectors, answer, audioLanguage } =
-    value.value;
+  const { question, questionLanguage, selectors, answer, audioLanguage } = value.value;
   const [selected, setSelected] = useState<string | null>();
   const handleSelectWord = (value: string) => {
     setSelected(value);
@@ -35,21 +34,21 @@ const ListeningLesson = ({
     onSkip?.();
   };
   return (
-    <View className='flex-1 gap-8'>
-      <Text className='font-light text-center text-sm italic'>
+    <View className="flex-1 gap-8">
+      <Text className="font-light text-center text-sm italic">
         * You can slow down the audio&apos;s speed
         {JSON.stringify({ questionLanguage })}
       </Text>
       <SpeakButton
         label={question || answer}
-        className='w-full'
+        className="w-full"
         showIcon
         language={questionLanguage || audioLanguage}
-        variant={"default"}
+        variant={'default'}
         disabled={disabled}
-        buttonClassName='justify-center text-xl font-bold'
+        buttonClassName="justify-center text-xl font-bold"
         hideLabel
-        leftIcon={<Volume2 className='text-white' size={20} />}
+        leftIcon={<Volume2 className="text-white" size={20} />}
       />
       <View style={styles.optionsContainer}>
         {selectors &&
@@ -61,18 +60,18 @@ const ListeningLesson = ({
                 onPress={() => {
                   handleSelectWord(word);
                 }}
-                className='w-full'
+                className="w-full"
                 disabled={disabled}
                 style={{ borderWidth: isUsed ? 1 : 2 }}
                 label={word}
                 isSelected={isUsed}
-                disabledSpeak={questionLanguage === "ko"}
+                disabledSpeak={questionLanguage === 'ko'}
                 language={audioLanguage || questionLanguage}
               />
             );
           })}
       </View>
-      <View className='mt-auto gap-2'>
+      <View className="mt-auto gap-2">
         <CannotListenButton onPress={handleSkip} />
         <CheckResultButton disabled={!selected} onCheck={handleCheckResults} />
       </View>
@@ -87,8 +86,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sentenceContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     marginBottom: 50,
   },
   sentenceText: {
@@ -96,18 +95,18 @@ const styles = StyleSheet.create({
     // marginRight: 4,
   },
   blankText: {
-    fontWeight: "500",
+    fontWeight: '500',
     // fontSize: 18,
   },
   optionsContainer: {
-    flexWrap: "wrap",
-    width: "100%",
+    flexWrap: 'wrap',
+    width: '100%',
     gap: 8,
     // marginTop: "auto",
     // marginBottom: "auto",
   },
   wordButton: {
-    backgroundColor: "#EEE",
+    backgroundColor: '#EEE',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 12,

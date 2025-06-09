@@ -1,13 +1,13 @@
-import { ArrowLeft, X } from "lucide-react-native";
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { TouchableOpacity, View } from "react-native";
-import { ELoginScreen } from "~/app/(auth)/login";
-import { InputWithIcon } from "~/components/custom-ui/input-icon";
-import { Button } from "~/components/ui/button";
-import { Text } from "~/components/ui/text";
-import { H3, H4 } from "~/components/ui/typography";
-import ThemeIcon from "../Icon";
+import { ArrowLeft, X } from 'lucide-react-native';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { TouchableOpacity, View } from 'react-native';
+import { ELoginScreen } from '~/app/(auth)/login';
+import { InputWithIcon } from '~/components/custom-ui/input-icon';
+import { Button } from '~/components/ui/button';
+import { Text } from '~/components/ui/text';
+import { H3, H4 } from '~/components/ui/typography';
+import ThemeIcon from '../Icon';
 
 type VerifyFormData = {
   verificationCode: string;
@@ -33,7 +33,7 @@ export function VerifyStep({
     formState: { errors },
   } = useForm<VerifyFormData>({
     defaultValues: {
-      verificationCode: "",
+      verificationCode: '',
     },
   });
 
@@ -59,44 +59,44 @@ export function VerifyStep({
       setVerifyError(null);
       onNextStep?.(ELoginScreen.DONE);
     } else {
-      setVerifyError("Invalid verification code. Please try again.");
+      setVerifyError('Invalid verification code. Please try again.');
     }
   };
 
   return (
-    <View className='gap-5'>
-      <View className='flex-row justify-between'>
+    <View className="gap-5">
+      <View className="flex-row justify-between">
         <TouchableOpacity onPress={() => onNextStep?.(ELoginScreen.REGISTER)}>
           <ThemeIcon Icon={ArrowLeft} />
         </TouchableOpacity>
-        <H3 className='text-center'>Register</H3>
+        <H3 className="text-center">Register</H3>
         <TouchableOpacity onPress={() => onClose?.()}>
           <ThemeIcon Icon={X} />
         </TouchableOpacity>
       </View>
-      <H4 className='font-semibold '>Verification Code</H4>
-      <Text className=''>
-        A 6-digit code has been sent to{" "}
-        <Text className='text-primary'>{email || "your email"}</Text>.{"\n"}
+      <H4 className="font-semibold ">Verification Code</H4>
+      <Text className="">
+        A 6-digit code has been sent to{' '}
+        <Text className="text-primary">{email || 'your email'}</Text>.{'\n'}
         Please enter this code to verify your email.
       </Text>
 
       <Controller
         control={control}
-        name='verificationCode'
+        name="verificationCode"
         rules={{
-          required: "Verification code is required",
+          required: 'Verification code is required',
           minLength: {
             value: 6,
-            message: "Code must be 6 digits",
+            message: 'Code must be 6 digits',
           },
           maxLength: {
             value: 6,
-            message: "Code must be 6 digits",
+            message: 'Code must be 6 digits',
           },
           pattern: {
             value: /^[0-9]+$/,
-            message: "Code must contain only numbers",
+            message: 'Code must contain only numbers',
           },
         }}
         render={({ field: { onChange, value } }) => (
@@ -104,31 +104,27 @@ export function VerifyStep({
             <InputWithIcon
               value={value}
               onChangeText={onChange}
-              placeholder='Enter the verification code'
-              keyboardType='number-pad'
+              placeholder="Enter the verification code"
+              keyboardType="number-pad"
               maxLength={6}
             />
             {errors.verificationCode && (
-              <Text className='text-red-500 text-xs mt-1 ml-3'>
+              <Text className="text-red-500 text-xs mt-1 ml-3">
                 {errors.verificationCode.message}
               </Text>
             )}
-            {verifyError && (
-              <Text className='text-red-500 text-xs mt-1 ml-3'>
-                {verifyError}
-              </Text>
-            )}
+            {verifyError && <Text className="text-red-500 text-xs mt-1 ml-3">{verifyError}</Text>}
           </View>
         )}
       />
 
       <TouchableOpacity
-        className='flex-row mx-auto justify-between items-center'
+        className="flex-row mx-auto justify-between items-center"
         onPress={handleResendCode}
         disabled={!canResend}
       >
-        <Text className={canResend ? "text-primary" : "text-gray-400"}>
-          {canResend ? "Resend Code" : `Resend Code in ${counter}s`}
+        <Text className={canResend ? 'text-primary' : 'text-gray-400'}>
+          {canResend ? 'Resend Code' : `Resend Code in ${counter}s`}
         </Text>
       </TouchableOpacity>
 
@@ -137,8 +133,8 @@ export function VerifyStep({
       </Button>
       <Button
         onPress={() => onNextStep?.(ELoginScreen.REGISTER)}
-        className='flex-row items-center justify-center'
-        variant={"neutral"}
+        className="flex-row items-center justify-center"
+        variant={'neutral'}
       >
         <Text>Back</Text>
       </Button>

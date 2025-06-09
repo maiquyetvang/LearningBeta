@@ -1,10 +1,10 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { User } from "~/types/user.type";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { User } from '~/types/user.type';
 
 // Thay thế khóa đơn lẻ bằng prefix
-const USER_STORAGE_PREFIX = "app_user_";
-const ACTIVE_USER_KEY = "app_active_user_id";
-const USER_LIST_KEY = "app_user_list";
+const USER_STORAGE_PREFIX = 'app_user_';
+const ACTIVE_USER_KEY = 'app_active_user_id';
+const USER_LIST_KEY = 'app_user_list';
 
 /**
  * Service for handling multiple users in local storage
@@ -15,7 +15,7 @@ class UserStorage {
    */
   async saveUser(user: User): Promise<void> {
     if (!user._id) {
-      throw new Error("User must have an _id to save");
+      throw new Error('User must have an _id to save');
     }
 
     // Lưu thông tin người dùng với key dựa trên ID
@@ -23,7 +23,7 @@ class UserStorage {
     await AsyncStorage.setItem(userKey, JSON.stringify(user));
 
     // Thêm vào danh sách người dùng đã đăng nhập
-    await this.addToUserList(user._id, user.email || "");
+    await this.addToUserList(user._id, user.email || '');
 
     // Đặt làm người dùng hiện tại
     await AsyncStorage.setItem(ACTIVE_USER_KEY, user._id);
@@ -42,9 +42,7 @@ class UserStorage {
     } else {
       // Cập nhật thời gian đăng nhập gần nhất
       const updatedList = list.map((user) =>
-        user.id === userId
-          ? { ...user, lastLogin: new Date().toISOString() }
-          : user
+        user.id === userId ? { ...user, lastLogin: new Date().toISOString() } : user,
       );
       await AsyncStorage.setItem(USER_LIST_KEY, JSON.stringify(updatedList));
     }
@@ -53,16 +51,14 @@ class UserStorage {
   /**
    * Get list of all saved users
    */
-  async getUserList(): Promise<
-    { id: string; email: string; lastLogin: string }[]
-  > {
+  async getUserList(): Promise<{ id: string; email: string; lastLogin: string }[]> {
     const data = await AsyncStorage.getItem(USER_LIST_KEY);
     if (!data) return [];
 
     try {
       return JSON.parse(data);
     } catch (error) {
-      console.error("Error parsing user list:", error);
+      console.error('Error parsing user list:', error);
       return [];
     }
   }
@@ -88,7 +84,7 @@ class UserStorage {
     await AsyncStorage.setItem(ACTIVE_USER_KEY, userId);
 
     // Cập nhật thời gian đăng nhập gần nhất
-    await this.addToUserList(userId, JSON.parse(userData).email || "");
+    await this.addToUserList(userId, JSON.parse(userData).email || '');
 
     return this.getUser();
   }
@@ -108,7 +104,7 @@ class UserStorage {
     try {
       return JSON.parse(data) as User;
     } catch (error) {
-      console.error("Error parsing user data:", error);
+      console.error('Error parsing user data:', error);
       return null;
     }
   }

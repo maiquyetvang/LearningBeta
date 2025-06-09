@@ -34,10 +34,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.dudaji.kindo",
-      "permissions": [
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS"]
     },
     "web": {
       "bundler": "metro",
@@ -83,10 +80,5 @@
       }
     },
     "owner": "maiquyetvang"
-  },
-  "build": {
-    "production": {
-      "autoIncrement": true
-    }
   }
 }

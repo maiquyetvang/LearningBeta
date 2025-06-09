@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   withSpring,
-} from "react-native-reanimated";
-import { ViewProps, Dimensions } from "react-native";
+} from 'react-native-reanimated';
+import { ViewProps, Dimensions } from 'react-native';
 
-type Direction = "center" | "up" | "down" | "left" | "right";
+type Direction = 'center' | 'up' | 'down' | 'left' | 'right';
 
 type AnimatedScreenWrapperProps = {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ type AnimatedScreenWrapperProps = {
 
 export const AnimatedScreenWrapper: React.FC<AnimatedScreenWrapperProps> = ({
   children,
-  direction = "center",
+  direction = 'center',
   delay = 150,
   ...rest
 }) => {
@@ -31,20 +31,20 @@ export const AnimatedScreenWrapper: React.FC<AnimatedScreenWrapperProps> = ({
   };
 
   useEffect(() => {
-    if (direction === "center") {
+    if (direction === 'center') {
       scale.value = 0.8;
     }
     switch (direction) {
-      case "up":
+      case 'up':
         translate.value = movement.distant;
         break;
-      case "down":
+      case 'down':
         translate.value = -movement.distant;
         break;
-      case "left":
+      case 'left':
         translate.value = movement.distant;
         break;
-      case "right":
+      case 'right':
         translate.value = -movement.distant;
         break;
       default:
@@ -52,7 +52,7 @@ export const AnimatedScreenWrapper: React.FC<AnimatedScreenWrapperProps> = ({
     }
 
     const timeout = setTimeout(() => {
-      if (direction === "center") {
+      if (direction === 'center') {
         scale.value = withSpring(1, { damping: 12 });
       }
       opacity.value = withTiming(1, { duration: movement.duration });
@@ -61,27 +61,27 @@ export const AnimatedScreenWrapper: React.FC<AnimatedScreenWrapperProps> = ({
 
     return () => {
       clearTimeout(timeout);
-      if (direction === "center") {
+      if (direction === 'center') {
         scale.value = withSpring(0.8, { damping: 12 });
       }
       opacity.value = withTiming(0, { duration: movement.duration });
       switch (direction) {
-        case "up":
+        case 'up':
           translate.value = withTiming(movement.distant, {
             duration: movement.duration,
           });
           break;
-        case "down":
+        case 'down':
           translate.value = withTiming(-movement.distant, {
             duration: movement.duration,
           });
           break;
-        case "left":
+        case 'left':
           translate.value = withTiming(movement.distant, {
             duration: movement.duration,
           });
           break;
-        case "right":
+        case 'right':
           translate.value = withTiming(-movement.distant, {
             duration: movement.duration,
           });
@@ -94,13 +94,13 @@ export const AnimatedScreenWrapper: React.FC<AnimatedScreenWrapperProps> = ({
 
   const animatedStyle = useAnimatedStyle(() => {
     const transform = [];
-    if (direction === "up" || direction === "down") {
+    if (direction === 'up' || direction === 'down') {
       transform.push({ translateY: translate.value });
     }
-    if (direction === "left" || direction === "right") {
+    if (direction === 'left' || direction === 'right') {
       transform.push({ translateX: translate.value });
     }
-    if (direction === "center") {
+    if (direction === 'center') {
       transform.push({ scale: scale.value });
     }
     return {

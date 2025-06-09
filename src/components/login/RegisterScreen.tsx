@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
-import { ELoginScreen } from "~/app/(auth)/login";
-import { RegisterStep } from "~/components/login/RegisterStep";
-import { VerifyStep } from "~/components/login/VerifyStep";
-import { DoneStep } from "./RegisterStepDone";
+import React, { useCallback } from 'react';
+import { ELoginScreen } from '~/app/(auth)/login';
+import { RegisterStep } from '~/components/login/RegisterStep';
+import { VerifyStep } from '~/components/login/VerifyStep';
+import { DoneStep } from './RegisterStepDone';
 
 export default function RegisterScreen({
   onNextStep,
@@ -16,16 +16,13 @@ export default function RegisterScreen({
     email: string;
     verifyCode?: string;
   }>({
-    email: "",
-    verifyCode: "",
+    email: '',
+    verifyCode: '',
   });
-  const handleRegister = useCallback(
-    (data: { email: string; verifyCode?: string }) => {
-      setRegisterData(data);
-      console.log({ data });
-    },
-    []
-  );
+  const handleRegister = useCallback((data: { email: string; verifyCode?: string }) => {
+    setRegisterData(data);
+    console.log({ data });
+  }, []);
   const handleStepChange = useCallback((step: ELoginScreen) => {
     if (step === ELoginScreen.LOGIN) {
       onNextStep?.(step);
@@ -48,20 +45,10 @@ export default function RegisterScreen({
         );
       case ELoginScreen.VERIFY:
         return (
-          <VerifyStep
-            data={registerData}
-            onNextStep={handleStepChange}
-            onClose={handleClose}
-          />
+          <VerifyStep data={registerData} onNextStep={handleStepChange} onClose={handleClose} />
         );
       case ELoginScreen.DONE:
-        return (
-          <DoneStep
-            data={registerData}
-            onNextStep={handleStepChange}
-            onClose={handleClose}
-          />
-        );
+        return <DoneStep data={registerData} onNextStep={handleStepChange} onClose={handleClose} />;
       default:
         return (
           <RegisterStep

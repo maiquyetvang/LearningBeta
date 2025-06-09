@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from 'react';
 import Voice, {
   SpeechErrorEvent,
   SpeechResultsEvent,
   SpeechVolumeChangeEvent,
-} from "@react-native-voice/voice";
-import { PermissionsAndroid, Platform } from "react-native";
-import { SUPPORTED_VOICE_MAP } from "~/configs/default-language";
+} from '@react-native-voice/voice';
+import { PermissionsAndroid, Platform } from 'react-native';
+import { SUPPORTED_VOICE_MAP } from '~/configs/default-language';
 
 interface IState {
   recognized?: string;
@@ -18,22 +18,22 @@ interface IState {
   isRecording?: boolean;
   language?: string;
 }
-export const useVoiceRecognition = (language: string = "en") => {
+export const useVoiceRecognition = (language: string = 'en') => {
   const [state, setState] = React.useState<IState>({
-    recognized: "",
-    error: "",
-    end: "",
-    started: "",
+    recognized: '',
+    error: '',
+    end: '',
+    started: '',
     results: [],
     partialResults: [],
     isRecording: false,
   });
   const resetState = useCallback(() => {
     setState({
-      recognized: "",
-      error: "",
-      end: "",
-      started: "",
+      recognized: '',
+      error: '',
+      end: '',
+      started: '',
       results: [],
       partialResults: [],
       isRecording: false,
@@ -41,18 +41,17 @@ export const useVoiceRecognition = (language: string = "en") => {
     });
   }, []);
   const requestPermission = async () => {
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
           {
-            title: "Voice Recognition Permission",
-            message:
-              "This app needs access to your microphone to recognize speech.",
-            buttonNeutral: "Ask Me Later",
-            buttonNegative: "Cancel",
-            buttonPositive: "OK",
-          }
+            title: 'Voice Recognition Permission',
+            message: 'This app needs access to your microphone to recognize speech.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
@@ -66,13 +65,13 @@ export const useVoiceRecognition = (language: string = "en") => {
     try {
       const hasPermission = await requestPermission();
       if (!hasPermission) {
-        setState((pre) => ({ ...pre, error: "Microphone permission denied" }));
+        setState((pre) => ({ ...pre, error: 'Microphone permission denied' }));
         return;
       }
       resetState();
       const langCode =
         SUPPORTED_VOICE_MAP[language as keyof typeof SUPPORTED_VOICE_MAP] ||
-        SUPPORTED_VOICE_MAP["en"];
+        SUPPORTED_VOICE_MAP['en'];
       await Voice.start(langCode);
       setState((pre) => ({
         ...pre,
@@ -97,7 +96,7 @@ export const useVoiceRecognition = (language: string = "en") => {
       // Stop voice recognition logic here
     } catch (err) {
       setState((pre) => {
-        return { ...pre, error: "Failed to stop listening" };
+        return { ...pre, error: 'Failed to stop listening' };
       });
     }
   }, []);
@@ -109,7 +108,7 @@ export const useVoiceRecognition = (language: string = "en") => {
       // Cancel voice recognition logic here
     } catch (err) {
       setState((pre) => {
-        return { ...pre, error: "Failed to cancel listening" };
+        return { ...pre, error: 'Failed to cancel listening' };
       });
     }
   }, []);
@@ -120,7 +119,7 @@ export const useVoiceRecognition = (language: string = "en") => {
       // Destroy voice recognition logic here
     } catch (err) {
       setState((pre) => {
-        return { ...pre, error: "Failed to destroy recognition" };
+        return { ...pre, error: 'Failed to destroy recognition' };
       });
     }
   }, []);
