@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, View, Dimensions } from "react-native";
-import { Lesson } from "~/types/lesson.type";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { Text } from "../ui/text";
-import { CheckResultButton } from "./CheckResultButton";
+import React, { useState } from 'react';
+import { Image, StyleSheet, View, Dimensions } from 'react-native';
+import { Lesson } from '~/types/lesson.type';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { Text } from '../ui/text';
+import { CheckResultButton } from './CheckResultButton';
 
 const SingleChooseImageLesson = ({
   value,
@@ -14,8 +14,7 @@ const SingleChooseImageLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, imageSelectors, answer, image, audioLanguage } =
-    value.value;
+  const { question, imageSelectors, answer, image, audioLanguage } = value.value;
   const [selected, setSelected] = useState<string | null>();
 
   const handleSelectWord = (value: string) => {
@@ -37,18 +36,16 @@ const SingleChooseImageLesson = ({
   }
 
   return (
-    <View className='flex-1 gap-6'>
+    <View className="flex-1 gap-6">
       {!!question && (
-        <Text className='font-semibold text-xl text-center text-primary'>
-          {question}
-        </Text>
+        <Text className="font-semibold text-xl text-center text-primary">{question}</Text>
       )}
 
       {image && (
         <Image
-          source={typeof image === "string" ? { uri: image } : image}
-          alt='Question Image'
-          style={{ flex: 1, maxHeight: 200, objectFit: "contain" }}
+          source={typeof image === 'string' ? { uri: image } : image}
+          alt="Question Image"
+          style={{ flex: 1, maxHeight: 200, objectFit: 'contain' }}
         />
       )}
 
@@ -58,10 +55,7 @@ const SingleChooseImageLesson = ({
             {row.map((item, colIndex) => {
               const isUsed = selected === item.label;
               return (
-                <View
-                  key={`item-${rowIndex}-${colIndex}`}
-                  style={styles.gridItem}
-                >
+                <View key={`item-${rowIndex}-${colIndex}`} style={styles.gridItem}>
                   <SpeakButton
                     onPress={() => {
                       handleSelectWord(item.label);
@@ -88,26 +82,26 @@ const SingleChooseImageLesson = ({
 export default SingleChooseImageLesson;
 
 // Lấy chiều rộng màn hình để tính toán kích thước nút
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 const buttonWidth = (width - 64) / 2; // 64 = padding của container + khoảng cách giữa các nút
 
 const styles = StyleSheet.create({
   gridContainer: {
-    width: "100%",
+    width: '100%',
     gap: 12,
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 12,
   },
   gridItem: {
-    width: "48%", // Gần 50% để có khoảng cách giữa các nút
+    width: '48%', // Gần 50% để có khoảng cách giữa các nút
   },
   button: {
     borderWidth: 2,
     borderRadius: 8,
-    width: "100%",
+    width: '100%',
   },
 
   container: {
@@ -115,21 +109,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sentenceContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     marginBottom: 50,
   },
   sentenceText: {},
   blankText: {
-    fontWeight: "500",
+    fontWeight: '500',
   },
   optionsContainer: {
-    flexWrap: "wrap",
-    width: "100%",
+    flexWrap: 'wrap',
+    width: '100%',
     gap: 8,
   },
   wordButton: {
-    backgroundColor: "#EEE",
+    backgroundColor: '#EEE',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 12,

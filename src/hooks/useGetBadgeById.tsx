@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { Badge, BADGES } from "../app/(protected)/(_tabs)/(achievements)";
+import { useQuery } from '@tanstack/react-query';
+import { Badge, BADGES } from '../app/(protected)/(_tabs)/(achievements)';
 
 async function fetchBadgeById(id: string): Promise<Badge> {
   // const res = await fetch(`https://your-api/lessons/${id}`);
@@ -7,14 +7,14 @@ async function fetchBadgeById(id: string): Promise<Badge> {
   // Giả sử sampleLesson là một mảng, lấy phần tử đầu tiên
   const badge = BADGES.find((badge) => badge.id === id);
   if (!badge) {
-    throw new Error("Badge not found");
+    throw new Error('Badge not found');
   }
   return badge;
 }
 
 export function useGetBadgeById(id?: string) {
   return useQuery<Badge>({
-    queryKey: ["achievement", id],
+    queryKey: ['achievement', id],
     queryFn: () => fetchBadgeById(id!),
     enabled: !!id,
   });

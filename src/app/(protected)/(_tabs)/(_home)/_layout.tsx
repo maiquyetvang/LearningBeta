@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router';
 
 export default function HomeLayout() {
   return (
@@ -7,15 +7,12 @@ export default function HomeLayout() {
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        name='index'
-        options={{ headerShown: false, animation: "none" }}
-      />
+      <Stack.Screen name="index" options={{ headerShown: false, animation: 'none' }} />
 
       <Stack.Screen
-        name='overview'
+        name="overview"
         options={{
-          presentation: "fullScreenModal",
+          presentation: 'fullScreenModal',
         }}
       />
     </Stack>

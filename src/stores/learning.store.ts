@@ -1,8 +1,8 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ProgressStep } from "../components/custom-ui/progress";
-import { Course } from "../types/lesson.type";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ProgressStep } from '../components/custom-ui/progress';
+import { Course } from '../types/lesson.type';
 
 export type CompletedUnit = {
   lessonId: string;
@@ -39,7 +39,7 @@ type LearningActions = {
     correctAnswers: number,
     totalQuestions: number,
     // duration: number,
-    pathId?: string
+    pathId?: string,
   ) => void;
   setCurrentLesson: (lessonId: string) => void;
   setCurrentCourse: (courseId?: Course) => void;
@@ -73,7 +73,7 @@ export const useLearningStore = create<LearningState & LearningActions>()(
         correctAnswers,
         totalQuestions,
         // duration,
-        pathId
+        pathId,
       ) =>
         set((state) => {
           const now = Date.now();
@@ -89,9 +89,7 @@ export const useLearningStore = create<LearningState & LearningActions>()(
               newStreak = 1;
             }
           }
-          const existing = state.learnedLessons.find(
-            (l) => l.lessonId === lessonId
-          );
+          const existing = state.learnedLessons.find((l) => l.lessonId === lessonId);
           if (existing) {
             return {
               learnedLessons: state.learnedLessons.map((l) =>
@@ -104,7 +102,7 @@ export const useLearningStore = create<LearningState & LearningActions>()(
                       // duration,
                       courseId: pathId,
                     }
-                  : l
+                  : l,
               ),
               // totalLearningTime: state.totalLearningTime + duration,
               streakDays: newStreak,
@@ -166,7 +164,7 @@ export const useLearningStore = create<LearningState & LearningActions>()(
         })),
     }),
     {
-      name: "learning-storage",
+      name: 'learning-storage',
       storage: {
         getItem: async (name) => {
           const value = await AsyncStorage.getItem(name);
@@ -179,6 +177,6 @@ export const useLearningStore = create<LearningState & LearningActions>()(
           await AsyncStorage.removeItem(name);
         },
       },
-    }
-  )
+    },
+  ),
 );

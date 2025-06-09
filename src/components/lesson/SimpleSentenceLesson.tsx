@@ -1,14 +1,14 @@
-import React, { use, useEffect, useState } from "react";
-import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Button } from "../ui/button";
-import { Text } from "../ui/text";
+import React, { use, useEffect, useState } from 'react';
+import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Button } from '../ui/button';
+import { Text } from '../ui/text';
 // import { ExpoSpeech } from "~/utils/TextToSpeech";
-import * as Speech from "expo-speech";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { Lesson } from "~/types/lesson.type";
-import { CheckResultButton } from "./CheckResultButton";
-import { H3 } from "../ui/typography";
-import { cn } from "~/lib/utils";
+import * as Speech from 'expo-speech';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { Lesson } from '~/types/lesson.type';
+import { CheckResultButton } from './CheckResultButton';
+import { H3 } from '../ui/typography';
+import { cn } from '~/lib/utils';
 
 const SimpleSentenceLesson = ({
   value,
@@ -48,8 +48,8 @@ const SimpleSentenceLesson = ({
           <Pressable
             key={index}
             className={cn(
-              "flex rounded-md items-center bg-neutral-800 dark:bg-neutral-200 p-3 justify-center ",
-              !isUsed && "opacity-40"
+              'flex rounded-md items-center bg-neutral-800 dark:bg-neutral-200 p-3 justify-center ',
+              !isUsed && 'opacity-40',
             )}
             onPress={() => handleResetSlot(index)}
             disabled={disabled}
@@ -68,12 +68,9 @@ const SimpleSentenceLesson = ({
     );
   };
   return (
-    <View className='flex-1 gap-8'>
-      {!!question && <H3 className='text-primary text-center'>{question}</H3>}
-      <View
-        className='bg-neutral-50  h-fit dark:bg-neutral-800'
-        style={styles.sentenceContainer}
-      >
+    <View className="flex-1 gap-8">
+      {!!question && <H3 className="text-primary text-center">{question}</H3>}
+      <View className="bg-neutral-50  h-fit dark:bg-neutral-800" style={styles.sentenceContainer}>
         {renderSentence()}
       </View>
       <View style={styles.optionsContainer}>
@@ -83,7 +80,7 @@ const SimpleSentenceLesson = ({
             return (
               <SpeakButton
                 key={idx}
-                variant='outline'
+                variant="outline"
                 onPress={() => {
                   handleSelectWord(word);
                 }}
@@ -109,9 +106,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sentenceContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     marginBottom: 50,
     minHeight: 50,
     borderRadius: 12,
@@ -123,17 +120,17 @@ const styles = StyleSheet.create({
     // marginRight: 4,
   },
   blankText: {
-    fontWeight: "500",
+    fontWeight: '500',
     // fontSize: 18,
   },
   optionsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     gap: 8,
   },
   wordButton: {
-    backgroundColor: "#EEE",
+    backgroundColor: '#EEE',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 12,

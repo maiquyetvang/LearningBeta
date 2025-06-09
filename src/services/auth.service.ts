@@ -1,7 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Prefix cho key
-const AUTH_PREFIX = "auth_";
+const AUTH_PREFIX = 'auth_';
 
 /**
  * Type for authentication data
@@ -48,7 +48,7 @@ class AuthStorage {
     try {
       return JSON.parse(data) as AuthData;
     } catch (error) {
-      console.error("Error parsing auth data:", error);
+      console.error('Error parsing auth data:', error);
       return null;
     }
   }
@@ -60,7 +60,7 @@ class AuthStorage {
     userId: string,
     email: string,
     password: string,
-    rememberMe: boolean = false
+    rememberMe: boolean = false,
   ): Promise<void> {
     const data: AuthData = {
       email,
@@ -83,7 +83,7 @@ class AuthStorage {
     userId: string,
     accessToken: string,
     refreshToken: string,
-    expiryInSeconds: number
+    expiryInSeconds: number,
   ): Promise<void> {
     const currentAuth = (await this.getAuth(userId)) || {};
     const tokenExpiry = Date.now() + expiryInSeconds * 1000;

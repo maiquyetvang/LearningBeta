@@ -1,5 +1,5 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
   return (
@@ -13,43 +13,43 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name='(_home)'
+        name="(_home)"
         options={{
           headerShown: false,
-          title: "Home",
+          title: 'Home',
 
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               color={color}
-              name={focused ? "home-variant" : "home-variant-outline"}
+              name={focused ? 'home-variant' : 'home-variant-outline'}
               size={size}
             />
           ),
         }}
       />
       <Tabs.Screen
-        name='(achievements)'
+        name="(achievements)"
         options={{
-          title: "Achievements",
+          title: 'Achievements',
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               color={color}
-              name={focused ? "trophy-variant" : "trophy-variant-outline"}
+              name={focused ? 'trophy-variant' : 'trophy-variant-outline'}
               size={size}
             />
           ),
         }}
       />
       <Tabs.Screen
-        name='(settings)'
+        name="(settings)"
         options={{
-          title: "Settings",
+          title: 'Settings',
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               color={color}
-              name={focused ? "cog" : "cog-outline"}
+              name={focused ? 'cog' : 'cog-outline'}
               size={size}
             />
           ),

@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Volume2 } from "~/lib/icons/Volume2";
-import { Lesson } from "~/types/lesson.type";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { Text } from "../ui/text";
-import { CheckResultButton } from "./CheckResultButton";
-import { Input } from "../ui/input";
-import { CannotListenButton } from "./CannotListenButton";
-import { useLearningStore } from "~/stores/learning.store";
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Volume2 } from '~/lib/icons/Volume2';
+import { Lesson } from '~/types/lesson.type';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { Text } from '../ui/text';
+import { CheckResultButton } from './CheckResultButton';
+import { Input } from '../ui/input';
+import { CannotListenButton } from './CannotListenButton';
+import { useLearningStore } from '~/stores/learning.store';
 
 const WriteOnlyWordLesson = ({
   value,
@@ -40,37 +40,37 @@ const WriteOnlyWordLesson = ({
   //   setSelected(value);
   // };
   return (
-    <View className='flex-1 gap-8'>
-      <Text className='font-light text-center text-sm italic'>
+    <View className="flex-1 gap-8">
+      <Text className="font-light text-center text-sm italic">
         * You can slow down the audio&apos;s speed
       </Text>
       <SpeakButton
         label={answer}
-        className='w-full'
+        className="w-full"
         showIcon
         language={audioLanguage}
-        variant={"default"}
-        buttonClassName='justify-center text-xl font-bold'
+        variant={'default'}
+        buttonClassName="justify-center text-xl font-bold"
         hideLabel
         disabled={disabled}
-        leftIcon={<Volume2 className='text-white' size={20} />}
+        leftIcon={<Volume2 className="text-white" size={20} />}
       />
 
       <Input
         style={{
           minWidth: 50,
           // width: "auto",
-          textAlign: "center",
+          textAlign: 'center',
           paddingHorizontal: 20,
         }}
         // className='w-fit'
-        placeholder='Type the answer here'
+        placeholder="Type the answer here"
         onChangeText={handleSelectWord}
         value={selected}
         onSubmitEditing={handleCheckResults}
         editable={!disabled}
       />
-      <View className='mt-auto gap-2'>
+      <View className="mt-auto gap-2">
         <CannotListenButton onPress={handleSkip} />
         <CheckResultButton disabled={!selected} onCheck={handleCheckResults} />
       </View>
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sentenceContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     marginBottom: 50,
   },
   sentenceText: {
@@ -94,18 +94,18 @@ const styles = StyleSheet.create({
     // marginRight: 4,
   },
   blankText: {
-    fontWeight: "500",
+    fontWeight: '500',
     // fontSize: 18,
   },
   optionsContainer: {
-    flexWrap: "wrap",
-    width: "100%",
+    flexWrap: 'wrap',
+    width: '100%',
     gap: 8,
     // marginTop: "auto",
     // marginBottom: "auto",
   },
   wordButton: {
-    backgroundColor: "#EEE",
+    backgroundColor: '#EEE',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 12,

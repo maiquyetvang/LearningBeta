@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Pressable, TouchableOpacity, View } from "react-native";
-import { InputWithIcon } from "~/components/custom-ui/input-icon";
-import { Button } from "~/components/ui/button";
-import { Text } from "~/components/ui/text";
-import { H3 } from "~/components/ui/typography";
-import ThemeIcon from "../Icon";
-import { Lock } from "~/lib/icons/Lock";
-import { Mail } from "~/lib/icons/Mail";
-import { ArrowLeft, X } from "lucide-react-native";
-import { AnimatedScreenWrapper } from "./AnimatedScreenWrapper";
-import { ELoginScreen } from "~/app/(auth)/login";
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Pressable, TouchableOpacity, View } from 'react-native';
+import { InputWithIcon } from '~/components/custom-ui/input-icon';
+import { Button } from '~/components/ui/button';
+import { Text } from '~/components/ui/text';
+import { H3 } from '~/components/ui/typography';
+import ThemeIcon from '../Icon';
+import { Lock } from '~/lib/icons/Lock';
+import { Mail } from '~/lib/icons/Mail';
+import { ArrowLeft, X } from 'lucide-react-native';
+import { AnimatedScreenWrapper } from './AnimatedScreenWrapper';
+import { ELoginScreen } from '~/app/(auth)/login';
 
 type SwitchAccountForm = {
   email: string;
@@ -38,10 +38,10 @@ export function SwitchAccount({
     formState: { errors },
     reset,
   } = useForm<SwitchAccountForm>({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
@@ -56,16 +56,16 @@ export function SwitchAccount({
   };
 
   return (
-    <View className='gap-5'>
+    <View className="gap-5">
       {/* Header */}
-      <View className='flex-row justify-between items-center'>
+      <View className="flex-row justify-between items-center">
         <AnimatedScreenWrapper>
           <TouchableOpacity onPress={onBack}>
             <ThemeIcon Icon={ArrowLeft} />
           </TouchableOpacity>
         </AnimatedScreenWrapper>
         <AnimatedScreenWrapper>
-          <H3 className='text-center'>Switch Account</H3>
+          <H3 className="text-center">Switch Account</H3>
         </AnimatedScreenWrapper>
         <AnimatedScreenWrapper>
           <TouchableOpacity onPress={onClose}>
@@ -74,68 +74,64 @@ export function SwitchAccount({
         </AnimatedScreenWrapper>
       </View>
       {/* Email */}
-      <View className='gap-2'>
-        <AnimatedScreenWrapper direction='up'>
-          <Text className='font-semibold ml-3'>Email</Text>
+      <View className="gap-2">
+        <AnimatedScreenWrapper direction="up">
+          <Text className="font-semibold ml-3">Email</Text>
         </AnimatedScreenWrapper>
         <Controller
           control={control}
-          name='email'
+          name="email"
           rules={{
-            required: "Email is required",
+            required: 'Email is required',
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: "Invalid email address",
+              message: 'Invalid email address',
             },
           }}
           render={({ field: { onChange, value } }) => (
             <InputWithIcon
-              placeholder='Email'
+              placeholder="Email"
               value={value}
               onChangeText={onChange}
-              leftIcon={<Mail className='text-primary' size={20} />}
-              autoCapitalize='none'
-              keyboardType='email-address'
+              leftIcon={<Mail className="text-primary" size={20} />}
+              autoCapitalize="none"
+              keyboardType="email-address"
               editable={!loading}
-              autoComplete='email'
+              autoComplete="email"
             />
           )}
         />
         {errors.email && (
-          <Text className='text-red-500 text-xs ml-3 mt-1'>
-            {errors.email.message}
-          </Text>
+          <Text className="text-red-500 text-xs ml-3 mt-1">{errors.email.message}</Text>
         )}
       </View>
       {/* Password */}
-      <View className='gap-2'>
-        <AnimatedScreenWrapper direction='up'>
-          <Text className='font-semibold ml-3'>Password</Text>
+      <View className="gap-2">
+        <AnimatedScreenWrapper direction="up">
+          <Text className="font-semibold ml-3">Password</Text>
         </AnimatedScreenWrapper>
         <Controller
           control={control}
-          name='password'
+          name="password"
           rules={{
-            required: "Password is required",
+            required: 'Password is required',
           }}
           render={({ field: { onChange, value } }) => (
             <InputWithIcon
-              placeholder='Enter your password'
+              placeholder="Enter your password"
               value={value}
               onChangeText={onChange}
               secureTextEntry
-              leftIcon={<Lock className='text-primary' size={20} />}
+              leftIcon={<Lock className="text-primary" size={20} />}
               editable={!loading}
-              autoComplete='off'
-              textContentType='none'
-              importantForAutofill='no'
+              autoComplete="off"
+              textContentType="none"
+              importantForAutofill="no"
             />
           )}
         />
         {errors.password && (
-          <Text className='text-red-500 text-xs ml-3 mt-1'>
-            {errors.password.message}
-          </Text>
+          <Text className="text-red-500 text-xs ml-3 mt-1">{errors.password.message}</Text>
         )}
       </View>
       {/* Login Button */}
@@ -144,12 +140,12 @@ export function SwitchAccount({
       </Button>
       {/* Actions */}
       <AnimatedScreenWrapper>
-        <View className='flex-row items-center justify-center gap-4'>
+        <View className="flex-row items-center justify-center gap-4">
           <Pressable onPress={onRegister}>
-            <Text className='text-primary'>Register</Text>
+            <Text className="text-primary">Register</Text>
           </Pressable>
           <Pressable onPress={onForgotPassword}>
-            <Text className='text-primary'>Forgot password?</Text>
+            <Text className="text-primary">Forgot password?</Text>
           </Pressable>
         </View>
       </AnimatedScreenWrapper>

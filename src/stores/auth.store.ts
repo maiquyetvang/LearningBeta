@@ -1,9 +1,9 @@
-import { use } from "react";
-import { removeFromStorage } from "./../utils/storage";
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { User } from "../types/user.type";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { use } from 'react';
+import { removeFromStorage } from './../utils/storage';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { User } from '../types/user.type';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type AuthState = {
   isAuthentication: boolean;
@@ -49,7 +49,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         })),
     }),
     {
-      name: "auth-storage",
+      name: 'auth-storage',
       storage: {
         getItem: async (name) => {
           const value = await AsyncStorage.getItem(name);
@@ -63,6 +63,6 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           await AsyncStorage.removeItem(name);
         },
       },
-    }
-  )
+    },
+  ),
 );

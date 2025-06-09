@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type UpdateUserInput = {
   name?: string;
@@ -10,16 +10,16 @@ export function useUpdateUser() {
 
   return useMutation({
     mutationFn: async (data: UpdateUserInput) => {
-      const res = await fetch("/api/user", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/user', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Update failed");
+      if (!res.ok) throw new Error('Update failed');
       return res.json();
     },
     onSuccess: (updatedUser) => {
-      queryClient.setQueryData(["user"], updatedUser);
+      queryClient.setQueryData(['user'], updatedUser);
     },
   });
 }

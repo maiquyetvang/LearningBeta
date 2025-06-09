@@ -1,15 +1,15 @@
-import { ImageSourcePropType } from "react-native";
+import { ImageSourcePropType } from 'react-native';
 
 export enum ELessonType {
-  Speaking = "voice",
-  Select = "select",
-  Sentence = "sentence",
-  SingleChoose = "single-choose",
-  SingleImageChoose = "single-image-choose",
-  Listening = "listening",
-  WriteOnlyWord = "write-only-word",
-  WriteWord = "write-word",
-  Mapping = "mapping",
+  Speaking = 'voice',
+  Select = 'select',
+  Sentence = 'sentence',
+  SingleChoose = 'single-choose',
+  SingleImageChoose = 'single-image-choose',
+  Listening = 'listening',
+  WriteOnlyWord = 'write-only-word',
+  WriteWord = 'write-word',
+  Mapping = 'mapping',
 }
 export interface LessonValue {
   question?: string;
@@ -19,8 +19,8 @@ export interface LessonValue {
   answers?: string[];
   selectors?: string[];
   imageSelectors?: { image: ImageSourcePropType; label: string }[];
-  audioLanguage?: "en" | "ko" | string;
-  questionLanguage?: "en" | "ko" | string;
+  audioLanguage?: 'en' | 'ko' | string;
+  questionLanguage?: 'en' | 'ko' | string;
 }
 export interface Lesson {
   type: ELessonType;
