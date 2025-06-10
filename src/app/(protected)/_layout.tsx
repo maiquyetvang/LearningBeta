@@ -6,46 +6,20 @@ import { useAuthStore } from "~/stores/auth.store";
 import { useShallow } from "zustand/shallow";
 
 export default function ProtectedLayout() {
-  // const [session, setSession] = useState<Session | null | undefined>(undefined);
-  const { session, loading } = useAuthStore(
+  const { session, loading, profile } = useAuthStore(
     useShallow((state) => ({
       session: state.session,
       loading: state.loading,
-      // profile: state.profile,
+      profile: state.profile,
     }))
   );
-  // if (loading) {
-  //   return null; // or a loading spinner
-  // }
+
   if (!session) {
     return <Redirect href='/(auth)/login' />;
   }
-  // if (!profile?.has_completed_survey || profile?.has_completed_survey === 0) {
-  //   return <Redirect href='/personalize' />;
-  // }
-  // useEffect(() => {
-  //   supabase.auth.getSession().then(({ data }) => {
-  //     setSession(data.session);
-  //   });
-
-  //   const { data: listener } = supabase.auth.onAuthStateChange(
-  //     (_event, session) => {
-  //       setSession(session);
-  //     }
-  //   );
-
-  //   return () => {
-  //     listener?.subscription.unsubscribe();
-  //   };
-  // }, []);
-
-  // if (session === undefined) {
-  //   return null;
-  // }
-
-  // if (!session) {
-  //   return <Redirect href='/(auth)/login' />;
-  // }
+  if (!!profile?.has_completed_survey && profile?.has_completed_survey === 0) {
+    return <Redirect href='/personalize' />;
+  }
 
   return (
     <Stack>
