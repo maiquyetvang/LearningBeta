@@ -12,7 +12,18 @@ import { useAuthStore } from "~/stores/auth.store";
 type UpdateProfileOptions = Partial<
   Pick<
     ProfileRecord,
-    "avatar_url" | "username" | "full_name" | "currency_code"
+    | "avatar_url"
+    | "username"
+    | "full_name"
+    | "currency_code"
+    | "has_completed_survey"
+    | "updated_at"
+    | "learning_level"
+    | "learning_purpose"
+    | "daily_duration"
+    | "native_language"
+    | "target_language"
+    | "ui_language"
   > & {
     is_setup_complete?: number;
   }
@@ -57,6 +68,12 @@ export const useUpdateProfile = (
             has_completed_survey: 0,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
+            learning_level: profile.learning_level ?? null,
+            learning_purpose: profile.learning_purpose ?? null,
+            daily_duration: profile.daily_duration ?? null,
+            native_language: profile.native_language ?? null,
+            target_language: profile.target_language ?? null,
+            ui_language: profile.ui_language ?? null,
           };
           await db.insertInto("profiles").values(newProfile).execute();
         }

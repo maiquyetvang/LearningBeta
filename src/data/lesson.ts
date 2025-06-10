@@ -52,7 +52,7 @@ export const levelTestLessons: Lesson[] = [
     value: {
       image: LessonImages.Apple,
       selectors: ["바나나", "우유", "사과", "밥"],
-      audioLanguage: "ko",
+      questionLanguage: "ko",
       answer: "우유",
     },
   },
@@ -73,7 +73,7 @@ export const levelTestLessons: Lesson[] = [
     type: ELessonType.Listening,
     value: {
       selectors: ["불", "물", "문", "몰"],
-      audioLanguage: "ko",
+      questionLanguage: "ko",
       answer: "물",
     },
   },
@@ -81,7 +81,7 @@ export const levelTestLessons: Lesson[] = [
     type: ELessonType.Listening,
     value: {
       question: "안녕하세요, 만나서 반갑습니다.",
-      questionLanguage: "ko",
+      selectorLanguage: "ko",
       selectors: [
         "Hello, nice to meet you",
         "My name is Minho",
@@ -96,7 +96,7 @@ export const levelTestLessons: Lesson[] = [
     value: {
       question: "안녕하세요",
       answer: "안녕하세요",
-      audioLanguage: "ko",
+      questionLanguage: "ko",
     },
   },
   {
@@ -104,7 +104,7 @@ export const levelTestLessons: Lesson[] = [
     value: {
       question: "저는 수진입니다",
       answer: "저는 수진입니다",
-      audioLanguage: "ko",
+      questionLanguage: "ko",
     },
   },
   {
@@ -112,7 +112,7 @@ export const levelTestLessons: Lesson[] = [
     value: {
       question: "학교",
       answer: "학교",
-      audioLanguage: "ko",
+      questionLanguage: "ko",
     },
   },
   {
@@ -138,7 +138,7 @@ export const levelTestLessons: Lesson[] = [
         "Apple",
       ],
       answers: ["This", "person", "is", "the", "teacher"],
-      audioLanguage: "en",
+      questionLanguage: "en",
     },
   },
   {
@@ -156,7 +156,7 @@ export const levelTestLessons: Lesson[] = [
         "선생님",
       ],
       answers: ["저는", "학생입니다"],
-      audioLanguage: "ko",
+      questionLanguage: "ko",
     },
   },
 
@@ -165,8 +165,8 @@ export const levelTestLessons: Lesson[] = [
     value: {
       selectors: ["밥", "선생님", "학생", "물"],
       answers: ["Rice", "Teacher", "Student", "Water"],
-      questionLanguage: "ko",
-      audioLanguage: "en",
+      selectorLanguage: "ko",
+      questionLanguage: "en",
     },
   },
   {
@@ -174,8 +174,8 @@ export const levelTestLessons: Lesson[] = [
     value: {
       selectors: ["Hello", "School", "Book", "Apple"],
       answers: ["안녕하세요", "학교", "책", "사과"],
-      questionLanguage: "en",
-      audioLanguage: "ko",
+      selectorLanguage: "en",
+      questionLanguage: "ko",
     },
   },
 ];
@@ -198,7 +198,7 @@ export const course1Unit1: Lesson[] = [
         { image: LessonImages.FamilyBrother, label: "Brother" },
       ],
       answer: "Father",
-      audioLanguage: "en",
+      questionLanguage: "en",
     },
   },
   {
@@ -213,6 +213,21 @@ export const course1Unit1: Lesson[] = [
 
 export const Course1Unit2: Lesson[] = [
   {
+    type: ELessonType.Listening,
+    value: {
+      question: "안녕하세요, 만나서 반갑습니다.",
+      questionLanguage: "ko",
+      selectorLanguage: "en",
+      selectors: [
+        "Hello, nice to meet you",
+        "My name is Minho",
+        "Goodbye, see you",
+        "Thanks a lot",
+      ],
+      answer: "Hello, nice to meet you",
+    },
+  },
+  {
     type: ELessonType.SingleImageChoose,
     value: {
       question: "아버지",
@@ -226,7 +241,8 @@ export const Course1Unit2: Lesson[] = [
         { image: LessonImages.FamilyBrother, label: "Brother" },
       ],
       answer: "Father",
-      audioLanguage: "en",
+      questionLanguage: "ko",
+      selectorLanguage: "en",
     },
   },
   {
@@ -235,7 +251,7 @@ export const Course1Unit2: Lesson[] = [
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/1200px-Flag_of_South_Korea.svg.png",
       selectors: ["미국", "한국", "사과"],
-      audioLanguage: "ko",
+      selectorLanguage: "ko",
       answer: "한국",
     },
   },
@@ -245,7 +261,7 @@ export const Course1Unit2: Lesson[] = [
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png",
       selectors: ["미국", "한국", "중국"],
-      audioLanguage: "ko",
+      selectorLanguage: "ko",
       answer: "미국",
     },
   },
@@ -254,15 +270,15 @@ export const Course1Unit2: Lesson[] = [
     value: {
       selectors: ["미국", "멕시코", "중국"],
       answers: ["United States", "Mexico", "China"],
-      questionLanguage: "ko",
-      audioLanguage: "en",
+      selectorLanguage: "ko",
+      questionLanguage: "en",
     },
   },
   {
     type: ELessonType.Listening,
     value: {
       selectors: ["선생님", "학생", "의사"],
-      audioLanguage: "ko",
+      selectorLanguage: "ko",
       answer: "선생님",
     },
   },
@@ -273,7 +289,7 @@ export const Course1Unit2: Lesson[] = [
       // question: "저는 학생이에요.",
       selectors: ["선생님", "학생"],
       answer: "학생",
-      audioLanguage: "ko",
+      selectorLanguage: "ko",
     },
   },
   {
@@ -281,7 +297,7 @@ export const Course1Unit2: Lesson[] = [
     value: {
       question: "한국 사람",
       answer: "한국 사람",
-      audioLanguage: "ko",
+      questionLanguage: "ko",
     },
   },
   {
@@ -290,16 +306,18 @@ export const Course1Unit2: Lesson[] = [
       question: "한국 사람.",
       selectors: ["American", "Korean", "Korean Doctor"],
       answer: "Korean",
-      audioLanguage: "en",
+      questionLanguage: "ko",
+      selectorLanguage: "en",
     },
   },
   {
     type: ELessonType.Sentence,
     value: {
       question: "I am a student.",
+      questionLanguage: "en",
       selectors: ["이에요", "사람이에요", "학생", "선생님", "저는", "학생"],
+      selectorLanguage: "ko",
       answers: ["저는", "사람이에요"],
-      audioLanguage: "ko",
     },
   },
   // {
@@ -314,8 +332,8 @@ export const Course1Unit2: Lesson[] = [
   {
     type: ELessonType.WriteWord,
     value: {
-      hint: "I am American.",
-      question: "___ 사람이에요.",
+      question: "I am American.",
+      selectors: ["___ 사람이에요."],
       answer: "미국",
     },
   },
@@ -323,7 +341,7 @@ export const Course1Unit2: Lesson[] = [
     type: ELessonType.Listening,
     value: {
       selectors: ["저는 학생이에요.", "저는 선생님이에요.", "선생님은 저예요."],
-      audioLanguage: "ko",
+      selectorLanguage: "ko",
       answer: "저는 선생님이에요.",
     },
   },
@@ -332,7 +350,8 @@ export const Course1Unit2: Lesson[] = [
     value: {
       question: "박지훈____ 선생님이에요.",
       selectors: ["은", "는"],
-      audioLanguage: "ko",
+      questionLanguage: "ko",
+      selectorLanguage: "ko",
       answer: "은",
     },
   },
@@ -340,17 +359,19 @@ export const Course1Unit2: Lesson[] = [
     type: ELessonType.Sentence,
     value: {
       question: "I am American.",
+      questionLanguage: "en",
       selectors: ["이에요", "선생님은", "학생", "한국", "저는", "사람이에요"],
+      selectorLanguage: "ko",
       answers: ["저는", "사람이에요"],
-      audioLanguage: "ko",
     },
   },
   {
     type: ELessonType.SingleChoose,
     value: {
       question: "안녕하세요",
+      questionLanguage: "ko",
       selectors: ["Goodbye", "Thanks", "Hello"],
-      audioLanguage: "en",
+      selectorLanguage: "en",
       answer: "Hello",
     },
   },
@@ -358,8 +379,8 @@ export const Course1Unit2: Lesson[] = [
     type: ELessonType.Speaking,
     value: {
       question: "안녕하세요?",
+      questionLanguage: "ko",
       answer: "안녕하세요?",
-      audioLanguage: "ko",
     },
   },
 
@@ -367,16 +388,16 @@ export const Course1Unit2: Lesson[] = [
     type: ELessonType.Speaking,
     value: {
       question: "저는 민준이에요",
+      questionLanguage: "ko",
       answer: "저는 민준이에요",
-      audioLanguage: "ko",
     },
   },
   {
     type: ELessonType.Speaking,
     value: {
       question: "저는 베트남 사람이에요.",
+      questionLanguage: "ko",
       answer: "저는 베트남 사람이에요.",
-      audioLanguage: "ko",
     },
   },
 ];

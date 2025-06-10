@@ -56,6 +56,17 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
     }
   }
 
+  async register(username: string, password: string) {
+    const { error } = await this.client.auth.signUp({
+      email: username,
+      password: password,
+    });
+    console.log({ error });
+    if (error) {
+      throw error;
+    }
+  }
+
   async changePassword(
     oldPassword: string,
     newPassword: string

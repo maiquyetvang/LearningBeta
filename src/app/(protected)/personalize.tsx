@@ -1,11 +1,14 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Image, SafeAreaView, View } from "react-native";
+import { toast } from "sonner-native";
 import StepProgressBar, { ProgressStep } from "~/components/custom-ui/progress";
 import { AnimatedScreenWrapper } from "~/components/login/AnimatedScreenWrapper";
 import PersonalizeStepScreen from "~/components/personalize/PersonalizeStepScreen";
 import { Text } from "~/components/ui/text";
 import { H3 } from "~/components/ui/typography";
+import { useUpdateProfile } from "~/feature/profiles/hooks/use-update-profile";
+import { useSystem } from "~/lib/powersync";
 
 export type PersonalizeStep =
   | { type: "welcome" }
@@ -103,12 +106,19 @@ export const personalizeStepDetail = [
 
 const PersonalizeScreen: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
+  const { powersync } = useSystem();
   const [personalizeValues, setPersonalizeValues] = useState<
     Record<string, string>
   >({});
   const [progress, setProgress] = useState<ProgressStep[]>([]);
 
+  const { updateProfileAsync } = useUpdateProfile({
+    onSuccess: () => {
+      toast.success("Your profile has been updated successfully.");
+    },
+  });
+
+  console.log({ personalizeValues });
   const renderTitle = (index: number) => {
     if (index >= personalizeStepDetail.length || index === 0) return <></>;
     const step = personalizeStepDetail[index];
@@ -134,17 +144,26 @@ const PersonalizeScreen: React.FC = () => {
     );
   };
 
-  const handlePersonalizeNext = (value: string) => {
+  const handlePersonalizeNext = async (value: string) => {
     setPersonalizeValues((prev) => ({
       ...prev,
       [personalizeStepDetail[currentIndex].type]: value,
     }));
     setCurrentIndex((prev) => prev + 1);
     if (currentIndex === personalizeStepDetail.length - 1) {
+      await updateProfileAsync({
+        has_completed_survey: 1,
+        learning_level: personalizeValues.level,
+        learning_purpose: personalizeValues.purpose,
+        daily_duration: personalizeValues.duration,
+        native_language: "en",
+        target_language: "ko",
+        ui_language: "en",
+      });
       if (value === "TAKE A TEST") {
         router.replace("/(protected)/(lesson)?lessonId=level-test");
       } else if (value === "START FROM BEGINNING") {
-        router.replace("/(protected)/(_tabs)/(_home)");
+        router.replace("/(protected)/(_tabs)");
       }
       return;
     }

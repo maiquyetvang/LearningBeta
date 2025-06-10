@@ -92,6 +92,8 @@ const Settings = () => {
                 height: 72,
                 borderRadius: 36,
                 backgroundColor: "#eee",
+                borderWidth: 1,
+                borderColor: "#ddd",
               }}
             />
             <Text className='text-lg font-semibold'>

@@ -1,5 +1,8 @@
 import { ImageSourcePropType } from "react-native";
-
+import {
+  LANGUAGE_CODES_MAP
+} from "./../configs/default-language";
+export type LanguageCode = keyof typeof LANGUAGE_CODES_MAP;
 export enum ELessonType {
   Speaking = "voice",
   Select = "select",
@@ -19,8 +22,8 @@ export interface LessonValue {
   answers?: string[];
   selectors?: string[];
   imageSelectors?: { image: ImageSourcePropType; label: string }[];
-  audioLanguage?: "en" | "ko" | string;
-  questionLanguage?: "en" | "ko" | string;
+  questionLanguage?: LanguageCode;
+  selectorLanguage?: LanguageCode;
 }
 export interface Lesson {
   type: ELessonType;

@@ -15,6 +15,8 @@ import { PasswordRules, checkPasswordRules } from "../custom-ui/password-rule";
 import { authApi } from "~/api/auth.local";
 import { LoginForm } from "./LoginScreen";
 import { sendVerifyCodeNotification } from "~/utils/notification";
+import { useSystem } from "~/lib/powersync";
+import { toast } from "sonner-native";
 
 type RegisterForm = {
   email: string;
@@ -33,6 +35,7 @@ export function RegisterStep({
 }) {
   const [loading, setLoading] = useState(false);
 
+  const { supabase } = useSystem();
   const {
     control,
     handleSubmit,
@@ -53,18 +56,12 @@ export function RegisterStep({
     try {
       console.log({ data });
       const { email, password } = data;
-      const result = await authApi.register({ email, password } as LoginForm);
-      if (result.isSuccess) {
-        sendVerifyCodeNotification(result.confirmCode);
-        onRegister?.({
-          email,
-          verifyCode: result.confirmCode,
-        });
-        onNextStep?.(ELoginScreen.VERIFY);
-      } else {
-        Alert.alert("Đăng ký thất bại", result.message);
-      }
+      await supabase.register(email, password);
+      onNextStep?.(ELoginScreen.LOGIN);
     } catch (e: any) {
+      toast.error(
+        e?.message || "An error occurred during registration. Please try again."
+      );
     } finally {
       setLoading(false);
     }

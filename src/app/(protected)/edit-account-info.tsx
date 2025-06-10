@@ -1,4 +1,3 @@
-import { useQuery } from "@powersync/react-native";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import React from "react";
@@ -7,7 +6,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import HeaderWithAction from "~/components/common/HeaderWithAction";
 import PullToRefreshWrapper from "~/components/common/PullToRefreshWrapper";
-import { AnimatedButton } from "~/components/custom-ui/animate-button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,24 +21,25 @@ import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
 import { useUpdateProfile } from "~/feature/profiles/hooks/use-update-profile";
 import { useImageUpload } from "~/hooks/use-image-upload";
-import { useGetMyProfile } from "~/hooks/use-my-profile";
 import { Pencil } from "~/lib/icons/Pencil";
 import { Trash2 } from "~/lib/icons/Trash2";
+import { useSystem } from "~/lib/powersync";
 import { useAuthStore } from "~/stores/auth.store";
 import { useLearningStore } from "~/stores/learning.store";
 
 export default function EditAccount() {
   const insets = useSafeAreaInsets();
   const { resetLearning, clearInProgressLesson } = useLearningStore();
-  const { profile, refetch } = useGetMyProfile();
 
-  const { session, setUser, logout, profile: user } = useAuthStore();
+  const { session, setUser, logout, profile } = useAuthStore();
   const [image, setImage] = React.useState<ImagePicker.ImagePickerAsset | null>(
     null
   );
 
+  const { supabase } = useSystem();
+
   const [name, setName] = React.useState<string | undefined>(
-    user?.full_name ?? undefined
+    profile?.full_name ?? undefined
   );
 
   const { upload, uploading } = useImageUpload({
@@ -52,8 +51,8 @@ export default function EditAccount() {
 
   const [allowed, setAllowed] = React.useState(false);
   React.useEffect(() => {
-    setAllowed(user?.full_name !== name || user?.avatar_url !== image);
-  }, [name, image, user]);
+    setAllowed(profile?.full_name !== name || profile?.avatar_url !== image);
+  }, [name, image, profile]);
 
   const handleBack = () => {
     if (router.canGoBack()) {
@@ -103,10 +102,18 @@ export default function EditAccount() {
   //   handleBack();
   // };
 
-  const handleDeleteAccount = () => {
-    resetLearning();
-    clearInProgressLesson();
-    logout();
+  const handleDeleteAccount = async () => {
+    try {
+      await supabase.signOut();
+      toast.success("Your account has been deleted successfully.");
+      resetLearning();
+      clearInProgressLesson();
+      logout();
+      router.replace("/(auth)/login");
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      toast.error("Failed to delete account. Please try again.");
+    }
   };
 
   return (
@@ -121,15 +128,14 @@ export default function EditAccount() {
             disableAction={!allowed}
           />
           {/* Avatar */}
-
           <View className='items-center'>
             <View>
               <Image
                 source={
-                  image?.uri
+                  !!image?.uri
                     ? { uri: image.uri }
-                    : user?.avatar_url
-                      ? user?.avatar_url
+                    : profile?.avatar_url
+                      ? { uri: profile?.avatar_url }
                       : require("assets/images/avatar-placeholder.png")
                 }
                 style={{
@@ -137,6 +143,8 @@ export default function EditAccount() {
                   height: 96,
                   borderRadius: 50,
                   backgroundColor: "#eee",
+                  borderWidth: 1,
+                  borderColor: "#ddd",
                 }}
               />
               <Pressable
