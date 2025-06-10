@@ -158,13 +158,14 @@ const SpeakButton = React.forwardRef<
     return (
       <Animated.View
         style={[buttonStyle]}
-        className={cn("flex-row gap-2", className)}
+        className={cn(customSpeed && "flex-row gap-2", className)}
       >
         <Button
           ref={ref}
           onPress={handlePress}
           className={cn(
-            "justify-start flex-row items-center gap-2 flex-1",
+            customSpeed && "flex-1",
+            "justify-start flex-row items-center gap-2",
             buttonClassName
           )}
           variant={variant ?? (isSelected ? "secondary" : "outline")}
