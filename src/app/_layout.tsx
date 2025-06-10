@@ -36,7 +36,6 @@ export default function RootLayout() {
     }
 
     if (Platform.OS === "web") {
-      // Adds the background color to the html element to prevent white background on overscroll.
       document.documentElement.classList.add("bg-background");
     }
     setAndroidNavigationBar(colorScheme);
@@ -49,19 +48,19 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView>
-      <AppProvider theme={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
+    <AppProvider theme={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Protected guard={true}>
           <Stack.Screen name='(auth)' />
-          <Stack.Screen name='(protected)' />
-        </Stack>
-        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-      </AppProvider>
-    </GestureHandlerRootView>
+        </Stack.Protected>
+        <Stack.Screen name='(protected)' />
+      </Stack>
+      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+    </AppProvider>
   );
 }
 

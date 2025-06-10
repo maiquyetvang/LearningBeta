@@ -13,7 +13,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name='(_home)'
+        name='index'
         options={{
           headerShown: false,
           title: "Home",
@@ -28,7 +28,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name='(achievements)'
+        name='achievements'
         options={{
           title: "Achievements",
           headerShown: false,
@@ -42,7 +42,21 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name='(settings)'
+        name='todo'
+        options={{
+          title: "Todo",
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons
+              color={color}
+              name={focused ? "pen" : "pen"}
+              size={size}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name='settings'
         options={{
           title: "Settings",
           headerShown: false,

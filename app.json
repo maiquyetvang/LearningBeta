@@ -20,7 +20,10 @@
       "icon": "./assets/images/icon-ios.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "NSPhotoLibraryUsageDescription": "Kindo needs access to your photo library to allow you to select and share photos in the app"
+        "NSPhotoLibraryUsageDescription": "Kindo needs access to your photo library to allow you to select and share photos in the app",
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       },
       "splash": {
         "image": "./assets/images/splash-icon.png",
@@ -71,7 +74,9 @@
           },
           "imageWidth": 200
         }
-      ]
+      ],
+      "expo-build-properties",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
@@ -82,7 +87,7 @@
         "projectId": "290c425c-3fac-4a88-a78d-0279015a00c2"
       }
     },
-    "owner": "maiquyetvang"
+    "owner": "dudaji"
   },
   "build": {
     "production": {

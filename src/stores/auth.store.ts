@@ -4,12 +4,16 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { User } from "../types/user.type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Session } from "@supabase/supabase-js";
+import { ProfileRecord } from "~/lib/powersync/app-schema";
 
 type AuthState = {
   isAuthentication: boolean;
   isLoaded: boolean;
   user: User | null;
   loading: boolean;
+  session: Session | null;
+  profile: ProfileRecord | null;
 };
 
 type AuthActions = {
@@ -18,11 +22,15 @@ type AuthActions = {
   setLoading: (loading: boolean) => void;
   setLoaded: (loaded: boolean) => void;
   setUser: (user: Partial<User>) => void;
+  setSession: (session: Session | null) => void;
+  setProfile: (profile: ProfileRecord | null) => void;
 };
 
 export const useAuthStore = create<AuthState & AuthActions>()(
   persist(
     (set) => ({
+      session: null,
+      profile: null,
       isAuthentication: false,
       isLoaded: false,
       user: null,
@@ -47,6 +55,13 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         set((state) => ({
           user: state.user ? { ...state.user, ...user } : null,
         })),
+      setSession: (session) =>
+        set(() => ({
+          session,
+          isAuthentication: !!session,
+          isLoaded: true,
+        })),
+      setProfile: (profile) => set(() => ({ profile })),
     }),
     {
       name: "auth-storage",

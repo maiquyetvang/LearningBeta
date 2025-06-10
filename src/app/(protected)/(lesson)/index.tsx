@@ -27,7 +27,7 @@ import LessonBottomSheet from "./_components/LessonBottomSheet";
 import ReviewNotCorrectLesson from "./_components/ReviewNotCorrectLesson";
 
 const LessonDetailScreen: React.FC = () => {
-  const { lessonId } = useLocalSearchParams<{ lessonId: string }>();
+  const { id: lessonId } = useLocalSearchParams<{ id: string }>();
   const queryClient = useQueryClient();
   const isLevelTest = lessonId === "level-test";
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -142,7 +142,7 @@ const LessonDetailScreen: React.FC = () => {
     if (router.canGoBack()) {
       router.back();
     } else {
-      router.replace("/(protected)/(_tabs)/(_home)");
+      router.replace("/(protected)/(_tabs)");
     }
   };
   const openBottomSheet = () => {
@@ -305,12 +305,7 @@ const LessonDetailScreen: React.FC = () => {
       queryClient.invalidateQueries({
         queryKey: ["completedUnits", courseId],
       });
-      markLessonAsLearned(
-        lessonId,
-        correctAnswers,
-        totalQuestions,
-        courseId
-      );
+      markLessonAsLearned(lessonId, correctAnswers, totalQuestions, courseId);
       clearInProgressLesson();
     }
   }, [isCompleted, lessonId, progress]);
