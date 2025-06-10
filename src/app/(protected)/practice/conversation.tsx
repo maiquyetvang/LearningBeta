@@ -8,6 +8,7 @@ import { ScreenHeader } from '~/components/screen-header';
 import { ScreenView } from '~/components/screen-view';
 import { Text } from '~/components/ui/text';
 import { cn } from '~/lib/utils';
+import { router } from 'expo-router';
 
 const TOPICS = [
   {
@@ -85,8 +86,7 @@ function TopicCard({ topic, onPress }: { topic: (typeof TOPICS)[0]; onPress: () 
 
 export default function ConversationScreen() {
   const handleTopicPress = (topicId: string) => {
-    console.log('Topic pressed:', topicId);
-    // Handle navigation to topic conversation
+    router.push(`/practice/chat-bot?topicId=${topicId}`);
   };
 
   const handleBackPress = () => {
