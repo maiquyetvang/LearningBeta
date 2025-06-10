@@ -1,6 +1,8 @@
-import React from 'react';
 import { Theme, ThemeProvider } from '@react-navigation/native';
+
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { PortalHost } from '@rn-primitives/portal';
+import React from 'react';
 import { ReactQueryProvider } from './react-query.provider';
 import { SplashScreenController } from '~/components/common/splash';
 
@@ -11,10 +13,12 @@ type AppProviderProps = {
 
 export const AppProvider = ({ children, theme }: AppProviderProps) => (
   <ReactQueryProvider>
-    <ThemeProvider value={theme}>
-      {children}
-      <PortalHost />
-      <SplashScreenController />
-    </ThemeProvider>
+    <KeyboardProvider>
+      <ThemeProvider value={theme}>
+        {children}
+        <PortalHost />
+        <SplashScreenController />
+      </ThemeProvider>
+    </KeyboardProvider>
   </ReactQueryProvider>
 );
