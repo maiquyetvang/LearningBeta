@@ -19,7 +19,7 @@ const SentenceLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, selectors, answers, hint, audioLanguage } = value.value;
+  const { question, selectors, answers, selectorLanguage } = value.value;
   const [selected, setSelected] = useState<(string | null)[]>(
     Array(answers?.length).fill(null)
   );
@@ -83,7 +83,6 @@ const SentenceLesson = ({
             {index < selected.length && (
               <Pressable
                 key={index}
-                // variant='secondary'
                 className={cn(
                   "flex rounded-md items-center bg-neutral-800 dark:bg-neutral-200 p-3 justify-center h-fit  ",
                   !isUsed && index !== nextIndex && "opacity-40"
@@ -93,7 +92,6 @@ const SentenceLesson = ({
                 <Text
                   style={{
                     ...styles.blankText,
-                    // color: index === nextIndex ? "#007AFF" : undefined,
                   }}
                   className={`text-background ${index === nextIndex && "text-[#007AFF]"}`}
                 >
@@ -109,6 +107,7 @@ const SentenceLesson = ({
 
   return (
     <View className='flex-1 gap-8'>
+      <Text>{JSON.stringify(value)}</Text>
       {!!question && <H3 className='text-primary text-center'>{question}</H3>}
       <View
         className='bg-neutral-50 gap-2 dark:bg-neutral-800 rounded-xl p-2 '
@@ -126,16 +125,11 @@ const SentenceLesson = ({
                 variant='outline'
                 onPress={() => {
                   handleSelectWord(nextIndex, word);
-                  // speak();
                 }}
                 disabled={isUsed}
-                language={audioLanguage}
+                language={selectorLanguage}
                 label={word}
-              >
-                {/* <Text className={`${isUsed && "text-transparent"}`}>
-                  {word}
-                </Text> */}
-              </SpeakButton>
+              ></SpeakButton>
             );
           })}
       </View>

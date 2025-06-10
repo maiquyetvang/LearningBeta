@@ -36,7 +36,7 @@ const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
     playCongratsSound(!isGoodResultValue);
   }, []);
   const handleBack = () => {
-    router.replace("/(protected)/(_tabs)/(_home)");
+    router.replace("/(protected)/(_tabs)");
   };
   return (
     <View className='flex-1 gap-3 justify-center items-center text-center text-2xl '>

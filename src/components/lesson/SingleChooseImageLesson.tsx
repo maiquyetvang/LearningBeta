@@ -14,7 +14,7 @@ const SingleChooseImageLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, imageSelectors, answer, image, audioLanguage } =
+  const { question, imageSelectors, answer, image, selectorLanguage } =
     value.value;
   const [selected, setSelected] = useState<string | null>();
 
@@ -27,10 +27,8 @@ const SingleChooseImageLesson = ({
     onSuccess?.(!isCorrect);
   };
 
-  // Chia imageSelectors thành các hàng
   const rows = [];
   if (imageSelectors && imageSelectors.length > 0) {
-    // Tạo mảng 2 chiều từ mảng 1 chiều
     for (let i = 0; i < imageSelectors.length; i += 2) {
       rows.push(imageSelectors.slice(i, i + 2));
     }
@@ -71,7 +69,7 @@ const SingleChooseImageLesson = ({
                     label={item.label}
                     image={item.image}
                     isSelected={isUsed}
-                    language={audioLanguage}
+                    language={selectorLanguage}
                   />
                 </View>
               );
@@ -87,10 +85,6 @@ const SingleChooseImageLesson = ({
 
 export default SingleChooseImageLesson;
 
-// Lấy chiều rộng màn hình để tính toán kích thước nút
-const { width } = Dimensions.get("window");
-const buttonWidth = (width - 64) / 2; // 64 = padding của container + khoảng cách giữa các nút
-
 const styles = StyleSheet.create({
   gridContainer: {
     width: "100%",
@@ -102,7 +96,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   gridItem: {
-    width: "48%", // Gần 50% để có khoảng cách giữa các nút
+    width: "48%",
   },
   button: {
     borderWidth: 2,
