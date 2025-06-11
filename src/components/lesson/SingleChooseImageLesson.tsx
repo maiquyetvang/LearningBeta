@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, View, Dimensions } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { Lesson } from '~/types/lesson.type';
 import { SpeakButton } from '../custom-ui/speak-button';
 import { Text } from '../ui/text';
@@ -14,8 +14,7 @@ const SingleChooseImageLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, imageSelectors, answer, image, selectorLanguage } =
-    value.value;
+  const { question, imageSelectors, answer, image, selectorLanguage } = value.value;
   const [selected, setSelected] = useState<string | null>();
 
   const handleSelectWord = (value: string) => {
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   gridItem: {
-    width: "48%",
+    width: '48%',
   },
   button: {
     borderWidth: 2,

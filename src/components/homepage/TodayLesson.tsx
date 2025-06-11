@@ -1,19 +1,10 @@
-import React from "react";
-import { Image, Pressable, View } from "react-native";
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-} from "react-native-reanimated";
-import { useGetCourse, useGetLessonGroup } from "~/hooks/useGetLessonById";
-import { useNextLesson } from "~/hooks/useNextLesson";
-import { useLearningStore } from "~/stores/learning.store";
-import { LessonGroup } from "~/types/lesson.type";
-import ProgressBar from "../common/ProgressBar";
-import { AnimatedButton } from "../custom-ui/animate-button";
-import { Button } from "../ui/button";
-import { Text } from "../ui/text";
-import { H4 } from "../ui/typography";
-import LessonCard from "./LessonCard";
+import React from 'react';
+import { View } from 'react-native';
+import { useGetCourse, useGetLessonGroup } from '~/hooks/useGetLessonById';
+import { useNextLesson } from '~/hooks/useNextLesson';
+import { useLearningStore } from '~/stores/learning.store';
+import { Text } from '../ui/text';
+import LessonCard from './LessonCard';
 
 const TodayLesson = ({
   courseId,

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
+import { ViewProps } from 'react-native';
 import Animated, {
-  useSharedValue,
   useAnimatedStyle,
-  withTiming,
+  useSharedValue,
   withSpring,
+  withTiming,
 } from 'react-native-reanimated';
-import { ViewProps, Dimensions } from 'react-native';
 
 type Direction = 'center' | 'up' | 'down' | 'left' | 'right';
 
@@ -90,6 +90,7 @@ export const AnimatedScreenWrapper: React.FC<AnimatedScreenWrapperProps> = ({
           translate.value = withTiming(0, { duration: movement.duration });
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [direction, scale, opacity, translate, delay]);
 
   const animatedStyle = useAnimatedStyle(() => {

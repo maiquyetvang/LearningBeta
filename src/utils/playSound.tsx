@@ -14,7 +14,9 @@ export async function playResultSound(isError?: boolean) {
         sound.unloadAsync();
       }
     });
-  } catch (e) {}
+  } catch (e) {
+    console.log('Error playing sound:', e);
+  }
 }
 export async function playCongratsSound(isFail?: boolean) {
   try {
@@ -25,5 +27,7 @@ export async function playCongratsSound(isFail?: boolean) {
         sound.unloadAsync();
       }
     });
-  } catch (e) {}
+  } catch (e) {
+    console.log('Error playing sound:', e);
+  }
 }

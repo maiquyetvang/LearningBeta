@@ -1,19 +1,10 @@
-import * as React from "react";
-import {
-  Animated,
-  Image,
-  ImageSourcePropType,
-  Pressable,
-  View,
-} from "react-native";
-import useTTS from "~/hooks/useTTS";
-import { Volume2 } from "~/lib/icons/Volume2";
-import { cn } from "~/lib/utils";
-import ThemeIcon from "../Icon";
-import { Button, ButtonProps } from "../ui/button";
-import { Text } from "../ui/text";
-import { useColorScheme } from "~/lib/useColorScheme";
-import { AnimatedButton } from "./animate-button";
+import * as React from 'react';
+import { Animated, Image, ImageSourcePropType, Pressable, View } from 'react-native';
+import useTTS from '~/hooks/useTTS';
+import { Volume2 } from '~/lib/icons/Volume2';
+import { cn } from '~/lib/utils';
+import { Button, ButtonProps } from '../ui/button';
+import { Text } from '../ui/text';
 
 type SpeakButtonProps = ButtonProps & {
   label?: string;
@@ -62,9 +53,7 @@ const SpeakButton = React.forwardRef<React.ComponentRef<typeof Button>, SpeakBut
     const { speak, isSpeaking } = useTTS();
     const buttonAnimate = React.useRef(new Animated.Value(0)).current;
     // Thêm state để theo dõi tốc độ hiện tại
-    const [currentSpeed, setCurrentSpeed] = React.useState<"normal" | "slow">(
-      "normal"
-    );
+    const [currentSpeed, setCurrentSpeed] = React.useState<'normal' | 'slow'>('normal');
 
     const buttonStyle = {
       transform: [
@@ -78,14 +67,10 @@ const SpeakButton = React.forwardRef<React.ComponentRef<typeof Button>, SpeakBut
     };
 
     // Tính toán tốc độ thực tế dựa trên chế độ hiện tại
-    const actualSpeakRate = currentSpeed === "normal" ? speakRate : 0.5;
+    const actualSpeakRate = currentSpeed === 'normal' ? speakRate : 0.5;
 
     const handlePress = (event: any) => {
-      if (
-        label &&
-        !isSpeaking &&
-        ((!disabledSpeak && language === "ko") || forceEnableSpeak)
-      ) {
+      if (label && !isSpeaking && ((!disabledSpeak && language === 'ko') || forceEnableSpeak)) {
         speak(label, {
           language,
           rate: actualSpeakRate, // Sử dụng tốc độ thực tế
@@ -109,7 +94,7 @@ const SpeakButton = React.forwardRef<React.ComponentRef<typeof Button>, SpeakBut
     // Hàm xử lý khi nhấn vào nút tốc độ
     const toggleSpeed = (event: any) => {
       event.stopPropagation(); // Ngăn không cho sự kiện lan đến button chính
-      setCurrentSpeed(currentSpeed === "normal" ? "slow" : "normal");
+      setCurrentSpeed(currentSpeed === 'normal' ? 'slow' : 'normal');
     };
 
     if (image) {
@@ -149,17 +134,17 @@ const SpeakButton = React.forwardRef<React.ComponentRef<typeof Button>, SpeakBut
     return (
       <Animated.View
         style={[buttonStyle]}
-        className={cn(customSpeed && "flex-row gap-2", className)}
+        className={cn(customSpeed && 'flex-row gap-2', className)}
       >
         <Button
           ref={ref}
           onPress={handlePress}
           className={cn(
-            customSpeed && "flex-1",
-            "justify-start flex-row items-center gap-2",
-            buttonClassName
+            customSpeed && 'flex-1',
+            'justify-start flex-row items-center gap-2',
+            buttonClassName,
           )}
-          variant={variant ?? (isSelected ? "secondary" : "outline")}
+          variant={variant ?? (isSelected ? 'secondary' : 'outline')}
           {...props}
         >
           {leftIcon}
@@ -171,10 +156,10 @@ const SpeakButton = React.forwardRef<React.ComponentRef<typeof Button>, SpeakBut
         {customSpeed && (
           <Pressable
             onPress={toggleSpeed}
-            className=' aspect-square bg-neutral-50 dark:bg-neutral-900 items-center justify-center rounded-lg px-2 py-1'
+            className=" aspect-square bg-neutral-50 dark:bg-neutral-900 items-center justify-center rounded-lg px-2 py-1"
           >
-            <Text className='text-sm font-medium '>
-              {currentSpeed === "normal" ? "x1" : "x0.5"}
+            <Text className="text-sm font-medium ">
+              {currentSpeed === 'normal' ? 'x1' : 'x0.5'}
             </Text>
           </Pressable>
         )}

@@ -1,8 +1,8 @@
-import { StorageAdapter } from "@powersync/attachments";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { decode as decodeBase64 } from "base64-arraybuffer";
-import * as FileSystem from "expo-file-system";
-import { SUPABASE_STORAGE_BUCKET } from "~/constant";
+import { StorageAdapter } from '@powersync/attachments';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { decode as decodeBase64 } from 'base64-arraybuffer';
+import * as FileSystem from 'expo-file-system';
+import { SUPABASE_STORAGE_BUCKET } from '~/constant';
 
 export interface SupabaseStorageAdapterOptions {
   client: SupabaseClient;
@@ -16,13 +16,13 @@ export class SupabaseStorageAdapter implements StorageAdapter {
     data: ArrayBuffer,
     options?: {
       mediaType?: string;
-    }
+    },
   ): Promise<void> {
     if (!SUPABASE_STORAGE_BUCKET) {
-      throw new Error("Supabase bucket not configured in AppConfig.ts");
+      throw new Error('Supabase bucket not configured in AppConfig.ts');
     }
 
-    const { mediaType = "text/plain" } = options ?? {};
+    const { mediaType = 'text/plain' } = options ?? {};
 
     const res = await this.options.client.storage
       .from(SUPABASE_STORAGE_BUCKET)
@@ -35,7 +35,7 @@ export class SupabaseStorageAdapter implements StorageAdapter {
 
   async downloadFile(filePath: string) {
     if (!SUPABASE_STORAGE_BUCKET) {
-      throw new Error("Supabase bucket not configured in AppConfig.ts");
+      throw new Error('Supabase bucket not configured in AppConfig.ts');
     }
     const { data, error } = await this.options.client.storage
       .from(SUPABASE_STORAGE_BUCKET)
@@ -52,14 +52,14 @@ export class SupabaseStorageAdapter implements StorageAdapter {
     base64Data: string,
     options?: {
       encoding?: FileSystem.EncodingType;
-    }
+    },
   ): Promise<void> {
     const { encoding = FileSystem.EncodingType.UTF8 } = options ?? {};
     await FileSystem.writeAsStringAsync(fileURI, base64Data, { encoding });
   }
   async readFile(
     fileURI: string,
-    options?: { encoding?: FileSystem.EncodingType; mediaType?: string }
+    options?: { encoding?: FileSystem.EncodingType; mediaType?: string },
   ): Promise<ArrayBuffer> {
     const { encoding = FileSystem.EncodingType.UTF8 } = options ?? {};
     const { exists } = await FileSystem.getInfoAsync(fileURI);
@@ -73,10 +73,7 @@ export class SupabaseStorageAdapter implements StorageAdapter {
     return this.stringToArrayBuffer(fileContent);
   }
 
-  async deleteFile(
-    uri: string,
-    options?: { filename?: string }
-  ): Promise<void> {
+  async deleteFile(uri: string, options?: { filename?: string }): Promise<void> {
     if (await this.fileExists(uri)) {
       await FileSystem.deleteAsync(uri);
     }
@@ -87,18 +84,18 @@ export class SupabaseStorageAdapter implements StorageAdapter {
     }
 
     if (!SUPABASE_STORAGE_BUCKET) {
-      throw new Error("Supabase bucket not configured in AppConfig.ts");
+      throw new Error('Supabase bucket not configured in AppConfig.ts');
     }
 
     const { data, error } = await this.options.client.storage
       .from(SUPABASE_STORAGE_BUCKET)
       .remove([filename]);
     if (error) {
-      console.debug("Failed to delete file from Cloud Storage", error);
+      console.debug('Failed to delete file from Cloud Storage', error);
       throw error;
     }
 
-    console.debug("Deleted file from storage", data);
+    console.debug('Deleted file from storage', data);
   }
 
   async fileExists(fileURI: string): Promise<boolean> {

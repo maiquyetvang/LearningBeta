@@ -1,13 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
-import Tts, { Options } from "react-native-tts";
-import { SUPPORTED_VOICE_MAP } from "~/configs/default-language";
+import * as Speech from 'expo-speech';
+import { useCallback, useState } from 'react';
+import Tts from 'react-native-tts';
 interface SpeakOptions {
   language?: string;
   rate?: number;
   pitch?: number;
 }
-import * as Speech from "expo-speech";
-const useTTS = (language: string = "en") => {
+const useTTS = (language: string = 'en') => {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   const speak = async (text: string, options?: SpeakOptions) => {
@@ -19,17 +18,17 @@ const useTTS = (language: string = "en") => {
       setIsSpeaking(true);
 
       await Speech.speak(text, {
-        language: options?.language || "en",
+        language: options?.language || 'en',
         pitch: options?.pitch || 1.0,
         rate: options?.rate || 0.9, // Tốc độ mặc định là 0.9
         onDone: () => setIsSpeaking(false),
         onError: (error) => {
-          console.error("TTS error:", error);
+          console.error('TTS error:', error);
           setIsSpeaking(false);
         },
       });
     } catch (error) {
-      console.error("TTS error:", error);
+      console.error('TTS error:', error);
       setIsSpeaking(false);
     }
   };

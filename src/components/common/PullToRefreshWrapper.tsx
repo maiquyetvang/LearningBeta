@@ -18,7 +18,7 @@ export default function PullToRefreshWrapper({
     <ScrollView
       className="flex-1"
       refreshControl={
-        refreshing ? (
+        onRefresh ? (
           <RefreshControl refreshing={refreshing || false} onRefresh={onRefresh} />
         ) : undefined
       }

@@ -1,14 +1,11 @@
-import React, { use, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Button } from '../ui/button';
+import React, { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '../ui/text';
-// import { ExpoSpeech } from "~/utils/TextToSpeech";
-import * as Speech from 'expo-speech';
-import { SpeakButton } from '../custom-ui/speak-button';
-import { Lesson } from '~/types/lesson.type';
-import { CheckResultButton } from './CheckResultButton';
-import { H3 } from '../ui/typography';
 import { cn } from '~/lib/utils';
+import { Lesson } from '~/types/lesson.type';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { H3 } from '../ui/typography';
+import { CheckResultButton } from './CheckResultButton';
 
 const SentenceLesson = ({
   value,
@@ -20,12 +17,8 @@ const SentenceLesson = ({
   onSuccess?: (isFail?: boolean) => void;
 }) => {
   const { question, selectors, answers, selectorLanguage } = value.value;
-  const [selected, setSelected] = useState<(string | null)[]>(
-    Array(answers?.length).fill(null)
-  );
-  const [usedWords, setUsedWords] = useState<
-    { index: number; value: string }[]
-  >([]);
+  const [selected, setSelected] = useState<(string | null)[]>(Array(answers?.length).fill(null));
+  const [usedWords, setUsedWords] = useState<{ index: number; value: string }[]>([]);
   const [nextIndex, setNextIndex] = useState<number>(0);
 
   const getNextUnusedIndex = (usedWords: { index: number; value: string }[]): number => {
@@ -102,9 +95,9 @@ const SentenceLesson = ({
   };
 
   return (
-    <View className='flex-1 gap-8'>
+    <View className="flex-1 gap-8">
       <Text>{JSON.stringify(value)}</Text>
-      {!!question && <H3 className='text-primary text-center'>{question}</H3>}
+      {!!question && <H3 className="text-primary text-center">{question}</H3>}
       <View
         className="bg-neutral-50 gap-2 dark:bg-neutral-800 rounded-xl p-2 "
         style={styles.sentenceContainer}

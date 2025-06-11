@@ -1,14 +1,11 @@
-import React, { use, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Button } from '../ui/button';
+import React, { useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '../ui/text';
-// import { ExpoSpeech } from "~/utils/TextToSpeech";
-import * as Speech from 'expo-speech';
-import { SpeakButton } from '../custom-ui/speak-button';
-import { Lesson } from '~/types/lesson.type';
-import { CheckResultButton } from './CheckResultButton';
-import { H3 } from '../ui/typography';
 import { cn } from '~/lib/utils';
+import { Lesson } from '~/types/lesson.type';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { H3 } from '../ui/typography';
+import { CheckResultButton } from './CheckResultButton';
 
 const SimpleSentenceLesson = ({
   value,
@@ -19,13 +16,7 @@ const SimpleSentenceLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const {
-    question,
-    selectors,
-    answers,
-    hint,
-    questionLanguage: audioLanguage,
-  } = value.value;
+  const { question, selectors, answers, questionLanguage: audioLanguage } = value.value;
   const [usedWords, setUsedWords] = useState<string[]>([]);
 
   const handleSelectWord = (value: string) => {

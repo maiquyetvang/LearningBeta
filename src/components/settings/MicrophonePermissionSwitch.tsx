@@ -1,7 +1,6 @@
-import { Pressable, TouchableOpacity, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Switch } from '~/components/ui/switch';
 import { Text } from '~/components/ui/text';
-import { Button } from '../ui/button';
 
 export default function MicrophonePermissionSwitch({
   checked,

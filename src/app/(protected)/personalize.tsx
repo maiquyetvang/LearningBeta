@@ -1,14 +1,11 @@
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, SafeAreaView, View } from 'react-native';
-import { toast } from 'sonner-native';
 import StepProgressBar, { ProgressStep } from '~/components/custom-ui/progress';
 import { AnimatedScreenWrapper } from '~/components/login/AnimatedScreenWrapper';
 import PersonalizeStepScreen from '~/components/personalize/PersonalizeStepScreen';
 import { Text } from '~/components/ui/text';
-import { H3 } from '~/components/ui/typography';
 import { useUpdateProfile } from '~/feature/profiles/hooks/use-update-profile';
-import { useSystem } from '~/lib/powersync';
 
 export type PersonalizeStep =
   | { type: 'welcome' }
@@ -106,15 +103,10 @@ export const personalizeStepDetail = [
 
 const PersonalizeScreen: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const { powersync } = useSystem();
   const [personalizeValues, setPersonalizeValues] = useState<Record<string, string>>({});
   const [progress, setProgress] = useState<ProgressStep[]>([]);
 
-  const { updateProfileAsync } = useUpdateProfile({
-    onSuccess: () => {
-      toast.success('Your profile has been updated successfully.');
-    },
-  });
+  const { updateProfileAsync } = useUpdateProfile();
 
   console.log({ personalizeValues });
   const renderTitle = (index: number) => {

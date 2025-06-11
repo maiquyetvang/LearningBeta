@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Animated, StyleSheet, View } from "react-native";
-import { useBoolean } from "usehooks-ts";
-import { Lesson } from "~/types/lesson.type";
-import { playResultSound } from "~/utils/playSound";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { H3, P } from "../ui/typography";
+import React, { useEffect, useState } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
+import { useBoolean } from 'usehooks-ts';
+import { Lesson } from '~/types/lesson.type';
+import { playResultSound } from '~/utils/playSound';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { H3, P } from '../ui/typography';
 const MAX_WRONG_ATTEMPTS = 5;
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -23,11 +23,10 @@ const MappingLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, selectors, answers, questionLanguage, selectorLanguage } =
-    value.value;
+  const { question, selectors, answers, questionLanguage, selectorLanguage } = value.value;
   const [shuffledSelectors] = useState(() => shuffleArray(selectors ?? []));
   const [shuffledAnswers] = useState(() => shuffleArray(answers ?? []));
-  const { value: disableAction, setTrue, setFalse, toggle } = useBoolean(false);
+  const { value: disableAction, setTrue, setFalse } = useBoolean(false);
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
   const [selectedRight, setSelectedRight] = useState<number | null>(null);
   const [disabledLeft, setDisabledLeft] = useState<boolean[]>(
@@ -124,6 +123,7 @@ const MappingLesson = ({
         }, 500),
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLeft, selectedRight]);
 
   return (

@@ -1,2 +1,2 @@
-export * from "./supabase";
-export * from "./supabase-connector";
+export * from './supabase';
+export * from './supabase-connector';

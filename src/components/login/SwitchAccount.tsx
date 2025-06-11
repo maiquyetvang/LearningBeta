@@ -1,3 +1,4 @@
+import { ArrowLeft, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Pressable, TouchableOpacity, View } from 'react-native';
@@ -5,12 +6,10 @@ import { InputWithIcon } from '~/components/custom-ui/input-icon';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { H3 } from '~/components/ui/typography';
-import ThemeIcon from '../Icon';
 import { Lock } from '~/lib/icons/Lock';
 import { Mail } from '~/lib/icons/Mail';
-import { ArrowLeft, X } from 'lucide-react-native';
+import ThemeIcon from '../Icon';
 import { AnimatedScreenWrapper } from './AnimatedScreenWrapper';
-import { ELoginScreen } from '~/app/(auth)/login';
 
 type SwitchAccountForm = {
   email: string;
@@ -36,7 +35,6 @@ export function SwitchAccount({
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<SwitchAccountForm>({
     mode: 'onChange',
     defaultValues: {

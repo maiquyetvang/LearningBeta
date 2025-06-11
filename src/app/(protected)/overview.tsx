@@ -114,7 +114,7 @@ const OverviewScreen: React.FC = () => {
       </PullToRefreshWrapper>
       <View className="px-5 pb-5">
         <Button className="bg-primary w-full" onPress={handleLearn}>
-          <Text className="text-white font-semibold">Let's Learn</Text>
+          <Text className="text-white font-semibold">Let&apos;s Learn</Text>
         </Button>
       </View>
     </SafeAreaView>

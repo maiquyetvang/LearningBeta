@@ -1,6 +1,6 @@
-import { AppSchema } from "~/lib/powersync/app-schema";
-import { PowerSyncDatabase } from "@powersync/react-native";
-import { ExtractType, generateJsonExtracts } from "./helpers";
+import { AppSchema } from '~/lib/powersync/app-schema';
+import { PowerSyncDatabase } from '@powersync/react-native';
+import { ExtractType, generateJsonExtracts } from './helpers';
 
 /**
  * Create a Full Text Search table for the given table and columns
@@ -15,12 +15,10 @@ async function createFtsTable(
   db: PowerSyncDatabase,
   tableName: string,
   columns: string[],
-  tokenizationMethod = "unicode61"
+  tokenizationMethod = 'unicode61',
 ): Promise<void> {
-  const internalName = AppSchema.tables.find(
-    (table) => table.name === tableName
-  )?.internalName;
-  const stringColumns = columns.join(", ");
+  const internalName = AppSchema.tables.find((table) => table.name === tableName)?.internalName;
+  const stringColumns = columns.join(', ');
 
   return await db.writeTransaction(async (tx) => {
     // Add FTS table
@@ -31,7 +29,7 @@ async function createFtsTable(
     // Copy over records already in table
     await tx.execute(`
       INSERT OR REPLACE INTO fts_${tableName}(rowid, id, ${stringColumns})
-      SELECT rowid, id, ${generateJsonExtracts(ExtractType.columnOnly, "data", columns)} FROM ${internalName};
+      SELECT rowid, id, ${generateJsonExtracts(ExtractType.columnOnly, 'data', columns)} FROM ${internalName};
     `);
     // Add INSERT, UPDATE and DELETE and triggers to keep fts table in sync with table
     await tx.execute(`
@@ -41,14 +39,14 @@ async function createFtsTable(
         VALUES (
           NEW.rowid,
           NEW.id,
-          ${generateJsonExtracts(ExtractType.columnOnly, "NEW.data", columns)}
+          ${generateJsonExtracts(ExtractType.columnOnly, 'NEW.data', columns)}
         );
       END;
     `);
     await tx.execute(`
       CREATE TRIGGER IF NOT EXISTS fts_update_trigger_${tableName} AFTER UPDATE ON ${internalName} BEGIN
         UPDATE fts_${tableName}
-        SET ${generateJsonExtracts(ExtractType.columnInOperation, "NEW.data", columns)}
+        SET ${generateJsonExtracts(ExtractType.columnInOperation, 'NEW.data', columns)}
         WHERE rowid = NEW.rowid;
       END;
     `);
@@ -66,6 +64,6 @@ async function createFtsTable(
  * with the data you would like to search on
  */
 export async function configureFts(db: PowerSyncDatabase): Promise<void> {
-  await createFtsTable(db, "lists", ["name"], "porter unicode61");
-  await createFtsTable(db, "todos", ["description", "list_id"]);
+  await createFtsTable(db, 'lists', ['name'], 'porter unicode61');
+  await createFtsTable(db, 'todos', ['description', 'list_id']);
 }

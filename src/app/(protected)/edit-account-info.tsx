@@ -1,11 +1,11 @@
-import * as ImagePicker from "expo-image-picker";
-import { router } from "expo-router";
-import React from "react";
-import { Image, Pressable, SafeAreaView, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { toast } from "sonner-native";
-import HeaderWithAction from "~/components/common/HeaderWithAction";
-import PullToRefreshWrapper from "~/components/common/PullToRefreshWrapper";
+import * as ImagePicker from 'expo-image-picker';
+import { router } from 'expo-router';
+import React from 'react';
+import { Image, Pressable, SafeAreaView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { toast } from 'sonner-native';
+import HeaderWithAction from '~/components/common/HeaderWithAction';
+import PullToRefreshWrapper from '~/components/common/PullToRefreshWrapper';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,35 +15,32 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "~/components/ui/alert-dialog";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Text } from "~/components/ui/text";
-import { useUpdateProfile } from "~/feature/profiles/hooks/use-update-profile";
-import { useImageUpload } from "~/hooks/use-image-upload";
-import { Pencil } from "~/lib/icons/Pencil";
-import { Trash2 } from "~/lib/icons/Trash2";
-import { useSystem } from "~/lib/powersync";
-import { useAuthStore } from "~/stores/auth.store";
-import { useLearningStore } from "~/stores/learning.store";
+} from '~/components/ui/alert-dialog';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import { Text } from '~/components/ui/text';
+import { useUpdateProfile } from '~/feature/profiles/hooks/use-update-profile';
+import { useImageUpload } from '~/hooks/use-image-upload';
+import { useGetMyProfile } from '~/hooks/use-my-profile';
+import { Pencil } from '~/lib/icons/Pencil';
+import { Trash2 } from '~/lib/icons/Trash2';
+import { useSystem } from '~/lib/powersync';
+import { useAuthStore } from '~/stores/auth.store';
+import { useLearningStore } from '~/stores/learning.store';
 
 export default function EditAccount() {
   const insets = useSafeAreaInsets();
-  const { resetLearning, clearInProgressLesson } = useLearningStore();
-
-  const { session, setUser, logout, profile } = useAuthStore();
-  const [image, setImage] = React.useState<ImagePicker.ImagePickerAsset | null>(
-    null
-  );
-
   const { supabase } = useSystem();
 
-  const [name, setName] = React.useState<string | undefined>(
-    profile?.full_name ?? undefined
-  );
+  const { resetLearning, clearInProgressLesson } = useLearningStore();
+  const { session, logout, profile } = useAuthStore();
+  const { refetch } = useGetMyProfile();
+  const [image, setImage] = React.useState<ImagePicker.ImagePickerAsset | null>(null);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [name, setName] = React.useState<string | undefined>(profile?.full_name ?? undefined);
 
   const { upload, uploading } = useImageUpload({
-    bucket: "avatars",
+    bucket: 'avatars',
     onSuccess: async (publicUrl) => {
       await updateProfileAsync({ avatar_url: publicUrl });
     },
@@ -51,14 +48,14 @@ export default function EditAccount() {
 
   const [allowed, setAllowed] = React.useState(false);
   React.useEffect(() => {
-    setAllowed(profile?.full_name !== name || profile?.avatar_url !== image);
+    setAllowed(profile?.full_name !== name || !!image);
   }, [name, image, profile]);
 
   const handleBack = () => {
     if (router.canGoBack()) {
       router.back();
     } else {
-      router.push("/(protected)/(_tabs)/settings");
+      router.push('/(protected)/(_tabs)/settings');
     }
   };
   const { updateProfileAsync } = useUpdateProfile({
@@ -67,7 +64,6 @@ export default function EditAccount() {
 
   const handlePickAvatar = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      // mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
@@ -89,46 +85,42 @@ export default function EditAccount() {
         });
       }
     } catch (error) {
-      toast.error("Failed to update profile. Please try again.");
+      console.error('Error updating profile:', error);
+      toast.error('Failed to update profile. Please try again.');
     }
   };
-
-  // const handleSave = async () => {
-  //   // setUser({ ...user, name, avatar });
-  //   // await sendLocalNotification({
-  //   //   title: "Profile Updated",
-  //   //   body: "Your profile has been updated successfully.",
-  //   // });
-  //   handleBack();
-  // };
-
+  const handleRefresh = React.useCallback(() => {
+    refetch();
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1200);
+  }, [refetch]);
   const handleDeleteAccount = async () => {
     try {
       await supabase.signOut();
-      toast.success("Your account has been deleted successfully.");
+      toast.success('Your account has been deleted successfully.');
       resetLearning();
       clearInProgressLesson();
       logout();
-      router.replace("/(auth)/login");
+      router.replace('/(auth)/login');
     } catch (error) {
-      console.error("Error deleting account:", error);
-      toast.error("Failed to delete account. Please try again.");
+      console.error('Error deleting account:', error);
+      toast.error('Failed to delete account. Please try again.');
     }
   };
 
   return (
-    <SafeAreaView className='flex-1' style={{ paddingTop: insets.top }}>
-      <PullToRefreshWrapper>
-        <View className='flex-1 gap-5 px-5 pb-5'>
-          <HeaderWithAction
-            title='Edit Account'
-            actionLabel='Save'
-            onBack={handleBack}
-            onAction={handleSave}
-            disableAction={!allowed}
-          />
-          {/* Avatar */}
-          <View className='items-center'>
+    <SafeAreaView className="flex-1" style={{ paddingTop: insets.top }}>
+      <HeaderWithAction
+        title="Edit Account"
+        actionLabel="Save"
+        onBack={handleBack}
+        onAction={handleSave}
+        className="px-5"
+        disableAction={!allowed}
+      />
+      <PullToRefreshWrapper refreshing={refreshing || uploading} onRefresh={handleRefresh}>
+        <View className="flex-1 gap-5 px-5 pb-5">
+          <View className="items-center">
             <View>
               <Image
                 source={
@@ -136,20 +128,20 @@ export default function EditAccount() {
                     ? { uri: image.uri }
                     : profile?.avatar_url
                       ? { uri: profile?.avatar_url }
-                      : require("assets/images/avatar-placeholder.png")
+                      : require('assets/images/avatar-placeholder.png')
                 }
                 style={{
                   width: 96,
                   height: 96,
                   borderRadius: 50,
-                  backgroundColor: "#eee",
+                  backgroundColor: '#eee',
                   borderWidth: 1,
-                  borderColor: "#ddd",
+                  borderColor: '#ddd',
                 }}
               />
               <Pressable
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   right: 31,
                   bottom: -10,
                   // backgroundColor: "#fff",
@@ -157,22 +149,22 @@ export default function EditAccount() {
                   padding: 6,
                   elevation: 2,
                 }}
-                className='bg-foreground shadow-sm '
+                className="bg-foreground shadow-sm "
                 // className='absolute bg-red-500 translate-x-1/2 left-1/2 bottom-0'
                 onPress={handlePickAvatar}
               >
-                <Pencil size={20} className='text-background' />
+                <Pencil size={20} className="text-background" />
               </Pressable>
             </View>
           </View>
           {/* Form */}
-          <View className='gap-5'>
+          <View className="gap-5">
             <View>
-              <Text className='mb-1 font-semibold px-3'>Name</Text>
+              <Text className="mb-1 font-semibold px-3">Name</Text>
               <Input value={name} onChangeText={setName} />
             </View>
             <View>
-              <Text className='mb-1 font-semibold px-3'>Email</Text>
+              <Text className="mb-1 font-semibold px-3">Email</Text>
               <Input value={session?.user.email} editable={false} />
             </View>
           </View>
@@ -187,27 +179,24 @@ export default function EditAccount() {
           </Button>
         </View> */}
           {/* AlertDialog */}
-          <AlertDialog className='mt-auto'>
-            <Button variant='ghost'>
-              <AlertDialogTrigger className='flex-row justify-center items-center'>
-                <Trash2 size={18} color='#f00' />
-                <Text className='!text-error ml-2'>Delete Account</Text>
+          <AlertDialog className="mt-auto">
+            <Button variant="ghost">
+              <AlertDialogTrigger className="flex-row justify-center items-center">
+                <Trash2 size={18} color="#f00" />
+                <Text className="!text-error ml-2">Delete Account</Text>
               </AlertDialogTrigger>
             </Button>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Are you sure you want to delete your account?
-                </AlertDialogTitle>
+                <AlertDialogTitle>Are you sure you want to delete your account?</AlertDialogTitle>
               </AlertDialogHeader>
               <Text>
-                This action cannot be undone. All your learning data will be
-                permanently deleted.
+                This action cannot be undone. All your learning data will be permanently deleted.
               </Text>
               <AlertDialogFooter>
                 <AlertDialogCancel asChild>
                   <Button
-                    variant='outline'
+                    variant="outline"
                     // onPress={() => setShowDeleteDialog(false)}
                   >
                     <Text>Cancel</Text>
@@ -215,7 +204,7 @@ export default function EditAccount() {
                 </AlertDialogCancel>
                 <AlertDialogAction asChild>
                   <Button
-                    variant='destructive'
+                    variant="destructive"
                     onPress={() => {
                       // setShowDeleteDialog(false);
                       handleDeleteAccount();

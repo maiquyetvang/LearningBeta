@@ -1,10 +1,9 @@
 import { useLearningStore } from '~/stores/learning.store';
 import { Course, LessonGroup } from '~/types/lesson.type';
-import { useGetLessonGroup } from './useGetLessonById';
 
-export function useNextLesson(course?: Course) {
+export function useNextLesson(course?: Course | null) {
   const { learnedLessons: completedUnit } = useLearningStore();
-  const { data: levelTestLesson } = useGetLessonGroup('level-test');
+  // const { data: levelTestLesson } = useGetLessonGroup('level-test');
 
   const checkIsCompleted = (lessonId: string) =>
     completedUnit?.some((unit) => unit.lessonId === lessonId);

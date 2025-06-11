@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Alert, Pressable, TouchableOpacity, View } from "react-native";
-import { InputWithIcon } from "~/components/custom-ui/input-icon";
-import { Button } from "~/components/ui/button";
-import { Text } from "~/components/ui/text";
-import { H3 } from "~/components/ui/typography";
-import ThemeIcon from "../Icon";
-import { Lock } from "~/lib/icons/Lock";
-import { Mail } from "~/lib/icons/Mail";
-import { ArrowLeft, X } from "lucide-react-native";
-import { AnimatedScreenWrapper } from "./AnimatedScreenWrapper";
-import { ELoginScreen } from "~/app/(auth)/login";
-import { PasswordRules, checkPasswordRules } from "../custom-ui/password-rule";
-import { authApi } from "~/api/auth.local";
-import { LoginForm } from "./LoginScreen";
-import { sendVerifyCodeNotification } from "~/utils/notification";
-import { useSystem } from "~/lib/powersync";
-import { toast } from "sonner-native";
+import { ArrowLeft, X } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Pressable, TouchableOpacity, View } from 'react-native';
+import { toast } from 'sonner-native';
+import { ELoginScreen } from '~/app/(auth)/login';
+import { InputWithIcon } from '~/components/custom-ui/input-icon';
+import { Button } from '~/components/ui/button';
+import { Text } from '~/components/ui/text';
+import { H3 } from '~/components/ui/typography';
+import { Lock } from '~/lib/icons/Lock';
+import { Mail } from '~/lib/icons/Mail';
+import { useSystem } from '~/lib/powersync';
+import { PasswordRules, checkPasswordRules } from '../custom-ui/password-rule';
+import ThemeIcon from '../Icon';
+import { AnimatedScreenWrapper } from './AnimatedScreenWrapper';
 
 type RegisterForm = {
   email: string;
@@ -59,9 +56,7 @@ export function RegisterStep({
       await supabase.register(email, password);
       onNextStep?.(ELoginScreen.LOGIN);
     } catch (e: any) {
-      toast.error(
-        e?.message || "An error occurred during registration. Please try again."
-      );
+      toast.error(e?.message || 'An error occurred during registration. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -71,7 +66,7 @@ export function RegisterStep({
     return () => {
       reset();
     };
-  }, [onClose]);
+  }, [onClose, reset]);
 
   return (
     <View className="gap-5">

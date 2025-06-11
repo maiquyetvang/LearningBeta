@@ -1,18 +1,15 @@
-import { router } from "expo-router";
-import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { SafeAreaView, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { toast } from "sonner-native";
-import HeaderWithAction from "~/components/common/HeaderWithAction";
-import { InputWithIcon } from "~/components/custom-ui/input-icon";
-import {
-  checkPasswordRules,
-  PasswordRules,
-} from "~/components/custom-ui/password-rule";
-import { Text } from "~/components/ui/text";
-import { Lock } from "~/lib/icons/Lock";
-import { useSystem } from "~/lib/powersync";
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { SafeAreaView, ScrollView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { toast } from 'sonner-native';
+import HeaderWithAction from '~/components/common/HeaderWithAction';
+import { InputWithIcon } from '~/components/custom-ui/input-icon';
+import { checkPasswordRules, PasswordRules } from '~/components/custom-ui/password-rule';
+import { Text } from '~/components/ui/text';
+import { Lock } from '~/lib/icons/Lock';
+import { useSystem } from '~/lib/powersync';
 
 type FormValues = {
   currentPassword: string;
@@ -38,12 +35,14 @@ export default function ChangePassword() {
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const currentPassword = watch('currentPassword');
+  const password = watch('password');
+  const confirmPassword = watch('confirmPassword');
   const handleSave = handleSubmit(async (data) => {
     try {
       setLoading(true);
       await supabase.changePassword(data.currentPassword, data.password);
-      toast.success("Password changed successfully");
+      toast.success('Password changed successfully');
       handleBack();
     } catch (error) {
       if (error instanceof Error) {
@@ -51,7 +50,7 @@ export default function ChangePassword() {
         setErrorMessage(errorMessage);
         toast.error(errorMessage);
       } else {
-        const errorMessage = "An unexpected error occurred";
+        const errorMessage = 'An unexpected error occurred';
         setErrorMessage(errorMessage);
         toast.error(errorMessage);
       }
@@ -63,26 +62,28 @@ export default function ChangePassword() {
     if (router.canGoBack()) {
       router.back();
     } else {
-      router.push("/(protected)/(_tabs)/settings");
+      router.push('/(protected)/(_tabs)/settings');
     }
   };
   React.useEffect(() => {
     if (errorMessage) {
       setErrorMessage(null);
     }
-  }, [watch("currentPassword"), watch("password"), watch("confirmPassword")]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPassword, password, confirmPassword]);
   return (
     <SafeAreaView className="flex-1 " style={{ paddingTop: insets.top }}>
-      <View className="flex-1 px-5">
-        <HeaderWithAction
-          title="Change Password"
-          actionLabel="Save"
-          onBack={handleBack}
-          onAction={handleSave}
-          disableAction={loading}
-        />
-        {/* Form */}
-        <View className="gap-4">
+      <HeaderWithAction
+        title="Change Password"
+        actionLabel="Save"
+        onBack={handleBack}
+        onAction={handleSave}
+        disableAction={loading}
+        className="px-5"
+      />
+      {/* Form */}
+      <ScrollView>
+        <View className="gap-3 px-5">
           {/* Current Password */}
           <View>
             <Text className="ml-3 mb-1 font-medium">
@@ -99,9 +100,6 @@ export default function ChangePassword() {
                   placeholder="Enter your current password"
                   value={value}
                   onChangeText={onChange}
-                  // autoComplete='off'
-                  // textContentType='none'
-                  // importantForAutofill='no'
                   secureTextEntry
                   leftIcon={<Lock className="text-primary" size={20} />}
                   editable={!loading}
@@ -109,13 +107,11 @@ export default function ChangePassword() {
               )}
             />
             {errors.currentPassword && (
-              <Text className="text-red-500 text-xs ml-3 mt-1">
-                {errors.currentPassword.message}
-              </Text>
+              <Text className="text-error text-xs ml-3 mt-1">{errors.currentPassword.message}</Text>
             )}
           </View>
           {/* New Password */}
-          <View className="gap-1">
+          <View>
             <Text className="ml-3 mb-1 font-medium">
               New Password <Text className="text-error">*</Text>
             </Text>
@@ -150,7 +146,7 @@ export default function ChangePassword() {
               )}
             />
             {!!errors.password?.message && (
-              <Text className="text-red-500 text-xs ml-3 mt-1">{errors.password.message}</Text>
+              <Text className="text-error text-xs ml-3 mt-1">{errors.password.message}</Text>
             )}
           </View>
           {/* Confirm New Password */}
@@ -180,16 +176,12 @@ export default function ChangePassword() {
               )}
             />
             {errors.confirmPassword && (
-              <Text className="text-red-500 text-xs ml-3 mt-1">
-                {errors.confirmPassword.message}
-              </Text>
+              <Text className="text-error text-xs ml-3 mt-1">{errors.confirmPassword.message}</Text>
             )}
+            {errorMessage && <Text className="text-error ml-3 mt-1  text-xs">{errorMessage}</Text>}
           </View>
-          {errorMessage && (
-            <Text className='text-error ml-3 text-xs'>{errorMessage}</Text>
-          )}
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

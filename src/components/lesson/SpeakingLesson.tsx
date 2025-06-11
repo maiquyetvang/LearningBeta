@@ -1,4 +1,3 @@
-import { ArrowRightIcon } from 'lucide-react-native';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { Button } from '~/components/ui/button';
@@ -6,7 +5,6 @@ import { Text } from '~/components/ui/text';
 import { useVoiceRecognition } from '~/hooks/useVoiceRecognition';
 import { Mic } from '~/lib/icons/Mic';
 import { Volume2 } from '~/lib/icons/Volume2';
-import { useColorScheme } from '~/lib/useColorScheme';
 import { cn } from '~/lib/utils';
 import { useLearningStore } from '~/stores/learning.store';
 import { Lesson } from '~/types/lesson.type';
@@ -27,12 +25,10 @@ const SpeakingLesson = ({
 }) => {
   const { setAudioDisabled } = useLearningStore();
   const { question, answer, questionLanguage } = sampleText.value;
-  const { isDarkColorScheme } = useColorScheme();
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [isReady, setIsReady] = React.useState(false);
   const [textDetected, setTextDetection] = React.useState<string | undefined>();
-  const { state, startListening, stopListening, destroyRecognition } =
-    useVoiceRecognition(questionLanguage);
+  const { state, startListening, stopListening } = useVoiceRecognition(questionLanguage);
   const sampleWords =
     question
       ?.replace(/[.,\/#!$?%\^&\*;:{}=\-_`~()]/g, '')
@@ -73,6 +69,7 @@ const SpeakingLesson = ({
     return () => {
       clearTimeout(timer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.results?.[0]]);
 
   const renderWords = sampleWords.map((word, index) => {
@@ -141,9 +138,9 @@ const SpeakingLesson = ({
           className="w-fit "
           showIcon
           language={questionLanguage}
-          variant={"neutral"}
+          variant={'neutral'}
           disabled={disabled || (!isReady && state.isRecording)}
-          buttonClassName='justify-center text-xl font-bold'
+          buttonClassName="justify-center text-xl font-bold"
           hideLabel
           customLabel="Play Sample"
           leftIcon={<Volume2 size={20} className="text-foreground" />}

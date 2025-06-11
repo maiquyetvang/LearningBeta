@@ -20,7 +20,7 @@ export const CannotSpeakButton = ({
       className={cn(!disabled && 'bg-primary-foreground ')}
     >
       <Text className="font-semibold text-neutral-800 dark:text-neutral-200">
-        I can't speak at the moment
+        I can&apos;t speak at the moment
       </Text>
     </Button>
   );

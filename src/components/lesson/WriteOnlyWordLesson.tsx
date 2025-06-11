@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Volume2 } from "~/lib/icons/Volume2";
-import { useLearningStore } from "~/stores/learning.store";
-import { Lesson } from "~/types/lesson.type";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { Input } from "../ui/input";
-import { Text } from "../ui/text";
-import { CannotListenButton } from "./CannotListenButton";
-import { CheckResultButton } from "./CheckResultButton";
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Volume2 } from '~/lib/icons/Volume2';
+import { useLearningStore } from '~/stores/learning.store';
+import { Lesson } from '~/types/lesson.type';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { Input } from '../ui/input';
+import { Text } from '../ui/text';
+import { CannotListenButton } from './CannotListenButton';
+import { CheckResultButton } from './CheckResultButton';
 
 const WriteOnlyWordLesson = ({
   value,
@@ -46,11 +46,11 @@ const WriteOnlyWordLesson = ({
       </Text>
       <SpeakButton
         label={question}
-        className='w-full'
+        className="w-full"
         showIcon
         language={questionLanguage}
-        variant={"default"}
-        buttonClassName='justify-center text-xl font-bold'
+        variant={'default'}
+        buttonClassName="justify-center text-xl font-bold"
         hideLabel
         disabled={disabled}
         leftIcon={<Volume2 className="text-white" size={20} />}
@@ -78,43 +78,3 @@ const WriteOnlyWordLesson = ({
   );
 };
 export default WriteOnlyWordLesson;
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    flex: 1,
-  },
-  sentenceContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 50,
-  },
-  sentenceText: {
-    // fontSize: 18,
-    // marginRight: 4,
-  },
-  blankText: {
-    fontWeight: '500',
-    // fontSize: 18,
-  },
-  optionsContainer: {
-    flexWrap: 'wrap',
-    width: '100%',
-    gap: 8,
-    // marginTop: "auto",
-    // marginBottom: "auto",
-  },
-  wordButton: {
-    backgroundColor: '#EEE',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    margin: 4,
-  },
-  wordButtonDisabled: {
-    opacity: 0.4,
-  },
-  wordText: {
-    // fontSize: 18,
-  },
-});

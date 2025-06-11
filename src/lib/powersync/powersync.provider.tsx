@@ -1,6 +1,6 @@
-import { PowerSyncContext } from "@powersync/react-native";
-import { PropsWithChildren, useMemo } from "react";
-import { system, SystemContext, useSystem } from "~/lib/powersync/system";
+import { PowerSyncContext } from '@powersync/react-native';
+import { PropsWithChildren, useMemo } from 'react';
+import { system, SystemContext, useSystem } from '~/lib/powersync/system';
 
 export const PowersyncProvider = ({ children }: PropsWithChildren) => {
   return (
@@ -16,7 +16,5 @@ const DBProvider = ({ children }: PropsWithChildren) => {
     system.init();
     return system.powersync;
   }, [system]);
-  return (
-    <PowerSyncContext.Provider value={db}>{children}</PowerSyncContext.Provider>
-  );
+  return <PowerSyncContext.Provider value={db}>{children}</PowerSyncContext.Provider>;
 };

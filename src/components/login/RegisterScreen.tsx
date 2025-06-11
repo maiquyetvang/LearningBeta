@@ -23,13 +23,16 @@ export default function RegisterScreen({
     setRegisterData(data);
     console.log({ data });
   }, []);
-  const handleStepChange = useCallback((step: ELoginScreen) => {
-    if (step === ELoginScreen.LOGIN) {
-      onNextStep?.(step);
-    } else {
-      setStep(step);
-    }
-  }, []);
+  const handleStepChange = useCallback(
+    (step: ELoginScreen) => {
+      if (step === ELoginScreen.LOGIN) {
+        onNextStep?.(step);
+      } else {
+        setStep(step);
+      }
+    },
+    [onNextStep],
+  );
   const handleClose = () => {
     onClose?.();
   };

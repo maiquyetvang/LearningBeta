@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import { useSystem } from "~/lib/powersync";
-import { useAuthStore } from "~/stores/auth.store";
+import { useQuery } from '@tanstack/react-query';
+import { useSystem } from '~/lib/powersync';
+import { useAuthStore } from '~/stores/auth.store';
 
-export const USE_GET_PROFILE_QUERY_KEY = "profile";
+export const USE_GET_PROFILE_QUERY_KEY = 'profile';
 export const useGetMyProfile = () => {
   const { setProfile, session } = useAuthStore();
   const { db, supabase } = useSystem();
@@ -10,26 +10,26 @@ export const useGetMyProfile = () => {
     queryKey: [USE_GET_PROFILE_QUERY_KEY, session?.user?.id],
     queryFn: async () => {
       const profiles = await db
-        .selectFrom("profiles")
+        .selectFrom('profiles')
         .selectAll()
-        .where("user_id", "=", session?.user?.id ?? "")
+        .where('user_id', '=', session?.user?.id ?? '')
         .execute();
       if (profiles.length === 0) {
         // try to get profile from supabase
         const { data, error } = await supabase.client
-          .from("profiles")
+          .from('profiles')
           .select()
-          .eq("user_id", session?.user?.id!)
+          .eq('user_id', session?.user?.id!)
           .maybeSingle();
         if (error) {
-          console.error("Error fetching profile", error);
+          console.error('Error fetching profile', error);
           return null;
         }
         if (!data) {
-          console.error("No profile found");
+          console.error('No profile found');
           return null;
         }
-        console.log("Profile from supabase", data);
+        console.log('Profile from supabase', data);
         setProfile(data);
         return null;
       }
@@ -39,5 +39,5 @@ export const useGetMyProfile = () => {
     },
     enabled: !!session?.user?.id,
   });
-  return { profile: data, ...rest };
+  return { data, ...rest };
 };

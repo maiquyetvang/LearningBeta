@@ -19,7 +19,7 @@ export default function LessonOverview({
     ? (inProgressLesson.progress.length / inProgressLesson.totalLesson) * 100
     : 0;
   const handleBack = () => {
-    router.replace("/(protected)/(_tabs)");
+    router.replace('/(protected)/(_tabs)');
   };
   return (
     <View className="flex-1 px-5 pb-5">

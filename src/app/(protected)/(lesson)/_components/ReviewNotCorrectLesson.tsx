@@ -1,5 +1,4 @@
 import { Lottie } from 'assets';
-import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import React from 'react';
 import { View } from 'react-native';
@@ -7,9 +6,6 @@ import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 
 const ReviewNotCorrectLesson = ({ onReview }: { onReview?: () => void }) => {
-  const handleBackHome = () => {
-    router.replace("/(protected)/(_tabs)");
-  };
   const handleReview = () => {
     onReview?.();
   };

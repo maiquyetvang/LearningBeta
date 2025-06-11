@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { Course1Unit2, lessonGroups, levelTestLessons } from '~/data/lesson';
-import { Course, Lesson, LessonGroup } from '~/types/lesson.type';
-import { CompletedUnit, useLearningStore } from '../stores/learning.store';
 import { LessonImages } from 'assets';
+import { Course1Unit2, lessonGroups, levelTestLessons } from '~/data/lesson';
+import { Course, LessonGroup } from '~/types/lesson.type';
+import { CompletedUnit, useLearningStore } from '../stores/learning.store';
 
 async function fetchUnitById(id: string): Promise<LessonGroup> {
   const lessonInfo = lessonGroups.find((lesson) => lesson.id === id);
@@ -44,8 +44,10 @@ async function fetchCourseById(id: string): Promise<Course> {
     lessonGroups: lessonGroups,
   };
 }
-async function fetchCompletedUnit(courseId?: string): Promise<CompletedUnit[]> {
-  const { learnedLessons } = useLearningStore();
+async function fetchCompletedUnit(
+  learnedLessons: CompletedUnit[],
+  courseId?: string,
+): Promise<CompletedUnit[]> {
   if (!courseId) {
     return learnedLessons;
   }
@@ -67,9 +69,10 @@ export function useGetCourse(courseId?: string) {
   });
 }
 export function useGetCompletedUnit(courseId?: string) {
+  const { learnedLessons } = useLearningStore();
   return useQuery<CompletedUnit[]>({
     queryKey: ['completedUnits', courseId],
-    queryFn: () => fetchCompletedUnit(courseId),
+    queryFn: () => fetchCompletedUnit(learnedLessons, courseId),
     enabled: true,
   });
 }

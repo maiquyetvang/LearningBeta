@@ -28,7 +28,7 @@ export enum ELoginScreen {
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const { isDarkColorScheme } = useColorScheme();
-  const { bottomSheetRef, openBottomSheet, closeBottomSheet, handleSheetChanges, isSheetOpen } =
+  const { bottomSheetRef, openBottomSheet, closeBottomSheet, handleSheetChanges } =
     useLessonBottomSheet();
   const [step, setStep] = React.useState<ELoginScreen>(ELoginScreen.LOGIN);
   const handleStepChange = useCallback((step: ELoginScreen) => {

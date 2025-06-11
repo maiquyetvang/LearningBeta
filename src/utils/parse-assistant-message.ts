@@ -15,6 +15,7 @@ export const parseAssistantMessage = (content: string) => {
         questionData,
       };
     } catch (e) {
+      console.log('JSON parsing error:', e);
       // If JSON parsing fails, treat as regular message
       return {
         hasQuestion: false,

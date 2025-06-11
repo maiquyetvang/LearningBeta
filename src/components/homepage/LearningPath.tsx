@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { ImageSourcePropType, View } from 'react-native';
 import { useGetCourse } from '~/hooks/useGetLessonById';
 import { useNextLesson } from '~/hooks/useNextLesson';
+import { FileText } from '~/lib/icons/FileText';
 import { useLearningStore } from '~/stores/learning.store';
 import ProgressBar from '../common/ProgressBar';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Text } from '../ui/text';
 import { H1 } from '../ui/typography';
-import { FileText } from '~/lib/icons/FileText';
-import CircleProgress from '../custom-ui/CircleProgress';
 type LessonInfo = {
   id: string;
   title: string;
@@ -30,9 +29,8 @@ export default function LearningPath({
 }) {
   // const { data } = useGetCompletedUnit();
   const { data: course } = useGetCourse(courseId);
-  const { nextLesson, lessonGroups, progress, totalLessons, checkIsCompleted } =
-    useNextLesson(course);
-  const { learnedLessons: completedUnit, setCurrentCourse, inProgressLesson } = useLearningStore();
+  const { nextLesson, lessonGroups, progress, checkIsCompleted } = useNextLesson(course);
+  const { setCurrentCourse } = useLearningStore();
 
   // const checkIsCompleted = (lessonId: string) => {
   //   return completedUnit?.some((unit) => unit.lessonId === lessonId);
@@ -47,12 +45,10 @@ export default function LearningPath({
   const handleLearn = (id: string) => {
     onLearn?.(id);
   };
-  const handleReview = (id: string) => {
-    onReview?.(id);
-  };
   const isCompleted = progress === 100;
   useEffect(() => {
     setCurrentCourse(course);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [course]);
   const lastLessonId = lessonGroups && lessonGroups[lessonGroups.length - 1]?.id;
   if (!course) {
@@ -136,8 +132,7 @@ const RenderLesson = ({
   onLearn?: (id: string) => void;
 }) => {
   const { id, title, description, isCompleted } = lesson;
-  const { learnedLessons, inProgressLesson, clearInProgressLesson } = useLearningStore();
-  const completedResult = learnedLessons?.find((lesson) => lesson.lessonId === id);
+  const { inProgressLesson, clearInProgressLesson } = useLearningStore();
   const [showDialog, setShowDialog] = useState(false);
 
   const hasOtherInProgress =

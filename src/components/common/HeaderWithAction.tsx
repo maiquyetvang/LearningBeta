@@ -23,11 +23,14 @@ export default function HeaderWithAction({
   disableAction = false,
 }: Props) {
   return (
-    <View className={`flex-row items-center justify-between mb-6 ${className}`}>
+    <View className={`flex-row items-center justify-between mb-3 ${className}`}>
       <TouchableOpacity onPress={onBack}>
         <ArrowLeft size={20} className="text-foreground" />
       </TouchableOpacity>
-      <Text className="text-lg font-semibold absolute right-1/2  translate-x-1/2">{title}</Text>
+      <View className="absolute left-0 right-0 items-center pointer-events-none">
+        <Text className="text-lg font-semibold">{title}</Text>
+      </View>
+
       <TouchableOpacity onPress={onAction} disabled={disableAction}>
         <Text
           disabled={disableAction}
