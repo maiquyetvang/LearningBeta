@@ -110,11 +110,7 @@ const PersonalizeScreen: React.FC = () => {
   const [personalizeValues, setPersonalizeValues] = useState<Record<string, string>>({});
   const [progress, setProgress] = useState<ProgressStep[]>([]);
 
-  const { updateProfileAsync } = useUpdateProfile({
-    onSuccess: () => {
-      toast.success('Your profile has been updated successfully.');
-    },
-  });
+  const { updateProfileAsync } = useUpdateProfile();
 
   console.log({ personalizeValues });
   const renderTitle = (index: number) => {
