@@ -1,5 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { AppImages } from 'assets';
+import { Moon, Sun } from 'lucide-react-native'; // hoặc icon bạn thích
 import React, { useCallback } from 'react';
 import {
   Image,
@@ -8,15 +9,16 @@ import {
   Platform,
   SafeAreaView,
   StyleSheet,
+  TouchableOpacity,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LoginStep } from '~/components/login/LoginScreen';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { useLessonBottomSheet } from '~/hooks/useLessonBottomSheet';
 import { useColorScheme } from '~/lib/useColorScheme';
 import RegisterScreen from '../../components/login/RegisterScreen';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export enum ELoginScreen {
   LOGIN = 'login',
@@ -27,7 +29,7 @@ export enum ELoginScreen {
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
-  const { isDarkColorScheme } = useColorScheme();
+  const { isDarkColorScheme, toggleColorScheme } = useColorScheme();
   const { bottomSheetRef, openBottomSheet, closeBottomSheet, handleSheetChanges } =
     useLessonBottomSheet();
   const [step, setStep] = React.useState<ELoginScreen>(ELoginScreen.LOGIN);
@@ -51,10 +53,21 @@ export default function LoginScreen() {
       style={{ flex: 1 }}
     >
       <SafeAreaView className="flex-1">
+        <View className="ml-auto pr-5">
+          <TouchableOpacity onPress={toggleColorScheme} hitSlop={10}>
+            {isDarkColorScheme ? (
+              <Sun size={24} color="#F59E42" />
+            ) : (
+              <Moon size={24} color="#222" />
+            )}
+          </TouchableOpacity>
+        </View>
         <View className="p-5 gap-5 flex-1 justify-center items-center">
           <View className=" flex-1 justify-center items-center ">
             <Image
-              source={require('assets/images/splash-icon.png')}
+              source={isDarkColorScheme ? AppImages.splash_icon_dark : AppImages.splash_icon}
+              height={180}
+              width={180}
               style={styles.image}
               resizeMode="contain"
             />

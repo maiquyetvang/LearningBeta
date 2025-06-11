@@ -158,7 +158,7 @@ export default function EditAccount() {
             </View>
           </View>
           {/* Form */}
-          <View className="gap-5">
+          <View className="gap-5 flex-1">
             <View>
               <Text className="mb-1 font-semibold px-3">Name</Text>
               <Input value={name} onChangeText={setName} />
@@ -168,56 +168,48 @@ export default function EditAccount() {
               <Input value={session?.user.email} editable={false} />
             </View>
           </View>
-          {/* Delete Account */}
-          {/* <View className='flex-1 justify-end mt-10'>
-          <Button
-            variant='ghost'
-            className='flex-row justify-center items-center'
-          >
-            <Trash2 size={18} color='#f00' />
-            <Text className='!text-error ml-2'>Delete Account</Text>
-          </Button>
-        </View> */}
-          {/* AlertDialog */}
-          <AlertDialog className="mt-auto">
-            <Button variant="ghost">
-              <AlertDialogTrigger className="flex-row justify-center items-center">
-                <Trash2 size={18} color="#f00" />
-                <Text className="!text-error ml-2">Delete Account</Text>
-              </AlertDialogTrigger>
-            </Button>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure you want to delete your account?</AlertDialogTitle>
-              </AlertDialogHeader>
-              <Text>
-                This action cannot be undone. All your learning data will be permanently deleted.
-              </Text>
-              <AlertDialogFooter>
-                <AlertDialogCancel asChild>
-                  <Button
-                    variant="outline"
-                    // onPress={() => setShowDeleteDialog(false)}
-                  >
-                    <Text>Cancel</Text>
-                  </Button>
-                </AlertDialogCancel>
-                <AlertDialogAction asChild>
-                  <Button
-                    variant="destructive"
-                    onPress={() => {
-                      // setShowDeleteDialog(false);
-                      handleDeleteAccount();
-                    }}
-                  >
-                    <Text>Delete</Text>
-                  </Button>
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </View>
       </PullToRefreshWrapper>
+      <AlertDialog>
+        <AlertDialogTrigger>
+          <Button
+            variant="ghost"
+            className="mx-5 mb-5 mt-auto flex-row justify-center items-center "
+          >
+            <Trash2 size={18} color="#f00" />
+            <Text className="!text-error ml-2">Delete Account</Text>
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete your account?</AlertDialogTitle>
+          </AlertDialogHeader>
+          <Text>
+            This action cannot be undone. All your learning data will be permanently deleted.
+          </Text>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button
+                variant="outline"
+                // onPress={() => setShowDeleteDialog(false)}
+              >
+                <Text>Cancel</Text>
+              </Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button
+                variant="destructive"
+                onPress={() => {
+                  // setShowDeleteDialog(false);
+                  handleDeleteAccount();
+                }}
+              >
+                <Text>Delete</Text>
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </SafeAreaView>
   );
 }
