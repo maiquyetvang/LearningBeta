@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Volume2 } from '~/lib/icons/Volume2';
-import { Lesson } from '~/types/lesson.type';
-import { SpeakButton } from '../custom-ui/speak-button';
-import { Text } from '../ui/text';
-import { CheckResultButton } from './CheckResultButton';
-import { Input } from '../ui/input';
-import { CannotListenButton } from './CannotListenButton';
-import { useLearningStore } from '~/stores/learning.store';
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Volume2 } from "~/lib/icons/Volume2";
+import { useLearningStore } from "~/stores/learning.store";
+import { Lesson } from "~/types/lesson.type";
+import { SpeakButton } from "../custom-ui/speak-button";
+import { Input } from "../ui/input";
+import { Text } from "../ui/text";
+import { CannotListenButton } from "./CannotListenButton";
+import { CheckResultButton } from "./CheckResultButton";
 
 const WriteOnlyWordLesson = ({
   value,
@@ -21,7 +21,7 @@ const WriteOnlyWordLesson = ({
   onSkip?: () => void;
 }) => {
   const { setSpeechDisabled } = useLearningStore();
-  const { question, selectors, answer, image, audioLanguage } = value.value;
+  const { question, answer, questionLanguage } = value.value;
 
   const [selected, setSelected] = useState<string | undefined>();
   const handleSelectWord = (value: string) => {
@@ -45,12 +45,12 @@ const WriteOnlyWordLesson = ({
         * You can slow down the audio&apos;s speed
       </Text>
       <SpeakButton
-        label={answer}
-        className="w-full"
+        label={question}
+        className='w-full'
         showIcon
-        language={audioLanguage}
-        variant={'default'}
-        buttonClassName="justify-center text-xl font-bold"
+        language={questionLanguage}
+        variant={"default"}
+        buttonClassName='justify-center text-xl font-bold'
         hideLabel
         disabled={disabled}
         leftIcon={<Volume2 className="text-white" size={20} />}

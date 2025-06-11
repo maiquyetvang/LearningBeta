@@ -10,7 +10,7 @@ import { playCongratsSound } from '~/utils/playSound';
 
 const CompleteLesson = () => {
   const handleBackHome = () => {
-    router.replace('/(protected)/(_tabs)/(_home)');
+    router.replace("/(protected)/(_tabs)");
   };
   useEffect(() => {
     playCongratsSound();

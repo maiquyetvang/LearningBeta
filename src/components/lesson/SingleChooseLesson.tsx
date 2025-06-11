@@ -14,7 +14,7 @@ const SingleChooseLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, selectors, answer, image, audioLanguage } = value.value;
+  const { question, selectors, answer, image, selectorLanguage } = value.value;
   const [selected, setSelected] = useState<string | null>();
   const handleSelectWord = (value: string) => {
     setSelected(value);
@@ -55,7 +55,7 @@ const SingleChooseLesson = ({
                 style={{ borderWidth: isUsed ? 1 : 2 }}
                 label={word}
                 isSelected={isUsed}
-                language={audioLanguage}
+                language={selectorLanguage}
               />
             );
           })}
@@ -71,37 +71,9 @@ const styles = StyleSheet.create({
     padding: 16,
     flex: 1,
   },
-  sentenceContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 50,
-  },
-  sentenceText: {
-    // fontSize: 18,
-    // marginRight: 4,
-  },
-  blankText: {
-    fontWeight: '500',
-    // fontSize: 18,
-  },
   optionsContainer: {
     flexWrap: 'wrap',
     width: '100%',
     gap: 8,
-    // marginTop: "auto",
-    // marginBottom: "auto",
-  },
-  wordButton: {
-    backgroundColor: '#EEE',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    margin: 4,
-  },
-  wordButtonDisabled: {
-    opacity: 0.4,
-  },
-  wordText: {
-    // fontSize: 18,
   },
 });

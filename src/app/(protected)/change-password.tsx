@@ -1,13 +1,18 @@
-import { router } from 'expo-router';
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { SafeAreaView, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import HeaderWithAction from '~/components/common/HeaderWithAction';
-import { InputWithIcon } from '~/components/custom-ui/input-icon';
-import { checkPasswordRules, PasswordRules } from '~/components/custom-ui/password-rule';
-import { Text } from '~/components/ui/text';
-import { Lock } from '~/lib/icons/Lock';
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { SafeAreaView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { toast } from "sonner-native";
+import HeaderWithAction from "~/components/common/HeaderWithAction";
+import { InputWithIcon } from "~/components/custom-ui/input-icon";
+import {
+  checkPasswordRules,
+  PasswordRules,
+} from "~/components/custom-ui/password-rule";
+import { Text } from "~/components/ui/text";
+import { Lock } from "~/lib/icons/Lock";
+import { useSystem } from "~/lib/powersync";
 
 type FormValues = {
   currentPassword: string;
@@ -29,18 +34,43 @@ export default function ChangePassword() {
       confirmPassword: '',
     },
   });
-  const loading = false;
-  const handleSave = handleSubmit((data) => {
-    // Xử lý đổi mật khẩu ở đây
-    // data.currentPassword, data.password
+  const { supabase } = useSystem();
+
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleSave = handleSubmit(async (data) => {
+    try {
+      setLoading(true);
+      await supabase.changePassword(data.currentPassword, data.password);
+      toast.success("Password changed successfully");
+      handleBack();
+    } catch (error) {
+      if (error instanceof Error) {
+        const errorMessage = error.message;
+        setErrorMessage(errorMessage);
+        toast.error(errorMessage);
+      } else {
+        const errorMessage = "An unexpected error occurred";
+        setErrorMessage(errorMessage);
+        toast.error(errorMessage);
+      }
+    } finally {
+      setLoading(false);
+    }
   });
   const handleBack = () => {
     if (router.canGoBack()) {
       router.back();
     } else {
-      router.push('/(protected)/(_tabs)/(settings)');
+      router.push("/(protected)/(_tabs)/settings");
     }
   };
+  React.useEffect(() => {
+    if (errorMessage) {
+      setErrorMessage(null);
+    }
+  }, [watch("currentPassword"), watch("password"), watch("confirmPassword")]);
   return (
     <SafeAreaView className="flex-1 " style={{ paddingTop: insets.top }}>
       <View className="flex-1 px-5">
@@ -49,6 +79,7 @@ export default function ChangePassword() {
           actionLabel="Save"
           onBack={handleBack}
           onAction={handleSave}
+          disableAction={loading}
         />
         {/* Form */}
         <View className="gap-4">
@@ -68,9 +99,9 @@ export default function ChangePassword() {
                   placeholder="Enter your current password"
                   value={value}
                   onChangeText={onChange}
-                  autoComplete="off"
-                  textContentType="none"
-                  importantForAutofill="no"
+                  // autoComplete='off'
+                  // textContentType='none'
+                  // importantForAutofill='no'
                   secureTextEntry
                   leftIcon={<Lock className="text-primary" size={20} />}
                   editable={!loading}
@@ -154,6 +185,9 @@ export default function ChangePassword() {
               </Text>
             )}
           </View>
+          {errorMessage && (
+            <Text className='text-error ml-3 text-xs'>{errorMessage}</Text>
+          )}
         </View>
       </View>
     </SafeAreaView>

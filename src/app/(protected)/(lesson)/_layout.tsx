@@ -4,17 +4,17 @@ import React, { useEffect } from 'react';
 import { useAuthStore } from '~/stores/auth.store';
 
 export default function ProtectedLayout() {
-  const { isAuthentication, user, logout } = useAuthStore();
+  // const { isAuthentication, user, logout } = useAuthStore();
 
-  useEffect(() => {
-    if (user && !user.stayLogin && isAuthentication) {
-      logout();
-    }
-  }, [logout]);
+  // useEffect(() => {
+  //   if (user && !user.stayLogin && isAuthentication) {
+  //     logout();
+  //   }
+  // }, [logout]);
 
-  if (!isAuthentication || !user) {
-    return <Redirect href="/welcome" />;
-  }
+  // if (!isAuthentication || !user) {
+  //   return <Redirect href='/welcome' />;
+  // }
   return (
     <Stack>
       <Stack.Screen

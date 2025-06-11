@@ -19,7 +19,13 @@ const SimpleSentenceLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, selectors, answers, hint, audioLanguage } = value.value;
+  const {
+    question,
+    selectors,
+    answers,
+    hint,
+    questionLanguage: audioLanguage,
+  } = value.value;
   const [usedWords, setUsedWords] = useState<string[]>([]);
 
   const handleSelectWord = (value: string) => {

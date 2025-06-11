@@ -7,25 +7,22 @@ import PullToRefreshWrapper from '~/components/common/PullToRefreshWrapper';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { useGetLessonGroup } from '~/hooks/useGetLessonById';
-import { useNextLesson } from '~/hooks/useNextLesson';
 import { ChevronLeft } from '~/lib/icons/ChevronLeft';
 import { useLearningStore } from '~/stores/learning.store';
 
 const OverviewScreen: React.FC = () => {
-  const { lessonId } = useLocalSearchParams<{ lessonId: string }>();
+  const { id: lessonId } = useLocalSearchParams<{ id: string }>();
   const { data: lesson, isLoading } = useGetLessonGroup(lessonId);
   const { inProgressLesson } = useLearningStore();
 
   const { currentCourse } = useLearningStore();
   if (!currentCourse) return null;
-  const { isAllCompleted } = useNextLesson(currentCourse);
 
   const handleLearn = () => {
-    console.log({ lessonIdlessonId: lessonId });
-    router.replace({
+    router.push({
       pathname: '/(protected)/(lesson)',
       params: {
-        lessonId: lessonId,
+        id: lessonId,
       },
     });
   };
@@ -33,7 +30,7 @@ const OverviewScreen: React.FC = () => {
     ? (inProgressLesson.progress.length / inProgressLesson.totalLesson) * 100
     : 0;
   const handleBack = () => {
-    router.replace('/(protected)/(_tabs)/(_home)');
+    router.replace('/(protected)/(_tabs)');
   };
   if (!lesson && isLoading) {
     return (

@@ -1,47 +1,38 @@
-import { useState, useEffect, useCallback } from 'react';
-import Tts, { Options } from 'react-native-tts';
-import { SUPPORTED_VOICE_MAP } from '~/configs/default-language';
-
-const useTTS = (language: string = 'en') => {
+import { useState, useEffect, useCallback } from "react";
+import Tts, { Options } from "react-native-tts";
+import { SUPPORTED_VOICE_MAP } from "~/configs/default-language";
+interface SpeakOptions {
+  language?: string;
+  rate?: number;
+  pitch?: number;
+}
+import * as Speech from "expo-speech";
+const useTTS = (language: string = "en") => {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
-    const initTTS = async () => {
-      try {
-        await Tts.getInitStatus();
-        if (!isMounted) return;
-        const langCode =
-          SUPPORTED_VOICE_MAP[language as keyof typeof SUPPORTED_VOICE_MAP] ||
-          SUPPORTED_VOICE_MAP['en'];
-        await Tts.setDefaultLanguage(langCode);
-      } catch (e) {}
-    };
-    initTTS();
-
-    const handleStart = () => setIsSpeaking(true);
-    const handleFinish = () => setIsSpeaking(false);
-    const handleCancel = () => setIsSpeaking(false);
-
-    Tts.addEventListener('tts-start', handleStart);
-    Tts.addEventListener('tts-finish', handleFinish);
-    Tts.addEventListener('tts-cancel', handleCancel);
-
-    return () => {
-      isMounted = false;
-      Tts.removeAllListeners('tts-start');
-      Tts.removeAllListeners('tts-finish');
-      Tts.removeAllListeners('tts-cancel');
-    };
-  }, [language]);
-
-  const speak = useCallback((text: string, options?: Options) => {
+  const speak = async (text: string, options?: SpeakOptions) => {
     try {
-      Tts.speak(text, options);
+      if (isSpeaking) {
+        await Speech.stop();
+      }
+
+      setIsSpeaking(true);
+
+      await Speech.speak(text, {
+        language: options?.language || "en",
+        pitch: options?.pitch || 1.0,
+        rate: options?.rate || 0.9, // Tốc độ mặc định là 0.9
+        onDone: () => setIsSpeaking(false),
+        onError: (error) => {
+          console.error("TTS error:", error);
+          setIsSpeaking(false);
+        },
+      });
     } catch (error) {
-      console.error('TTS Error:', error);
+      console.error("TTS error:", error);
+      setIsSpeaking(false);
     }
-  }, []);
+  };
 
   const stop = useCallback(() => {
     try {

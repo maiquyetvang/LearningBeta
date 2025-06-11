@@ -17,7 +17,7 @@ const WriteWordLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, hint, answer } = value.value;
+  const { question, selectors, answer } = value.value;
 
   const [selected, setSelected] = useState<string | undefined>();
   const handleSelectWord = (value?: string) => {
@@ -31,8 +31,8 @@ const WriteWordLesson = ({
     onSuccess?.(!isCorrect);
   };
   const renderSentence = () => {
-    if (!question) return <></>;
-    const parts = question.split('___');
+    if (!selectors) return <></>;
+    const parts = selectors ? selectors[0].split("___") : [];
     return parts.map((part, index) => (
       <View key={index} className="w-fit flex-row items-center">
         <Text
@@ -64,7 +64,7 @@ const WriteWordLesson = ({
       <Text className="font-light text-center text-sm italic">
         * You can slow down the audio&apos;s speed
       </Text>
-      {hint && <H3 className="text-primary text-center">{hint}</H3>}
+      {question && <H3 className='text-primary text-center'>{question}</H3>}
 
       <View className="flex-wrap  flex-row items-center justify-center gap-1">
         {renderSentence()}

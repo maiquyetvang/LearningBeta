@@ -14,7 +14,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="(_home)"
+        name="index"
         options={{
           headerShown: false,
           title: 'Home',
@@ -39,7 +39,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="(achievements)"
+        name="achievements"
         options={{
           title: 'Achievements',
           headerShown: false,
@@ -53,7 +53,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="(settings)"
+        name="settings"
         options={{
           title: 'Settings',
           headerShown: false,

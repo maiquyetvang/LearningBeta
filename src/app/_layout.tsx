@@ -52,19 +52,19 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView>
-      <AppProvider theme={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(protected)" />
-        </Stack>
-        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      </AppProvider>
-    </GestureHandlerRootView>
+    <AppProvider theme={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Protected guard={true}>
+          <Stack.Screen name='(auth)' />
+        </Stack.Protected>
+        <Stack.Screen name='(protected)' />
+      </Stack>
+      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+    </AppProvider>
   );
 }
 

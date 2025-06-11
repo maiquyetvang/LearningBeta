@@ -1,30 +1,32 @@
-import { router } from 'expo-router';
-import React from 'react';
-import { SafeAreaView, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import PullToRefreshWrapper from '~/components/common/PullToRefreshWrapper';
-import LearningPath from '~/components/homepage/LearningPath';
-import Overall from '~/components/homepage/Overall';
-import TestVoice from '~/components/homepage/TestVoice';
-import TodayLesson from '~/components/homepage/TodayLesson';
+import { router } from "expo-router";
+import React from "react";
+import { SafeAreaView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import PullToRefreshWrapper from "~/components/common/PullToRefreshWrapper";
+import LearningPath from "~/components/homepage/LearningPath";
+import Overall from "~/components/homepage/Overall";
+import TestVoice from "~/components/homepage/TestVoice";
+import TodayLesson from "~/components/homepage/TodayLesson";
+import { Text } from "~/components/ui/text";
+import { useAuthStore } from "~/stores/auth.store";
 
 const HomeScreen: React.FC = () => {
+  const { session } = useAuthStore();
   const insets = useSafeAreaInsets();
   const [refreshing, setRefreshing] = React.useState(false);
   const handlePushDetail = (index: string) => {
-    console.log({ index });
     router.push({
       pathname: '/(protected)/(lesson)',
       params: {
-        lessonId: index,
+        id: index,
       },
     });
   };
   const handlePushOverview = (index: string) => {
     router.push({
-      pathname: '/(protected)/(_tabs)/(_home)/overview',
+      pathname: "/(protected)/overview",
       params: {
-        lessonId: index,
+        id: index,
       },
     });
   };

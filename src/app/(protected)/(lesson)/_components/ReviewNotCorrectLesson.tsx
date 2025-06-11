@@ -8,7 +8,7 @@ import { Text } from '~/components/ui/text';
 
 const ReviewNotCorrectLesson = ({ onReview }: { onReview?: () => void }) => {
   const handleBackHome = () => {
-    router.replace('/(protected)/(_tabs)/(_home)');
+    router.replace("/(protected)/(_tabs)");
   };
   const handleReview = () => {
     onReview?.();

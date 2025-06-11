@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Volume2 } from '~/lib/icons/Volume2';
-import { useLearningStore } from '~/stores/learning.store';
-import { Lesson } from '~/types/lesson.type';
-import { SpeakButton } from '../custom-ui/speak-button';
-import { Text } from '../ui/text';
-import { CannotListenButton } from './CannotListenButton';
-import { CheckResultButton } from './CheckResultButton';
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Volume2 } from "~/lib/icons/Volume2";
+import { useLearningStore } from "~/stores/learning.store";
+import { Lesson } from "~/types/lesson.type";
+import { SpeakButton } from "../custom-ui/speak-button";
+import { Text } from "../ui/text";
+import { CannotListenButton } from "./CannotListenButton";
+import { CheckResultButton } from "./CheckResultButton";
+import { AnimatedButton } from "../custom-ui/animate-button";
 
 const ListeningLesson = ({
   value,
@@ -20,7 +21,8 @@ const ListeningLesson = ({
   onSkip?: () => void;
 }) => {
   const { setSpeechDisabled } = useLearningStore();
-  const { question, questionLanguage, selectors, answer, audioLanguage } = value.value;
+  const { question, questionLanguage, selectors, answer, selectorLanguage } =
+    value.value;
   const [selected, setSelected] = useState<string | null>();
   const handleSelectWord = (value: string) => {
     setSelected(value);
@@ -33,22 +35,23 @@ const ListeningLesson = ({
     setSpeechDisabled(true);
     onSkip?.();
   };
+  const disabledSpeak = selectorLanguage !== "ko" || disabled;
   return (
     <View className="flex-1 gap-8">
       <Text className="font-light text-center text-sm italic">
         * You can slow down the audio&apos;s speed
-        {JSON.stringify({ questionLanguage })}
       </Text>
       <SpeakButton
         label={question || answer}
         className="w-full"
         showIcon
-        language={questionLanguage || audioLanguage}
-        variant={'default'}
+        language={questionLanguage || selectorLanguage}
+        variant={"default"}
         disabled={disabled}
         buttonClassName="justify-center text-xl font-bold"
         hideLabel
-        leftIcon={<Volume2 className="text-white" size={20} />}
+        leftIcon={<Volume2 className='text-white' size={20} />}
+        customSpeed
       />
       <View style={styles.optionsContainer}>
         {selectors &&
@@ -65,8 +68,8 @@ const ListeningLesson = ({
                 style={{ borderWidth: isUsed ? 1 : 2 }}
                 label={word}
                 isSelected={isUsed}
-                disabledSpeak={questionLanguage === 'ko'}
-                language={audioLanguage || questionLanguage}
+                disabledSpeak={disabledSpeak}
+                language={selectorLanguage}
               />
             );
           })}

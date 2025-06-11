@@ -26,13 +26,13 @@ const SpeakingLesson = ({
   onSkip?: () => void;
 }) => {
   const { setAudioDisabled } = useLearningStore();
-  const { question, selectors, answer, audioLanguage } = sampleText.value;
+  const { question, answer, questionLanguage } = sampleText.value;
   const { isDarkColorScheme } = useColorScheme();
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [isReady, setIsReady] = React.useState(false);
   const [textDetected, setTextDetection] = React.useState<string | undefined>();
   const { state, startListening, stopListening, destroyRecognition } =
-    useVoiceRecognition(audioLanguage);
+    useVoiceRecognition(questionLanguage);
   const sampleWords =
     question
       ?.replace(/[.,\/#!$?%\^&\*;:{}=\-_`~()]/g, '')
@@ -73,13 +73,13 @@ const SpeakingLesson = ({
     return () => {
       clearTimeout(timer);
     };
-  }, [state.results?.[0], state.isRecording]);
+  }, [state.results?.[0]]);
 
   const renderWords = sampleWords.map((word, index) => {
     const spokenWord = spokenWords ? spokenWords[index] : '';
     const isMatch =
       !!word && !!spokenWords
-        ? spokenWords.some((v) => v.toLowerCase() === word.toLowerCase()) // word.toLowerCase() === spokenWord.toLowerCase()
+        ? spokenWords.some((v) => v.toLowerCase() === word.toLowerCase())
         : false;
     return (
       <Text
@@ -140,10 +140,10 @@ const SpeakingLesson = ({
           label={answer}
           className="w-fit "
           showIcon
-          language={audioLanguage}
-          variant={'neutral'}
-          disabled={disabled}
-          buttonClassName="justify-center text-xl font-bold"
+          language={questionLanguage}
+          variant={"neutral"}
+          disabled={disabled || (!isReady && state.isRecording)}
+          buttonClassName='justify-center text-xl font-bold'
           hideLabel
           customLabel="Play Sample"
           leftIcon={<Volume2 size={20} className="text-foreground" />}

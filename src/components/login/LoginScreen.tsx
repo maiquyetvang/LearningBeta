@@ -1,17 +1,16 @@
+import { router } from 'expo-router';
 import { Lock, Mail } from 'lucide-react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, Pressable, TextInput, View } from 'react-native';
-import { authApi } from '~/api/auth.local';
 import { ELoginScreen } from '~/app/(auth)/login';
 import { InputWithIcon } from '~/components/custom-ui/input-icon';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { H3 } from '~/components/ui/typography';
-import { Checkbox } from '../ui/checkbox';
+import { useSystem } from '~/lib/powersync/system';
 import { useAuthStore } from '~/stores/auth.store';
-import { User } from '~/types/user.type';
-import { router } from 'expo-router';
+import { Checkbox } from '../ui/checkbox';
 import { AnimatedScreenWrapper } from './AnimatedScreenWrapper';
 
 export type LoginForm = {
@@ -30,8 +29,9 @@ export function LoginStep({
 }) {
   // const [loading, setLoading] = useState(false);
   const passwordInputRef = useRef<TextInput>(null);
-  const { login, user, loading, setLoading } = useAuthStore();
+  const { login, user, session, loading, setLoading } = useAuthStore();
 
+  const { supabase } = useSystem();
   const {
     control,
     handleSubmit,
@@ -39,7 +39,7 @@ export function LoginStep({
     reset,
   } = useForm<LoginForm>({
     defaultValues: {
-      email: user?.email || '',
+      email: session?.user?.email || '',
       password: '',
       remember: user?.remember || false,
       stayLogin: true,
@@ -51,20 +51,11 @@ export function LoginStep({
     // timeout
     // await new Promise((resolve) => setTimeout(resolve, 2000));
     try {
-      const result = await authApi.login(data);
-      login({
-        email: result.email,
-        remember: data.remember,
-        stayLogin: data.stayLogin,
-        isFirstLogin: result.isFirstLogin,
-      } as User);
-      if (result.isFirstLogin) {
-        router.replace('/(protected)/personalize');
-      } else {
-        router.replace('/');
-      }
+      await supabase.login(data.email, data.password);
+      router.replace('/(protected)/(_tabs)');
     } catch (e: any) {
       Alert.alert('Login Failed', e.message);
+      console.log({ errorMessage: e.message });
     } finally {
       setLoading(false);
     }

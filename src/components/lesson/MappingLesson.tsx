@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
-import { useBoolean } from 'usehooks-ts';
-import { Lesson } from '~/types/lesson.type';
-import { playResultSound } from '~/utils/playSound';
-import { SpeakButton } from '../custom-ui/speak-button';
-import { H3, P } from '../ui/typography'; // Thêm P nếu chưa có
-
-// Số lần sai tối đa cho phép
+import React, { useEffect, useState } from "react";
+import { Animated, StyleSheet, View } from "react-native";
+import { useBoolean } from "usehooks-ts";
+import { Lesson } from "~/types/lesson.type";
+import { playResultSound } from "~/utils/playSound";
+import { SpeakButton } from "../custom-ui/speak-button";
+import { H3, P } from "../ui/typography";
 const MAX_WRONG_ATTEMPTS = 5;
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -25,7 +23,8 @@ const MappingLesson = ({
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {
-  const { question, selectors, answers, audioLanguage, questionLanguage } = value.value;
+  const { question, selectors, answers, questionLanguage, selectorLanguage } =
+    value.value;
   const [shuffledSelectors] = useState(() => shuffleArray(selectors ?? []));
   const [shuffledAnswers] = useState(() => shuffleArray(answers ?? []));
   const { value: disableAction, setTrue, setFalse, toggle } = useBoolean(false);
@@ -178,8 +177,7 @@ const MappingLesson = ({
                   }
                   onPress={() => handleSelectLeft(idx)}
                   disabled={isUsed}
-                  disabledSpeak={questionLanguage !== 'ko'}
-                  language={questionLanguage}
+                  language={selectorLanguage}
                   label={word}
                   className="transition-colors"
                 />
@@ -225,8 +223,7 @@ const MappingLesson = ({
                   }
                   onPress={() => handleSelectRight(idx)}
                   disabled={isUsed}
-                  disabledSpeak={audioLanguage !== 'ko'}
-                  language={audioLanguage}
+                  language={questionLanguage}
                   label={word}
                   className="transition-colors"
                 />
