@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
-import { toast } from "sonner-native";
-import { useSystem } from "~/lib/powersync";
-import { useAuthStore } from "~/stores/auth.store";
+import { useCallback, useState } from 'react';
+import { toast } from 'sonner-native';
+import { useSystem } from '~/lib/powersync';
+import { useAuthStore } from '~/stores/auth.store';
 
 type ImageUploadOptions = {
   bucket?: string;
@@ -10,8 +10,8 @@ type ImageUploadOptions = {
 };
 
 export const useImageUpload = ({
-  bucket = "default",
-  parentPath = "",
+  bucket = 'default',
+  parentPath = '',
   onSuccess,
 }: ImageUploadOptions) => {
   const [uploading, setUploading] = useState(false);
@@ -22,12 +22,12 @@ export const useImageUpload = ({
       setUploading(true);
       try {
         const arraybuffer = await fetch(uri).then((res) => res.arrayBuffer());
-        const fileExt = uri?.split(".").pop()?.toLowerCase() ?? "jpeg";
+        const fileExt = uri?.split('.').pop()?.toLowerCase() ?? 'jpeg';
         const path = `${parentPath}${userId}/${new Date().getTime()}.${fileExt}`;
         const { data, error: uploadError } = await supabase.client.storage
           .from(bucket)
           .upload(path, arraybuffer, {
-            contentType: mimeType ?? "image/jpeg",
+            contentType: mimeType ?? 'image/jpeg',
           });
 
         if (uploadError) {
@@ -49,7 +49,7 @@ export const useImageUpload = ({
         setUploading(false);
       }
     },
-    [bucket, onSuccess, parentPath, supabase.client.storage, userId]
+    [bucket, onSuccess, parentPath, supabase.client.storage, userId],
   );
   return { upload, uploading };
 };

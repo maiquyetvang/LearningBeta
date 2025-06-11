@@ -32,9 +32,10 @@ const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
   useEffect(() => {
     const isGoodResultValue = isGoodResult();
     playCongratsSound(!isGoodResultValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleBack = () => {
-    router.replace("/(protected)/(_tabs)");
+    router.replace('/(protected)/(_tabs)');
   };
   return (
     <View className="flex-1 gap-3 justify-center items-center text-center text-2xl ">
@@ -42,7 +43,7 @@ const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
         <Text className="text-center text-2xl font-semibold text-primary">
           {isGoodResult() ? 'Amazing! ' : "Don't worry! "}
           <Text className="text-center text-2xl">
-            {isGoodResult() ? 'You’ve finished today lesson' : 'I will help you level up'}
+            {isGoodResult() ? 'You&apos;ve finished today lesson' : 'I will help you level up'}
           </Text>
         </Text>
       </View>
@@ -61,7 +62,8 @@ const CompleteLevelTest = ({ progress }: { progress: ProgressStep[] }) => {
         {countResult(progress)}/{progress?.length}
       </Text>
       <Text className="text-center font-normal">
-        You've completed the test. We will provide the fittest learning path base on your result
+        You&apos;ve completed the test. We will provide the fittest learning path base on your
+        result
       </Text>
       <Button onPress={handleBack}>
         <Text>Back home</Text>

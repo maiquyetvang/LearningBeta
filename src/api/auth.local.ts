@@ -15,7 +15,7 @@ type AuthState = {
 export const authApi = {
   async login(loginForm: LoginForm): Promise<AuthState> {
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    const { email, password } = loginForm;
+    const { email } = loginForm;
     // const found = accounts.find(
     //   (acc) => acc.email === email && acc.password === password
     // );

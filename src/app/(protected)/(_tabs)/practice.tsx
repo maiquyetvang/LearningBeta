@@ -1,10 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { Button } from '~/components/ui/button';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenView } from '~/components/screen-view';
 import { router } from 'expo-router';
+import { ScreenView } from '~/components/screen-view';
+import { Button } from '~/components/ui/button';
 import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function PracticeScreen() {

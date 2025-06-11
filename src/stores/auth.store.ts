@@ -1,11 +1,9 @@
-import { use } from 'react';
-import { removeFromStorage } from './../utils/storage';
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
-import { User } from '../types/user.type';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Session } from '@supabase/supabase-js';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { ProfileRecord } from '~/lib/powersync/app-schema';
+import { User } from '../types/user.type';
 
 type AuthState = {
   isAuthentication: boolean;

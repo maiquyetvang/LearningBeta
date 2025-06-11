@@ -1,18 +1,12 @@
-import React from "react";
-import { Image, Pressable, View } from "react-native";
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-} from "react-native-reanimated";
-import { useGetCourse, useGetLessonGroup } from "~/hooks/useGetLessonById";
-import { useNextLesson } from "~/hooks/useNextLesson";
-import { useLearningStore } from "~/stores/learning.store";
-import { LessonGroup } from "~/types/lesson.type";
-import ProgressBar from "../common/ProgressBar";
-import { AnimatedButton } from "../custom-ui/animate-button";
-import { Button } from "../ui/button";
-import { Text } from "../ui/text";
-import { H4 } from "../ui/typography";
+import React from 'react';
+import { Image, Pressable, View } from 'react-native';
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import { useLearningStore } from '~/stores/learning.store';
+import { LessonGroup } from '~/types/lesson.type';
+import ProgressBar from '../common/ProgressBar';
+import { Button } from '../ui/button';
+import { Text } from '../ui/text';
+import { H4 } from '../ui/typography';
 
 const LessonCard: React.FC<{
   lesson: LessonGroup;
@@ -39,32 +33,32 @@ const LessonCard: React.FC<{
   return (
     <Animated.View style={animatedStyle}>
       <Pressable
-        className='bg-neutral-50 dark:bg-neutral-900 rounded-lg'
+        className="bg-neutral-50 dark:bg-neutral-900 rounded-lg"
         onPress={() => onOverview?.(lesson.id)}
       >
         {lesson.image && (
           <Image
             source={lesson.image}
             style={{
-              width: "100%",
+              width: '100%',
               aspectRatio: 39 / 28,
               height: undefined,
             }}
-            className='rounded-t-lg'
+            className="rounded-t-lg"
           />
         )}
-        <View className='p-3 gap-2'>
-          <View className='gap-2  text-foreground'>
-            <H4 className='text-foreground'>{lesson.title}</H4>
-            <Text className='text-neutral-500'>{lesson.description}</Text>
+        <View className="p-3 gap-2">
+          <View className="gap-2  text-foreground">
+            <H4 className="text-foreground">{lesson.title}</H4>
+            <Text className="text-neutral-500">{lesson.description}</Text>
           </View>
           <ProgressBar value={progress} />
           <Button
             onPress={() => onLearn?.(lesson.id)}
-            variant={inProgressLesson ? "secondary" : undefined}
-            className='w-full'
+            variant={inProgressLesson ? 'secondary' : undefined}
+            className="w-full"
           >
-            <Text>{inProgressLesson ? "Resume" : "Start Learning"}</Text>
+            <Text>{inProgressLesson ? 'Resume' : 'Start Learning'}</Text>
           </Button>
         </View>
       </Pressable>

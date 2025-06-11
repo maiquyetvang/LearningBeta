@@ -1,11 +1,11 @@
+import { X } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Lesson } from '~/types/lesson.type';
+import { SpeakButton } from '../custom-ui/speak-button';
+import ThemeIcon from '../Icon';
 import { Button } from '../ui/button';
 import { Text } from '../ui/text';
-import ThemeIcon from '../Icon';
-import { X } from 'lucide-react-native';
-import { SpeakButton } from '../custom-ui/speak-button';
-import { Lesson } from '~/types/lesson.type';
 import { CheckResultButton } from './CheckResultButton';
 
 const SelectLesson = ({
@@ -21,7 +21,6 @@ const SelectLesson = ({
   const [selected, setSelected] = useState<(string | null)[]>(Array(answers?.length).fill(null));
   const [usedWords, setUsedWords] = useState<{ index: number; value: string }[]>([]);
   const [nextIndex, setNextIndex] = useState<number>(0);
-  const [isSuccess, setIsSuccess] = useState<boolean | undefined>();
   const getNextUnusedIndex = (usedWords: { index: number; value: string }[]): number => {
     const usedIndices = new Set(usedWords.map((word) => word.index));
     let i = 0;
@@ -44,12 +43,6 @@ const SelectLesson = ({
     updated[firstEmpty] = value;
     setSelected(updated);
     setUsedWords([...usedWords, { index, value }]);
-
-    const isCorrect =
-      updated.every((val, i) => answers && val === answers[i]) && !updated.includes(null);
-    // if (isCorrect && onSuccess) {
-    //   onSuccess();
-    // }
   };
   const handleResetSlot = (index: number) => {
     const word = selected[index];
@@ -66,7 +59,6 @@ const SelectLesson = ({
       !!answers &&
       answers.every((val, i) => val === usedWords.find((value) => value.index === i)?.value) &&
       !selected.includes(null);
-    setIsSuccess(isCorrect);
     onSuccess?.(!isCorrect);
   };
 

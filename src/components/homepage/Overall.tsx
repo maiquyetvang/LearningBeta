@@ -1,3 +1,4 @@
+import { AppImages } from 'assets';
 import React from 'react';
 import { Image, View } from 'react-native';
 import Animated, {
@@ -7,27 +8,25 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { AppImages } from 'assets';
-import { Text } from '../ui/text';
 import { useLearningStore } from '~/stores/learning.store';
-import { useAuthStore } from '~/stores/auth.store';
+import { Text } from '../ui/text';
 
 const Overall = () => {
-  const { totalLearningTime, streakDays, learnedLessons, inProgressLesson, lastLearnedDate } =
-    useLearningStore();
-  const user = useAuthStore((state) => state.user);
+  const { totalLearningTime, streakDays } = useLearningStore();
 
   const minute = Math.floor((totalLearningTime || 0) / 60000);
   const animatedMinute = useSharedValue(minute);
 
   React.useEffect(() => {
     animatedMinute.value = withTiming(minute, { duration: 400 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minute]);
 
   const animMinute = useSharedValue(0);
   React.useEffect(() => {
     animMinute.value = 0;
     animMinute.value = withTiming(1, { duration: 500 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minute]);
 
   const animatedMinuteStyle = useAnimatedStyle(() => ({
@@ -39,19 +38,19 @@ const Overall = () => {
     ],
   }));
 
-  const animatedMinuteText = useDerivedValue(() => Math.round(animatedMinute.value));
-
   // --- Streak Days ---
   const animatedStreak = useSharedValue(streakDays);
 
   React.useEffect(() => {
     animatedStreak.value = withTiming(streakDays, { duration: 400 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [streakDays]);
 
   const animStreak = useSharedValue(0);
   React.useEffect(() => {
     animStreak.value = 0;
     animStreak.value = withTiming(1, { duration: 500 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [streakDays]);
 
   const animatedStreakStyle = useAnimatedStyle(() => ({

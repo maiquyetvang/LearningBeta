@@ -1,15 +1,15 @@
-import "@azure/core-asynciterator-polyfill";
-import { AttachmentRecord } from "@powersync/attachments";
-import { Kysely, wrapPowerSyncWithKysely } from "@powersync/kysely-driver";
-import { PowerSyncDatabase } from "@powersync/react-native";
-import { Expression, ParseJSONResultsPlugin, RawBuilder } from "kysely";
-import React from "react";
-import { OPSqliteOpenFactory } from "@powersync/op-sqlite";
-import { KVStorage, SupabaseStorageAdapter } from "../storage";
-import { PhotoAttachmentQueue } from "./attachment-queue";
-import { SupabaseConnector } from "../supabase";
-import { AppSchema, Database } from "./app-schema";
-import { SUPABASE_STORAGE_BUCKET } from "~/constant";
+import '@azure/core-asynciterator-polyfill';
+import { AttachmentRecord } from '@powersync/attachments';
+import { Kysely, wrapPowerSyncWithKysely } from '@powersync/kysely-driver';
+import { PowerSyncDatabase } from '@powersync/react-native';
+import { Expression, ParseJSONResultsPlugin, RawBuilder } from 'kysely';
+import React from 'react';
+import { OPSqliteOpenFactory } from '@powersync/op-sqlite';
+import { KVStorage, SupabaseStorageAdapter } from '../storage';
+import { PhotoAttachmentQueue } from './attachment-queue';
+import { SupabaseConnector } from '../supabase';
+import { AppSchema, Database } from './app-schema';
+import { SUPABASE_STORAGE_BUCKET } from '~/constant';
 
 export class System {
   kvStorage: KVStorage;
@@ -34,7 +34,7 @@ export class System {
     this.powersync = new PowerSyncDatabase({
       schema: AppSchema,
       database: new OPSqliteOpenFactory({
-        dbFilename: "sqlite.db",
+        dbFilename: 'sqlite.db',
       }),
     });
     //@ts-ignore
@@ -61,11 +61,8 @@ export class System {
         storage: this.storage,
         // Use this to handle download errors where you can use the attachment
         // and/or the exception to decide if you want to retry the download
-        onDownloadError: async (
-          attachment: AttachmentRecord,
-          exception: any
-        ) => {
-          if (exception.toString() === "StorageApiError: Object not found") {
+        onDownloadError: async (attachment: AttachmentRecord, exception: any) => {
+          if (exception.toString() === 'StorageApiError: Object not found') {
             return { retry: false };
           }
 
@@ -77,10 +74,10 @@ export class System {
 
   async init() {
     await this.powersync.init().catch((error) => {
-      console.error("Failed to initialize powersync", error);
+      console.error('Failed to initialize powersync', error);
     });
     await this.powersync.connect(this.supabase).catch((error) => {
-      console.error("Failed to connect to powersync", error);
+      console.error('Failed to connect to powersync', error);
     });
 
     if (this.attachmentQueue) {
@@ -95,7 +92,7 @@ export const SystemContext = React.createContext(system);
 export const useSystem = () => {
   const context = React.useContext(SystemContext);
   if (context === undefined) {
-    throw new Error("useSystem must be used within a SystemProvider");
+    throw new Error('useSystem must be used within a SystemProvider');
   }
   return context;
 };

@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/shallow';
 import { useAuthStore } from '~/stores/auth.store';
 
 export default function ProtectedLayout() {
-  const { session, loading, profile } = useAuthStore(
+  const { session, profile } = useAuthStore(
     useShallow((state) => ({
       session: state.session,
       loading: state.loading,

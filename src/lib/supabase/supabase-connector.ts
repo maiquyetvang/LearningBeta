@@ -3,24 +3,23 @@ import {
   CrudEntry,
   PowerSyncBackendConnector,
   UpdateType,
-} from "@powersync/react-native";
+} from '@powersync/react-native';
 
-import { SupabaseClient, createClient } from "@supabase/supabase-js";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { POWERSYNC_URL, SUPABASE_ANON_KEY, SUPABASE_URL } from "~/constant";
-import { System } from "../powersync";
-import { SupabaseStorageAdapter } from "../storage";
+import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { POWERSYNC_URL, SUPABASE_ANON_KEY, SUPABASE_URL } from '~/constant';
+import { System } from '../powersync';
+import { SupabaseStorageAdapter } from '../storage';
 
 /// Postgres Response codes that we cannot recover from by retrying.
 const FATAL_RESPONSE_CODES = [
   // Class 22 — Data Exception
   // Examples include data type mismatch.
-  new RegExp("^22...$"),
+  new RegExp('^22...$'),
   // Class 23 — Integrity Constraint Violation.
   // Examples include NOT NULL, FOREIGN KEY and UNIQUE violations.
-  new RegExp("^23...$"),
+  new RegExp('^23...$'),
   // INSUFFICIENT PRIVILEGE - typically a row-level security violation
-  new RegExp("^42501$"),
+  new RegExp('^42501$'),
 ];
 
 export class SupabaseConnector implements PowerSyncBackendConnector {
@@ -67,23 +66,19 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
     }
   }
 
-  async changePassword(
-    oldPassword: string,
-    newPassword: string
-  ): Promise<void> {
+  async changePassword(oldPassword: string, newPassword: string): Promise<void> {
     //  {
     // Kiểm tra mật khẩu mới và cũ có giống nhau không
     if (oldPassword === newPassword) {
-      throw new Error("New password must be different from current password");
+      throw new Error('New password must be different from current password');
     }
 
     // Lấy email của user hiện tại
-    const { data: userData, error: userError } =
-      await this.client.auth.getUser();
+    const { data: userData, error: userError } = await this.client.auth.getUser();
 
     if (userError || !userData.user || !userData.user.email) {
       throw new Error(
-        `Could not get current user info: ${userError?.message || "User not found or email missing"}`
+        `Could not get current user info: ${userError?.message || 'User not found or email missing'}`,
       );
     }
 
@@ -106,7 +101,7 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
       throw new Error(`Could not change password: ${updateError.message}`);
     }
 
-    console.log("Password changed successfully");
+    console.log('Password changed successfully');
     // } catch (error) {
     //   console.error("Error changing password:", error);
     //   throw error;
@@ -128,17 +123,15 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
     }
 
     console.debug(
-      "session expires at",
-      session.expires_at && new Date(session.expires_at * 1000).toLocaleString()
+      'session expires at',
+      session.expires_at && new Date(session.expires_at * 1000).toLocaleString(),
     );
 
     return {
       client: this.client,
       endpoint: POWERSYNC_URL,
-      token: session.access_token ?? "",
-      expiresAt: session.expires_at
-        ? new Date(session.expires_at * 1000)
-        : undefined,
+      token: session.access_token ?? '',
+      expiresAt: session.expires_at ? new Date(session.expires_at * 1000) : undefined,
       userID: session.user.id,
     };
   }
@@ -160,32 +153,26 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
         let result: any = null;
         switch (op.op) {
           case UpdateType.PUT:
-            // eslint-disable-next-line no-case-declarations
             const record = { ...op.opData, id: op.id };
             result = await table.upsert(record);
             break;
           case UpdateType.PATCH:
-            result = await table.update(op.opData).eq("id", op.id);
+            result = await table.update(op.opData).eq('id', op.id);
             break;
           case UpdateType.DELETE:
-            result = await table.delete().eq("id", op.id);
+            result = await table.delete().eq('id', op.id);
             break;
         }
 
         if (result.error) {
-          throw new Error(
-            `Could not ${op.op} data to Supabase error: ${JSON.stringify(result)}`
-          );
+          throw new Error(`Could not ${op.op} data to Supabase error: ${JSON.stringify(result)}`);
         }
       }
 
       await transaction.complete();
     } catch (ex: any) {
       console.debug(ex);
-      if (
-        typeof ex.code == "string" &&
-        FATAL_RESPONSE_CODES.some((regex) => regex.test(ex.code))
-      ) {
+      if (typeof ex.code == 'string' && FATAL_RESPONSE_CODES.some((regex) => regex.test(ex.code))) {
         /**
          * Instead of blocking the queue with these errors,
          * discard the (rest of the) transaction.

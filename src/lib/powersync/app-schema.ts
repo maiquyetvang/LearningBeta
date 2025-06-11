@@ -1,27 +1,27 @@
-import { column, Schema, Table } from "@powersync/react-native";
+import { column, Schema, Table } from '@powersync/react-native';
 
 export const QUESTION_TYPES = [
-  "voice",
-  "select",
-  "sentence",
-  "single-choose",
-  "single-image-choose",
-  "listening",
-  "write-only-word",
-  "write-word",
-  "mapping",
+  'voice',
+  'select',
+  'sentence',
+  'single-choose',
+  'single-image-choose',
+  'listening',
+  'write-only-word',
+  'write-word',
+  'mapping',
 ] as const;
 
 export const ACHIEVEMENT_TYPES = [
-  "progress",
-  "streak",
-  "mastery",
-  "time",
-  "social",
-  "special",
+  'progress',
+  'streak',
+  'mastery',
+  'time',
+  'social',
+  'special',
 ] as const;
 
-export const BADGE_TYPES = ["bronze", "silver", "gold", "platinum"] as const;
+export const BADGE_TYPES = ['bronze', 'silver', 'gold', 'platinum'] as const;
 
 // TABLES
 
@@ -45,10 +45,10 @@ const profiles = new Table(
   },
   {
     indexes: {
-      id: ["id"],
-      user_id: ["user_id"],
+      id: ['id'],
+      user_id: ['user_id'],
     },
-  }
+  },
 );
 
 const user_learning_stats = new Table(
@@ -61,9 +61,9 @@ const user_learning_stats = new Table(
   },
   {
     indexes: {
-      user_id: ["user_id"],
+      user_id: ['user_id'],
     },
-  }
+  },
 );
 
 const courses = new Table(
@@ -83,9 +83,9 @@ const courses = new Table(
   },
   {
     indexes: {
-      id: ["id"],
+      id: ['id'],
     },
-  }
+  },
 );
 
 const lessons = new Table(
@@ -105,10 +105,10 @@ const lessons = new Table(
   },
   {
     indexes: {
-      id: ["id"],
-      course_id: ["course_id"],
+      id: ['id'],
+      course_id: ['course_id'],
     },
-  }
+  },
 );
 
 const questions = new Table(
@@ -123,10 +123,10 @@ const questions = new Table(
   },
   {
     indexes: {
-      id: ["id"],
-      lesson_id: ["lesson_id"],
+      id: ['id'],
+      lesson_id: ['lesson_id'],
     },
-  }
+  },
 );
 
 const completed_lessons = new Table(
@@ -140,12 +140,12 @@ const completed_lessons = new Table(
   },
   {
     indexes: {
-      id: ["id"],
-      user_id: ["user_id"],
-      lesson_id: ["lesson_id"],
-      course_id: ["course_id"],
+      id: ['id'],
+      user_id: ['user_id'],
+      lesson_id: ['lesson_id'],
+      course_id: ['course_id'],
     },
-  }
+  },
 );
 
 const achievements = new Table(
@@ -163,9 +163,9 @@ const achievements = new Table(
   },
   {
     indexes: {
-      id: ["id"],
+      id: ['id'],
     },
-  }
+  },
 );
 
 const user_achievements = new Table(
@@ -181,11 +181,11 @@ const user_achievements = new Table(
   },
   {
     indexes: {
-      id: ["id"],
-      user_id: ["user_id"],
-      achievement_id: ["achievement_id"],
+      id: ['id'],
+      user_id: ['user_id'],
+      achievement_id: ['achievement_id'],
     },
-  }
+  },
 );
 
 export const AppSchema = new Schema({
@@ -199,12 +199,12 @@ export const AppSchema = new Schema({
   user_achievements,
 });
 
-export type Database = (typeof AppSchema)["types"];
-export type ProfileRecord = Database["profiles"];
-export type UserLearningStatsRecord = Database["user_learning_stats"];
-export type CourseRecord = Database["courses"];
-export type LessonRecord = Database["lessons"];
-export type QuestionRecord = Database["questions"];
-export type CompletedLessonRecord = Database["completed_lessons"];
-export type AchievementRecord = Database["achievements"];
-export type UserAchievementRecord = Database["user_achievements"];
+export type Database = (typeof AppSchema)['types'];
+export type ProfileRecord = Database['profiles'];
+export type UserLearningStatsRecord = Database['user_learning_stats'];
+export type CourseRecord = Database['courses'];
+export type LessonRecord = Database['lessons'];
+export type QuestionRecord = Database['questions'];
+export type CompletedLessonRecord = Database['completed_lessons'];
+export type AchievementRecord = Database['achievements'];
+export type UserAchievementRecord = Database['user_achievements'];

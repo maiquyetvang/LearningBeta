@@ -1,12 +1,9 @@
-import { Sun } from 'lucide-react-native';
-import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
-import { MoonStar } from '~/lib/icons/MoonStar';
-import { useColorScheme } from '~/lib/useColorScheme';
-import { Button } from '../ui/button';
-import { Text } from '../ui/text';
-import { Pressable, TouchableOpacity, View } from 'react-native';
 import React from 'react';
+import { Pressable, View } from 'react-native';
 import { Switch } from '~/components/ui/switch';
+import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
+import { useColorScheme } from '~/lib/useColorScheme';
+import { Text } from '../ui/text';
 
 export default function ThemeToggle() {
   const { isDarkColorScheme, setColorScheme } = useColorScheme();
@@ -16,6 +13,7 @@ export default function ThemeToggle() {
     const newTheme = isDarkMode ? 'dark' : 'light';
     setColorScheme(newTheme);
     setAndroidNavigationBar(newTheme);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDarkMode]);
 
   return (

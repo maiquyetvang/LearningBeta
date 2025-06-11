@@ -8,7 +8,6 @@ import MicrophonePermissionSwitch from '~/components/settings/MicrophonePermissi
 import MyCourseCard from '~/components/settings/MyCourseCard';
 import NotificationPermissionSwitch from '~/components/settings/NotificationPermissionSwitch';
 import SettingSection from '~/components/settings/PermissionsSection';
-import STTPermissionSwitch from '~/components/settings/STTPermissionSwitch';
 import ThemeToggle from '~/components/settings/ThemeToggle';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
@@ -25,14 +24,13 @@ const Settings = () => {
   const { data: profile, refetch } = useGetMyProfile();
   const [refreshing, setRefreshing] = React.useState(false);
   const [mic, setMic] = React.useState(true);
-  const [stt, setStt] = React.useState(true);
 
   const { supabase, powersync } = useSystem();
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = () => {
     refetch();
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 1200);
-  }, []);
+  };
 
   const handleEditAccount = () => {
     router.push('/(protected)/edit-account-info');
@@ -100,7 +98,6 @@ const Settings = () => {
           <SettingSection title="Permissions">
             <NotificationPermissionSwitch />
             <MicrophonePermissionSwitch checked={mic} onCheckedChange={setMic} />
-            <STTPermissionSwitch checked={stt} onCheckedChange={setStt} />
             <ThemeToggle />
           </SettingSection>
           <View className="flex-row gap-3  hidden">

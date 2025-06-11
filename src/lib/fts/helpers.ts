@@ -11,14 +11,10 @@ function _createExtract(jsonColumnName: string, columnName: string): string {
   return `json_extract(${jsonColumnName}, '$.${columnName}')`;
 }
 
-const extractGeneratorsMap: ExtractGeneratorMap = new Map<
-  ExtractType,
-  ExtractGenerator
->([
+const extractGeneratorsMap: ExtractGeneratorMap = new Map<ExtractType, ExtractGenerator>([
   [
     ExtractType.columnOnly,
-    (jsonColumnName: string, columnName: string) =>
-      _createExtract(jsonColumnName, columnName),
+    (jsonColumnName: string, columnName: string) => _createExtract(jsonColumnName, columnName),
   ],
   [
     ExtractType.columnInOperation,
@@ -32,16 +28,16 @@ const extractGeneratorsMap: ExtractGeneratorMap = new Map<
 export const generateJsonExtracts = (
   type: ExtractType,
   jsonColumnName: string,
-  columns: string[]
+  columns: string[],
 ): string => {
   const generator = extractGeneratorsMap.get(type);
   if (generator == null) {
-    throw new Error("Unexpected null generator for key: $type");
+    throw new Error('Unexpected null generator for key: $type');
   }
 
-  if (columns.length == 1) {
+  if (columns.length === 1) {
     return generator(jsonColumnName, columns[0]);
   }
 
-  return columns.map((column) => generator(jsonColumnName, column)).join(", ");
+  return columns.map((column) => generator(jsonColumnName, column)).join(', ');
 };

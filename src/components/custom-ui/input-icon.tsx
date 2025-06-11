@@ -1,7 +1,7 @@
+import { Eye, EyeClosed } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { StyleSheet, View, StyleProp, ViewStyle, Pressable, TouchableOpacity } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Input } from '../ui/input';
-import { Eye, EyeClosed, EyeOff } from 'lucide-react-native';
 
 type InputWithIconProps = Omit<React.ComponentProps<typeof Input>, 'style'> & {
   leftIcon?: React.ReactNode;
@@ -70,3 +70,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+InputWithIcon.displayName = 'InputWithIcon';

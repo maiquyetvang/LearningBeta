@@ -1,12 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Volume2 } from '~/lib/icons/Volume2';
 import { Lesson } from '~/types/lesson.type';
-import { SpeakButton } from '../custom-ui/speak-button';
-import { Text } from '../ui/text';
-import { CheckResultButton } from './CheckResultButton';
 import { Input } from '../ui/input';
+import { Text } from '../ui/text';
 import { H3 } from '../ui/typography';
+import { CheckResultButton } from './CheckResultButton';
 
 const WriteWordLesson = ({
   value,
@@ -32,7 +30,7 @@ const WriteWordLesson = ({
   };
   const renderSentence = () => {
     if (!selectors) return <></>;
-    const parts = selectors ? selectors[0].split("___") : [];
+    const parts = selectors ? selectors[0].split('___') : [];
     return parts.map((part, index) => (
       <View key={index} className="w-fit flex-row items-center">
         <Text
@@ -64,7 +62,7 @@ const WriteWordLesson = ({
       <Text className="font-light text-center text-sm italic">
         * You can slow down the audio&apos;s speed
       </Text>
-      {question && <H3 className='text-primary text-center'>{question}</H3>}
+      {question && <H3 className="text-primary text-center">{question}</H3>}
 
       <View className="flex-wrap  flex-row items-center justify-center gap-1">
         {renderSentence()}

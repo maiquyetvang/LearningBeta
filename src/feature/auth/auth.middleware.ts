@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { useGetMyProfile } from "~/hooks/use-my-profile";
-import { useSystem } from "~/lib/powersync";
-import { useAuthStore } from "~/stores/auth.store";
+import { useEffect } from 'react';
+import { useGetMyProfile } from '~/hooks/use-my-profile';
+import { useSystem } from '~/lib/powersync';
+import { useAuthStore } from '~/stores/auth.store';
 
 export const AuthMiddleware = () => {
   // useAuthLinking();

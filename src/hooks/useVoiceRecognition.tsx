@@ -85,7 +85,7 @@ export const useVoiceRecognition = (language: string = 'en') => {
         error: err?.toString(),
       }));
     }
-  }, [language]);
+  }, [language, resetState]);
 
   const stopListening = useCallback(async () => {
     try {
@@ -95,6 +95,7 @@ export const useVoiceRecognition = (language: string = 'en') => {
       });
       // Stop voice recognition logic here
     } catch (err) {
+      console.log('Error stopping voice recognition:', err);
       setState((pre) => {
         return { ...pre, error: 'Failed to stop listening' };
       });
@@ -107,22 +108,23 @@ export const useVoiceRecognition = (language: string = 'en') => {
       resetState();
       // Cancel voice recognition logic here
     } catch (err) {
+      console.log('Error cancelling voice recognition:', err);
       setState((pre) => {
         return { ...pre, error: 'Failed to cancel listening' };
       });
     }
-  }, []);
+  }, [resetState]);
   const destroyRecognition = useCallback(async () => {
     try {
       await Voice.destroy();
       resetState();
-      // Destroy voice recognition logic here
     } catch (err) {
+      console.log('Error destroying voice recognition:', err);
       setState((pre) => {
         return { ...pre, error: 'Failed to destroy recognition' };
       });
     }
-  }, []);
+  }, [resetState]);
 
   useEffect(() => {
     Voice.onSpeechStart = () => {

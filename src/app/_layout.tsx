@@ -2,17 +2,14 @@ import 'global.css';
 import 'polyfills.js';
 
 import * as React from 'react';
-
 import { DarkTheme, DefaultTheme, Theme } from '@react-navigation/native';
-
-import { AppProvider } from '~/providers/app.provider';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { NAV_THEME } from '~/lib/constants';
-import { Platform } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
+import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
+import { AppProvider } from '~/providers/app.provider';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -59,11 +56,11 @@ export default function RootLayout() {
         }}
       >
         <Stack.Protected guard={true}>
-          <Stack.Screen name='(auth)' />
+          <Stack.Screen name="(auth)" />
         </Stack.Protected>
-        <Stack.Screen name='(protected)' />
+        <Stack.Screen name="(protected)" />
       </Stack>
-      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+      <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
     </AppProvider>
   );
 }

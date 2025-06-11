@@ -34,7 +34,7 @@ export default function EditAccount() {
 
   const { resetLearning, clearInProgressLesson } = useLearningStore();
   const { session, logout, profile } = useAuthStore();
-  const { data, refetch, isFetching } = useGetMyProfile();
+  const { refetch } = useGetMyProfile();
   const [image, setImage] = React.useState<ImagePicker.ImagePickerAsset | null>(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const [name, setName] = React.useState<string | undefined>(profile?.full_name ?? undefined);
@@ -85,6 +85,7 @@ export default function EditAccount() {
         });
       }
     } catch (error) {
+      console.error('Error updating profile:', error);
       toast.error('Failed to update profile. Please try again.');
     }
   };
@@ -92,7 +93,7 @@ export default function EditAccount() {
     refetch();
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 1200);
-  }, []);
+  }, [refetch]);
   const handleDeleteAccount = async () => {
     try {
       await supabase.signOut();
@@ -117,7 +118,7 @@ export default function EditAccount() {
         className="px-5"
         disableAction={!allowed}
       />
-      <PullToRefreshWrapper refreshing={refreshing} onRefresh={handleRefresh}>
+      <PullToRefreshWrapper refreshing={refreshing || uploading} onRefresh={handleRefresh}>
         <View className="flex-1 gap-5 px-5 pb-5">
           <View className="items-center">
             <View>

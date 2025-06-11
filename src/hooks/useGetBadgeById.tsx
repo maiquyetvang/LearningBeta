@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { Badge, BADGES } from "../app/(protected)/(_tabs)/(achievements)/achievements";
+import { useQuery } from '@tanstack/react-query';
+import { Badge } from './useAchievements';
 
 async function fetchBadgeById(id: string): Promise<Badge> {
   // const res = await fetch(`https://your-api/lessons/${id}`);

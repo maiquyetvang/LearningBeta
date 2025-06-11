@@ -35,7 +35,9 @@ export default function ChangePassword() {
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const currentPassword = watch('currentPassword');
+  const password = watch('password');
+  const confirmPassword = watch('confirmPassword');
   const handleSave = handleSubmit(async (data) => {
     try {
       setLoading(true);
@@ -67,7 +69,8 @@ export default function ChangePassword() {
     if (errorMessage) {
       setErrorMessage(null);
     }
-  }, [watch('currentPassword'), watch('password'), watch('confirmPassword')]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPassword, password, confirmPassword]);
   return (
     <SafeAreaView className="flex-1 " style={{ paddingTop: insets.top }}>
       <HeaderWithAction
@@ -97,9 +100,6 @@ export default function ChangePassword() {
                   placeholder="Enter your current password"
                   value={value}
                   onChangeText={onChange}
-                  // autoComplete='off'
-                  // textContentType='none'
-                  // importantForAutofill='no'
                   secureTextEntry
                   leftIcon={<Lock className="text-primary" size={20} />}
                   editable={!loading}

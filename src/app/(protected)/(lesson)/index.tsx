@@ -32,10 +32,7 @@ const LessonDetailScreen: React.FC = () => {
   const isLevelTest = lessonId === 'level-test';
   const bottomSheetRef = useRef<BottomSheet>(null);
   const {
-    totalLearningTime,
-    streakDays,
     markLessonAsLearned,
-    learnedLessons,
     saveInProgressLesson,
     inProgressLesson,
     clearInProgressLesson,
@@ -109,6 +106,7 @@ const LessonDetailScreen: React.FC = () => {
         playResultSound(isFalse);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [data, currentIndex, stepStartTime, reviewCurrent, reviewMode, reviewIndexes],
   );
   const checkIsSkip = (currentIndex: number) => {
@@ -131,7 +129,7 @@ const LessonDetailScreen: React.FC = () => {
     if (router.canGoBack()) {
       router.back();
     } else {
-      router.replace("/(protected)/(_tabs)");
+      router.replace('/(protected)/(_tabs)');
     }
   };
   const openBottomSheet = () => {
@@ -249,6 +247,7 @@ const LessonDetailScreen: React.FC = () => {
     } else {
       setIsCompleted(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, data, reviewCurrent, reviewIndexes]);
 
   // Check if the lesson is skipped
@@ -257,6 +256,7 @@ const LessonDetailScreen: React.FC = () => {
       handleSuccess(true, true);
       handleNextStep();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, reviewCurrent]);
 
   useEffect(() => {
@@ -264,6 +264,7 @@ const LessonDetailScreen: React.FC = () => {
       setAudioDisabled(false);
       setSpeechDisabled(false);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lessonId, reviewMode]);
 
   //Handle save completed lesson
@@ -283,6 +284,7 @@ const LessonDetailScreen: React.FC = () => {
       markLessonAsLearned(lessonId, correctAnswers, totalQuestions, courseId);
       clearInProgressLesson();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCompleted, lessonId, progress]);
 
   // handle saving in-progress lesson
@@ -296,6 +298,7 @@ const LessonDetailScreen: React.FC = () => {
         reviewIndexes,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lessonId, currentIndex, progress, isCompleted, reviewIndexes]);
 
   useEffect(() => {

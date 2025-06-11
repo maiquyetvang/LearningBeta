@@ -89,14 +89,8 @@ export default function ConversationScreen() {
     router.push(`/practice/chat-bot?topicId=${topicId}`);
   };
 
-  const handleBackPress = () => {
-    console.log('Back pressed');
-    // Handle navigation back
-  };
-
   const handleLevelChange = (direction: 'prev' | 'next') => {
     console.log('Level change:', direction);
-    // Handle level change
   };
 
   return (

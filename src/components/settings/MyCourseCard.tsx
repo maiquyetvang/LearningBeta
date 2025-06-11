@@ -6,9 +6,9 @@ import ProgressBar from '../common/ProgressBar';
 
 export default function MyCourseCard() {
   const { currentCourse: course } = useLearningStore();
-  if (!course) return null;
   const { progress, isAllCompleted } = useNextLesson(course);
 
+  if (!course) return null;
   return (
     <View className="p-3 rounded-lg gap-3 bg-neutral-50 dark:bg-neutral-900">
       <View className="gap-3 justify-between items-center flex-row">

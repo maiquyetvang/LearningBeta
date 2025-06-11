@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
-import { Image, Pressable, View } from 'react-native';
 import { AppImages } from 'assets';
+import React, { useEffect } from 'react';
+import { Image, View } from 'react-native';
 import { personalizeStepDetail } from '~/app/(protected)/personalize';
 import { ChevronLeft } from '~/lib/icons/ChevronLeft';
 import { ChevronRight } from '~/lib/icons/ChevronRight';
 import { cn } from '~/lib/utils';
+import { AnimatedButton } from '../custom-ui/animate-button';
+import { AnimatedPressable } from '../custom-ui/animate-pressable';
 import { AnimatedScreenWrapper } from '../login/AnimatedScreenWrapper';
 import { Button } from '../ui/button';
 import { Text } from '../ui/text';
 import { H3 } from '../ui/typography';
-import { AnimatedPressable } from '../custom-ui/animate-pressable';
-import { AnimatedButton } from '../custom-ui/animate-button';
 
 type Props = {
   stepIndex: number;

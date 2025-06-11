@@ -1,8 +1,7 @@
-import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
-import { set } from 'react-hook-form';
 export interface PushNotificationState {
   notification?: Notifications.Notification;
   expoPushToken?: Notifications.ExpoPushToken;

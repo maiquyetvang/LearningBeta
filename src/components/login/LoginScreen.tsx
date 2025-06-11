@@ -29,7 +29,7 @@ export function LoginStep({
 }) {
   // const [loading, setLoading] = useState(false);
   const passwordInputRef = useRef<TextInput>(null);
-  const { login, user, session, loading, setLoading } = useAuthStore();
+  const { user, session, loading, setLoading } = useAuthStore();
 
   const { supabase } = useSystem();
   const {
@@ -64,7 +64,7 @@ export function LoginStep({
     return () => {
       reset();
     };
-  }, [onClose]);
+  }, [onClose, reset]);
   return (
     <View className="gap-5">
       <AnimatedScreenWrapper>

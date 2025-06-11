@@ -20,7 +20,7 @@ export const CannotListenButton = ({
       className={cn(!disabled && 'bg-primary-foreground ')}
     >
       <Text className="font-semibold text-neutral-800 dark:text-neutral-200">
-        I can't listen at the moment
+        I can&apos;t listen at the moment
       </Text>
     </Button>
   );
