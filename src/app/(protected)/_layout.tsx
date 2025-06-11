@@ -1,9 +1,7 @@
-import { Redirect, Stack } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { Session } from '@supabase/supabase-js';
-import { useSystem } from '~/lib/powersync/system';
-import { useAuthStore } from '~/stores/auth.store';
+import { Redirect, Stack, usePathname } from 'expo-router';
+import React from 'react';
 import { useShallow } from 'zustand/shallow';
+import { useAuthStore } from '~/stores/auth.store';
 
 export default function ProtectedLayout() {
   const { session, loading, profile } = useAuthStore(
@@ -13,11 +11,12 @@ export default function ProtectedLayout() {
       profile: state.profile,
     })),
   );
+  const pathname = usePathname();
 
   if (!session) {
     return <Redirect href="/(auth)/login" />;
   }
-  if (!!profile?.has_completed_survey && profile?.has_completed_survey === 0) {
+  if (profile && profile.has_completed_survey === 0 && pathname !== '/personalize') {
     return <Redirect href="/personalize" />;
   }
 
