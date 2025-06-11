@@ -38,7 +38,7 @@ const useTTS = (language: string = "en") => {
     try {
       Tts.stop();
     } catch (error) {
-      console.error("TTS stop error", error);
+      console.error('TTS stop error', error);
     }
   }, []);
 

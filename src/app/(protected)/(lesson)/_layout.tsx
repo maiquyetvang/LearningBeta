@@ -1,7 +1,7 @@
-"use client";
-import { Redirect, Stack } from "expo-router";
-import React, { useEffect } from "react";
-import { useAuthStore } from "~/stores/auth.store";
+'use client';
+import { Redirect, Stack } from 'expo-router';
+import React, { useEffect } from 'react';
+import { useAuthStore } from '~/stores/auth.store';
 
 export default function ProtectedLayout() {
   // const { isAuthentication, user, logout } = useAuthStore();
@@ -18,7 +18,7 @@ export default function ProtectedLayout() {
   return (
     <Stack>
       <Stack.Screen
-        name='index'
+        name="index"
         options={{
           headerShown: false,
         }}

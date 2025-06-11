@@ -1,11 +1,11 @@
-import { use } from "react";
-import { removeFromStorage } from "./../utils/storage";
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { User } from "../types/user.type";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Session } from "@supabase/supabase-js";
-import { ProfileRecord } from "~/lib/powersync/app-schema";
+import { use } from 'react';
+import { removeFromStorage } from './../utils/storage';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { User } from '../types/user.type';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Session } from '@supabase/supabase-js';
+import { ProfileRecord } from '~/lib/powersync/app-schema';
 
 type AuthState = {
   isAuthentication: boolean;
@@ -64,20 +64,21 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       setProfile: (profile) => set(() => ({ profile })),
     }),
     {
-      name: "auth-storage",
-      storage: {
-        getItem: async (name) => {
-          const value = await AsyncStorage.getItem(name);
-          const parsedValue = value ? JSON.parse(value) : null;
-          return parsedValue;
-        },
-        setItem: async (name, value) => {
-          await AsyncStorage.setItem(name, JSON.stringify(value));
-        },
-        removeItem: async (name) => {
-          await AsyncStorage.removeItem(name);
-        },
-      },
-    }
-  )
+      name: 'auth-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+      // storage: {
+      //   getItem: async (name) => {
+      //     const value = await AsyncStorage.getItem(name);
+      //     const parsedValue = value ? JSON.parse(value) : null;
+      //     return parsedValue;
+      //   },
+      //   setItem: async (name, value) => {
+      //     await AsyncStorage.setItem(name, JSON.stringify(value));
+      //   },
+      //   removeItem: async (name) => {
+      //     await AsyncStorage.removeItem(name);
+      //   },
+      // },
+    },
+  ),
 );

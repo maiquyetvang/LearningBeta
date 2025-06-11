@@ -1,5 +1,5 @@
-import React from "react";
-import { useColorScheme } from "react-native";
+import React from 'react';
+import { useColorScheme } from 'react-native';
 
 type ThemeIconProps = {
   Icon: React.ComponentType<{ color?: string; size?: number }>;
@@ -11,11 +11,11 @@ type ThemeIconProps = {
 const ThemeIcon: React.FC<ThemeIconProps> = ({
   Icon,
   size,
-  lightColor = "#000",
-  darkColor = "#fff",
+  lightColor = '#000',
+  darkColor = '#fff',
 }) => {
   const theme = useColorScheme();
-  const color = theme === "dark" ? darkColor : lightColor;
+  const color = theme === 'dark' ? darkColor : lightColor;
 
   return <Icon color={color} size={size} />;
 };

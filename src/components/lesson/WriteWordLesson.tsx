@@ -1,12 +1,12 @@
-import React, { useCallback, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Volume2 } from "~/lib/icons/Volume2";
-import { Lesson } from "~/types/lesson.type";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { Text } from "../ui/text";
-import { CheckResultButton } from "./CheckResultButton";
-import { Input } from "../ui/input";
-import { H3 } from "../ui/typography";
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Volume2 } from '~/lib/icons/Volume2';
+import { Lesson } from '~/types/lesson.type';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { Text } from '../ui/text';
+import { CheckResultButton } from './CheckResultButton';
+import { Input } from '../ui/input';
+import { H3 } from '../ui/typography';
 
 const WriteWordLesson = ({
   value,
@@ -34,7 +34,7 @@ const WriteWordLesson = ({
     if (!selectors) return <></>;
     const parts = selectors ? selectors[0].split("___") : [];
     return parts.map((part, index) => (
-      <View key={index} className='w-fit flex-row items-center'>
+      <View key={index} className="w-fit flex-row items-center">
         <Text
           style={{
             ...styles.sentenceText,
@@ -47,8 +47,8 @@ const WriteWordLesson = ({
           <Input
             style={{
               minWidth: 80,
-              width: "auto",
-              textAlign: "center",
+              width: 'auto',
+              textAlign: 'center',
             }}
             onChange={(e) => handleSelectWord(e.nativeEvent.text)}
             value={selected}
@@ -60,13 +60,13 @@ const WriteWordLesson = ({
     ));
   };
   return (
-    <View className='flex-1 gap-8'>
-      <Text className='font-light text-center text-sm italic'>
+    <View className="flex-1 gap-8">
+      <Text className="font-light text-center text-sm italic">
         * You can slow down the audio&apos;s speed
       </Text>
       {question && <H3 className='text-primary text-center'>{question}</H3>}
 
-      <View className='flex-wrap  flex-row items-center justify-center gap-1'>
+      <View className="flex-wrap  flex-row items-center justify-center gap-1">
         {renderSentence()}
       </View>
       <CheckResultButton disabled={!selected} onCheck={handleCheckResults} />
@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sentenceContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     marginBottom: 50,
   },
   sentenceText: {
@@ -90,18 +90,18 @@ const styles = StyleSheet.create({
     // marginRight: 4,
   },
   blankText: {
-    fontWeight: "500",
+    fontWeight: '500',
     // fontSize: 18,
   },
   optionsContainer: {
-    flexWrap: "wrap",
-    width: "100%",
+    flexWrap: 'wrap',
+    width: '100%',
     gap: 8,
     // marginTop: "auto",
     // marginBottom: "auto",
   },
   wordButton: {
-    backgroundColor: "#EEE",
+    backgroundColor: '#EEE',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 12,

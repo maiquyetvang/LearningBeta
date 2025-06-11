@@ -1,10 +1,10 @@
-import { useLearningStore } from "~/stores/learning.store";
-import { Course, LessonGroup } from "~/types/lesson.type";
-import { useGetLessonGroup } from "./useGetLessonById";
+import { useLearningStore } from '~/stores/learning.store';
+import { Course, LessonGroup } from '~/types/lesson.type';
+import { useGetLessonGroup } from './useGetLessonById';
 
 export function useNextLesson(course?: Course) {
   const { learnedLessons: completedUnit } = useLearningStore();
-  const { data: levelTestLesson } = useGetLessonGroup("level-test");
+  const { data: levelTestLesson } = useGetLessonGroup('level-test');
 
   const checkIsCompleted = (lessonId: string) =>
     completedUnit?.some((unit) => unit.lessonId === lessonId);
@@ -18,9 +18,7 @@ export function useNextLesson(course?: Course) {
       isCompleted: checkIsCompleted(lesson.id),
     }));
 
-  const lastCompletedIndex = lessonGroups
-    .map((lesson) => lesson.isCompleted)
-    .lastIndexOf(true);
+  const lastCompletedIndex = lessonGroups.map((lesson) => lesson.isCompleted).lastIndexOf(true);
 
   const nextLesson = (lessonGroups[lastCompletedIndex + 1] ??
     lessonGroups.find((lesson) => !lesson.isCompleted)) as LessonGroup;
@@ -28,12 +26,9 @@ export function useNextLesson(course?: Course) {
   const totalLessons = lessonGroups.length || 0;
   const progress =
     totalLessons > 0
-      ? (lessonGroups.filter((lesson) => lesson.isCompleted).length /
-          totalLessons) *
-        100
+      ? (lessonGroups.filter((lesson) => lesson.isCompleted).length / totalLessons) * 100
       : 0;
-  const isAllCompleted =
-    completedUnit?.length === totalLessons && totalLessons > 0;
+  const isAllCompleted = completedUnit?.length === totalLessons && totalLessons > 0;
 
   return {
     checkIsCompleted,

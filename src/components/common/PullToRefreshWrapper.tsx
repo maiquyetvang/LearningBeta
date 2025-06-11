@@ -1,11 +1,11 @@
-import React from "react";
-import { RefreshControl, ScrollView, ViewProps } from "react-native";
+import React from 'react';
+import { RefreshControl, ScrollView, ViewProps } from 'react-native';
 
 type PullToRefreshWrapperProps = {
   refreshing?: boolean;
   onRefresh?: () => void;
   children: React.ReactNode;
-  contentContainerStyle?: ViewProps["style"];
+  contentContainerStyle?: ViewProps['style'];
 };
 
 export default function PullToRefreshWrapper({
@@ -16,17 +16,14 @@ export default function PullToRefreshWrapper({
 }: PullToRefreshWrapperProps) {
   return (
     <ScrollView
-      className='flex-1'
+      className="flex-1"
       refreshControl={
         refreshing ? (
-          <RefreshControl
-            refreshing={refreshing || false}
-            onRefresh={onRefresh}
-          />
+          <RefreshControl refreshing={refreshing || false} onRefresh={onRefresh} />
         ) : undefined
       }
       contentContainerStyle={contentContainerStyle}
-      keyboardShouldPersistTaps='handled'
+      keyboardShouldPersistTaps="handled"
     >
       {children}
     </ScrollView>

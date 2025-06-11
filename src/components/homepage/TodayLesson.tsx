@@ -33,10 +33,8 @@ const TodayLesson = ({
     return <></>;
   }
   return (
-    <View className='gap-3'>
-      <Text className='font-semibold  text-neutral-500 dark:text-neutral-300'>
-        Today Lesson
-      </Text>
+    <View className="gap-3">
+      <Text className="font-semibold  text-neutral-500 dark:text-neutral-300">Today Lesson</Text>
       <LessonCard lesson={lesson} onLearn={onLearn} onOverview={onOverview} />
     </View>
   );

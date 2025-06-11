@@ -33,22 +33,19 @@ type SpeakButtonProps = ButtonProps & {
   customSpeed?: boolean; // Thêm prop customSpeed
 };
 
-const SpeakButton = React.forwardRef<
-  React.ComponentRef<typeof Button>,
-  SpeakButtonProps
->(
+const SpeakButton = React.forwardRef<React.ComponentRef<typeof Button>, SpeakButtonProps>(
   (
     {
-      label = "",
+      label = '',
       iconSize = 20,
       isSelected,
       onPress,
       className,
       children,
-      language = "en",
+      language = 'en',
       showIcon = false,
       buttonClassName,
-      customLabel = "Start Listening",
+      customLabel = 'Start Listening',
       hideLabel = false,
       disabledSpeak = false,
       forceEnableSpeak,
@@ -60,7 +57,7 @@ const SpeakButton = React.forwardRef<
       customSpeed = false, // Mặc định là false
       ...props
     },
-    ref
+    ref,
   ) => {
     const { speak, isSpeaking } = useTTS();
     const buttonAnimate = React.useRef(new Animated.Value(0)).current;
@@ -122,31 +119,25 @@ const SpeakButton = React.forwardRef<
             ref={ref}
             onPress={handlePress}
             className={cn(
-              "p-0 overflow-hidden flex-col border-[1px]",
-              isSelected
-                ? "border-primary"
-                : "border-neutral-100 dark:border-neutral-800",
-              buttonClassName
+              'p-0 overflow-hidden flex-col border-[1px]',
+              isSelected ? 'border-primary' : 'border-neutral-100 dark:border-neutral-800',
+              buttonClassName,
             )}
             {...props}
           >
-            <View className='w-full aspect-square'>
-              <Image
-                source={image}
-                style={{ width: "100%", height: "100%" }}
-                resizeMode='cover'
-              />
+            <View className="w-full aspect-square">
+              <Image source={image} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
             </View>
 
-            <View className='w-full bg-background p-2'>
+            <View className="w-full bg-background p-2">
               {label && (
-                <Text className='text-foreground text-center font-medium'>
+                <Text className="text-foreground text-center font-medium">
                   {!hideLabel ? label : customLabel}
                 </Text>
               )}
               {showIcon && (
-                <View className='absolute right-2 top-2 bg-white/30 rounded-full p-1'>
-                  <Volume2 size={16} color='white' />
+                <View className="absolute right-2 top-2 bg-white/30 rounded-full p-1">
+                  <Volume2 size={16} color="white" />
                 </View>
               )}
             </View>
@@ -189,10 +180,10 @@ const SpeakButton = React.forwardRef<
         )}
       </Animated.View>
     );
-  }
+  },
 );
 
-SpeakButton.displayName = "SpeakButton";
+SpeakButton.displayName = 'SpeakButton';
 
 export { SpeakButton };
 export type { SpeakButtonProps };

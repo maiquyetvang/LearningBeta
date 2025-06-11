@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
-import { Lesson } from "~/types/lesson.type";
-import { SpeakButton } from "../custom-ui/speak-button";
-import { Text } from "../ui/text";
-import { CheckResultButton } from "./CheckResultButton";
+import React, { useState } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import { Lesson } from '~/types/lesson.type';
+import { SpeakButton } from '../custom-ui/speak-button';
+import { Text } from '../ui/text';
+import { CheckResultButton } from './CheckResultButton';
 
 const SingleChooseLesson = ({
   value,
@@ -24,19 +24,17 @@ const SingleChooseLesson = ({
     onSuccess?.(!isCorrect);
   };
   return (
-    <View className='flex-1 gap-8'>
+    <View className="flex-1 gap-8">
       {!!question && (
-        <Text className='font-semibold text-xl text-center text-primary'>
-          {question}
-        </Text>
+        <Text className="font-semibold text-xl text-center text-primary">{question}</Text>
       )}
       {image && (
-        <View className='items-center justify-center'>
+        <View className="items-center justify-center">
           <Image
-            source={typeof image === "string" ? { uri: image } : image}
-            resizeMode='contain'
+            source={typeof image === 'string' ? { uri: image } : image}
+            resizeMode="contain"
             style={{
-              width: "100%",
+              width: '100%',
               height: 200,
             }}
           />
@@ -52,7 +50,7 @@ const SingleChooseLesson = ({
                 onPress={() => {
                   handleSelectWord(word);
                 }}
-                className='w-full'
+                className="w-full"
                 disabled={disabled}
                 style={{ borderWidth: isUsed ? 1 : 2 }}
                 label={word}
@@ -74,8 +72,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   optionsContainer: {
-    flexWrap: "wrap",
-    width: "100%",
+    flexWrap: 'wrap',
+    width: '100%',
     gap: 8,
   },
 });

@@ -1,23 +1,17 @@
-import * as React from "react";
-import { Animated } from "react-native";
-import { cn } from "~/lib/utils";
-import { Button, ButtonProps } from "../ui/button";
-import { Text } from "../ui/text";
+import * as React from 'react';
+import { Animated } from 'react-native';
+import { cn } from '~/lib/utils';
+import { Button, ButtonProps } from '../ui/button';
+import { Text } from '../ui/text';
 
 type AnimateButtonProps = ButtonProps & {
   isSelected?: boolean;
   wrapperClassName?: string;
-  selectedVariant?: ButtonProps["variant"];
+  selectedVariant?: ButtonProps['variant'];
 };
 
-const AnimatedButton = React.forwardRef<
-  React.ElementRef<typeof Button>,
-  AnimateButtonProps
->(
-  (
-    { isSelected, onPress, wrapperClassName, children, className, ...props },
-    ref
-  ) => {
+const AnimatedButton = React.forwardRef<React.ElementRef<typeof Button>, AnimateButtonProps>(
+  ({ isSelected, onPress, wrapperClassName, children, className, ...props }, ref) => {
     const buttonAnimate = React.useRef(new Animated.Value(0)).current;
     const buttonStyle = {
       transform: [
@@ -45,7 +39,7 @@ const AnimatedButton = React.forwardRef<
     };
 
     const renderChildren =
-      typeof children === "string" || typeof children === "number" ? (
+      typeof children === 'string' || typeof children === 'number' ? (
         <Text>{children}</Text>
       ) : (
         children
@@ -53,20 +47,15 @@ const AnimatedButton = React.forwardRef<
 
     return (
       <Animated.View style={[buttonStyle]} className={cn(wrapperClassName)}>
-        <Button
-          ref={ref}
-          onPress={handlePress}
-          className={cn(className)}
-          {...props}
-        >
+        <Button ref={ref} onPress={handlePress} className={cn(className)} {...props}>
           {renderChildren}
         </Button>
       </Animated.View>
     );
-  }
+  },
 );
 
-AnimatedButton.displayName = "AnimatedButton";
+AnimatedButton.displayName = 'AnimatedButton';
 
 export { AnimatedButton as AnimatedButton };
 export type { AnimateButtonProps as SpeakButtonProps };

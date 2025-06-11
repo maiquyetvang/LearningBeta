@@ -1,19 +1,12 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  StyleProp,
-  ViewStyle,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
-import { Input } from "../ui/input";
-import { Eye, EyeClosed, EyeOff } from "lucide-react-native";
+import React, { useState } from 'react';
+import { StyleSheet, View, StyleProp, ViewStyle, Pressable, TouchableOpacity } from 'react-native';
+import { Input } from '../ui/input';
+import { Eye, EyeClosed, EyeOff } from 'lucide-react-native';
 
-type InputWithIconProps = Omit<React.ComponentProps<typeof Input>, "style"> & {
+type InputWithIconProps = Omit<React.ComponentProps<typeof Input>, 'style'> & {
   leftIcon?: React.ReactNode;
   containerStyle?: StyleProp<ViewStyle>;
-  style?: React.ComponentProps<typeof Input>["style"];
+  style?: React.ComponentProps<typeof Input>['style'];
 };
 
 export const InputWithIcon = React.forwardRef<any, InputWithIconProps>(
@@ -41,41 +34,37 @@ export const InputWithIcon = React.forwardRef<any, InputWithIconProps>(
             onPress={() => setShowPassword((v) => !v)}
             hitSlop={10}
           >
-            {!showPassword ? (
-              <EyeClosed size={20} color='#888' />
-            ) : (
-              <Eye size={20} color='#888' />
-            )}
+            {!showPassword ? <EyeClosed size={20} color="#888" /> : <Eye size={20} color="#888" />}
           </TouchableOpacity>
         )}
       </View>
     );
-  }
+  },
 );
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
   },
   icon: {
-    position: "absolute",
+    position: 'absolute',
     left: 12,
     zIndex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    height: "100%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    height: '100%',
   },
   rightIcon: {
-    position: "absolute",
+    position: 'absolute',
     right: 12,
     zIndex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    height: "100%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    height: '100%',
   },
   input: {
     flex: 1,

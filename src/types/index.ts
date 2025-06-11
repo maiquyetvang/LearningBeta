@@ -1,4 +1,4 @@
-import { User } from "./user.type";
+import { User } from './user.type';
 
 export type BaseEntity = {
   _id: string;
@@ -9,7 +9,7 @@ export type BaseEntity = {
 export type CursorParams = {
   limit?: number;
   cursor?: string;
-  direction?: "forward" | "backward";
+  direction?: 'forward' | 'backward';
 };
 
 export type CursorPagination = {
@@ -39,7 +39,7 @@ export type ListResponse<T, P extends OffsetPagination | CursorPagination> = {
   pageInfo: P;
 };
 
-export type MediaType = "image" | "video" | "audio" | "document";
+export type MediaType = 'image' | 'video' | 'audio' | 'document';
 
 export type Media = {
   url: string;
@@ -58,4 +58,4 @@ export type Tokens = {
   refreshToken: string;
 };
 
-export * from "./auth.type";
+export * from './auth.type';

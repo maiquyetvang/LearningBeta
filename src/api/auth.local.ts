@@ -1,7 +1,7 @@
-import { LoginForm } from "../components/login/LoginScreen";
-import accounts from "../data/accounts.json";
+import { LoginForm } from '../components/login/LoginScreen';
+import accounts from '../data/accounts.json';
 
-export const AUTH_KEY = "auth_state";
+export const AUTH_KEY = 'auth_state';
 
 type AuthState = {
   isLoggedIn?: boolean;
@@ -34,7 +34,7 @@ export const authApi = {
     const { email, password } = registerForm;
     const found = accounts.find((acc) => acc.email === email);
     if (found) {
-      return { isSuccess: false, message: "Email existed" };
+      return { isSuccess: false, message: 'Email existed' };
     }
     accounts.push({ email, password });
     return {

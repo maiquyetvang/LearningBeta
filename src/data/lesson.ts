@@ -1,47 +1,47 @@
-import { LessonImages } from "assets";
-import { ELessonType, Lesson, LessonGroup } from "~/types/lesson.type";
+import { LessonImages } from 'assets';
+import { ELessonType, Lesson, LessonGroup } from '~/types/lesson.type';
 
 export const lessonGroups: LessonGroup[] = [
   {
-    id: "level-test",
-    title: "Placement Test",
-    description: "Test your Korean level",
-    courseId: "course-0",
+    id: 'level-test',
+    title: 'Placement Test',
+    description: 'Test your Korean level',
+    courseId: 'course-0',
     image: LessonImages[1],
   },
   {
-    id: "course-1-1",
-    title: "회사원이 아니에요 1",
+    id: 'course-1-1',
+    title: '회사원이 아니에요 1',
     description: "I'm not a company employee",
-    courseId: "course-1",
+    courseId: 'course-1',
     image: LessonImages[1],
   },
   {
-    id: "course-1-2",
-    title: "회사원이 아니에요 2",
+    id: 'course-1-2',
+    title: '회사원이 아니에요 2',
     description: "I'm not a company employee",
-    courseId: "course-1",
+    courseId: 'course-1',
     image: LessonImages[2],
   },
   {
-    id: "course-1-3",
-    title: "회사원이 아니에요 3",
+    id: 'course-1-3',
+    title: '회사원이 아니에요 3',
     description: "I'm not a company employee",
-    courseId: "course-1",
+    courseId: 'course-1',
     image: LessonImages[3],
   },
   {
-    id: "course-1-4",
-    title: "회사원이 아니에요 4",
+    id: 'course-1-4',
+    title: '회사원이 아니에요 4',
     description: "I'm not a company employee",
-    courseId: "course-1",
+    courseId: 'course-1',
     image: LessonImages[4],
   },
   {
-    id: "course-1-5",
-    title: "회사원이 아니에요 5",
+    id: 'course-1-5',
+    title: '회사원이 아니에요 5',
     description: "I'm not a company employee",
-    courseId: "course-1",
+    courseId: 'course-1',
     image: LessonImages[5],
   },
 ];
@@ -59,13 +59,8 @@ export const levelTestLessons: Lesson[] = [
   {
     type: ELessonType.SingleChoose,
     value: {
-      question: "저는 학생이에요.",
-      selectors: [
-        "I'm a teacher",
-        "I'm a student",
-        "I'm a doctor",
-        "I'm Korean",
-      ],
+      question: '저는 학생이에요.',
+      selectors: ["I'm a teacher", "I'm a student", "I'm a doctor", "I'm Korean"],
       answer: "I'm a student",
     },
   },
@@ -83,12 +78,12 @@ export const levelTestLessons: Lesson[] = [
       question: "안녕하세요, 만나서 반갑습니다.",
       selectorLanguage: "ko",
       selectors: [
-        "Hello, nice to meet you",
-        "My name is Minho",
-        "Goodbye, see you",
-        "Thanks a lot",
+        'Hello, nice to meet you',
+        'My name is Minho',
+        'Goodbye, see you',
+        'Thanks a lot',
       ],
-      answer: "Hello, nice to meet you",
+      answer: 'Hello, nice to meet you',
     },
   },
   {
@@ -118,9 +113,9 @@ export const levelTestLessons: Lesson[] = [
   {
     type: ELessonType.WriteWord,
     value: {
-      hint: "I eat rice",
-      question: "저는 ___ 먹어요",
-      answer: "밥",
+      hint: 'I eat rice',
+      question: '저는 ___ 먹어요',
+      answer: '밥',
     },
   },
   {
@@ -187,15 +182,15 @@ export const course1Unit1: Lesson[] = [
   {
     type: ELessonType.SingleImageChoose,
     value: {
-      question: "아버지",
+      question: '아버지',
       imageSelectors: [
-        { image: LessonImages.FamilyDad, label: "Father" },
-        { image: LessonImages.FamilyMom, label: "Mother" },
+        { image: LessonImages.FamilyDad, label: 'Father' },
+        { image: LessonImages.FamilyMom, label: 'Mother' },
         {
           image: LessonImages.FamilyYoungBrother,
-          label: "Young Brother/Sister",
+          label: 'Young Brother/Sister',
         },
-        { image: LessonImages.FamilyBrother, label: "Brother" },
+        { image: LessonImages.FamilyBrother, label: 'Brother' },
       ],
       answer: "Father",
       questionLanguage: "en",
@@ -204,9 +199,9 @@ export const course1Unit1: Lesson[] = [
   {
     type: ELessonType.WriteWord,
     value: {
-      hint: "I am American.",
-      question: "___ 사람이에요.",
-      answer: "미국",
+      hint: 'I am American.',
+      question: '___ 사람이에요.',
+      answer: '미국',
     },
   },
 ];
@@ -230,15 +225,15 @@ export const Course1Unit2: Lesson[] = [
   {
     type: ELessonType.SingleImageChoose,
     value: {
-      question: "아버지",
+      question: '아버지',
       imageSelectors: [
-        { image: LessonImages.FamilyDad, label: "Father" },
-        { image: LessonImages.FamilyMom, label: "Mother" },
+        { image: LessonImages.FamilyDad, label: 'Father' },
+        { image: LessonImages.FamilyMom, label: 'Mother' },
         {
           image: LessonImages.FamilyYoungBrother,
-          label: "Young Brother/Sister",
+          label: 'Young Brother/Sister',
         },
-        { image: LessonImages.FamilyBrother, label: "Brother" },
+        { image: LessonImages.FamilyBrother, label: 'Brother' },
       ],
       answer: "Father",
       questionLanguage: "ko",
@@ -285,7 +280,7 @@ export const Course1Unit2: Lesson[] = [
   {
     type: ELessonType.SingleChoose,
     value: {
-      image: "https://www.pallikkutam.com/uploads/webzines/1735619741.jpg",
+      image: 'https://www.pallikkutam.com/uploads/webzines/1735619741.jpg',
       // question: "저는 학생이에요.",
       selectors: ["선생님", "학생"],
       answer: "학생",

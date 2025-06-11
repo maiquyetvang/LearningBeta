@@ -4,15 +4,15 @@ import {
 } from "./../configs/default-language";
 export type LanguageCode = keyof typeof LANGUAGE_CODES_MAP;
 export enum ELessonType {
-  Speaking = "voice",
-  Select = "select",
-  Sentence = "sentence",
-  SingleChoose = "single-choose",
-  SingleImageChoose = "single-image-choose",
-  Listening = "listening",
-  WriteOnlyWord = "write-only-word",
-  WriteWord = "write-word",
-  Mapping = "mapping",
+  Speaking = 'voice',
+  Select = 'select',
+  Sentence = 'sentence',
+  SingleChoose = 'single-choose',
+  SingleImageChoose = 'single-image-choose',
+  Listening = 'listening',
+  WriteOnlyWord = 'write-only-word',
+  WriteWord = 'write-word',
+  Mapping = 'mapping',
 }
 export interface LessonValue {
   question?: string;
