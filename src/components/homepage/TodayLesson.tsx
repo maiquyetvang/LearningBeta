@@ -1,25 +1,29 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useGetCourse, useGetLessonGroup } from '~/hooks/useGetLessonById';
+import { useGetCourses } from '~/feature/lesson/hooks/use-get-courses';
+import { useGetLesson } from '~/feature/lesson/hooks/use-get-lesson';
+import { useGetUserLearningStats } from '~/feature/lesson/hooks/use-get-user-learning-stats';
 import { useNextLesson } from '~/hooks/useNextLesson';
-import { useLearningStore } from '~/stores/learning.store';
+import { useLocalLearningStore } from '~/stores/learning.store';
 import { Text } from '../ui/text';
 import LessonCard from './LessonCard';
 
 const TodayLesson = ({
-  courseId,
+  // courseId,
   onLearn,
   onOverview,
 }: {
-  courseId: string;
+  // courseId: string;
   onLearn?: (id: string) => void;
   onOverview?: (id: string) => void;
 }) => {
-  const { data: course } = useGetCourse(courseId);
+  const { data: userLearningStats } = useGetUserLearningStats();
+  const courseId = userLearningStats?.current_course_id || '';
+  const { data: course } = useGetCourses(courseId);
   const { nextLesson } = useNextLesson(course);
-  const { inProgressLesson } = useLearningStore();
+  const { inProgressLesson } = useLocalLearningStore();
   const currentLesson = inProgressLesson?.lessonId || nextLesson?.id;
-  const { data: lesson } = useGetLessonGroup(currentLesson);
+  const { data: lesson } = useGetLesson({ id: currentLesson });
   if (!lesson) {
     return <></>;
   }

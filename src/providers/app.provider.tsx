@@ -7,6 +7,7 @@ import { PowersyncProvider } from '~/lib/powersync';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AuthMiddleware } from '~/feature/auth/auth.middleware';
 import { Toaster } from 'sonner-native';
+import { StreakModalProvider } from '~/contexts/StreakModalContext';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -18,10 +19,12 @@ export const AppProvider = ({ children, theme }: AppProviderProps) => (
     <ReactQueryProvider>
       <GestureHandlerRootView>
         <ThemeProvider value={theme}>
-          {children}
-          <Toaster />
-          <PortalHost />
-          <AuthMiddleware />
+          <StreakModalProvider>
+            {children}
+            <Toaster />
+            <PortalHost />
+            <AuthMiddleware />
+          </StreakModalProvider>
         </ThemeProvider>
         <SplashScreenController />
       </GestureHandlerRootView>

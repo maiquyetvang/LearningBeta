@@ -41,5 +41,8 @@ const Lottie = {
   reading: require('./lottie/reading.json'),
   sad: require('./lottie/sad.json'),
   welcome: require('./lottie/welcome.json'),
+  fire: require('./lottie/fire.json'),
+  confetti: require('./lottie/confetti.json'),
+  longConfetti: require('./lottie/long-confetti.json'),
 };
 export { AchievementImages, AppImages, LessonImages, Lottie };

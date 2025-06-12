@@ -33,21 +33,20 @@ const HomeScreen: React.FC = () => {
       setRefreshing(false);
     }, 1200);
   }, []);
-  const courseId = 'course-1';
   return (
     <SafeAreaView className="flex-1" style={{ paddingTop: insets.top }}>
       <PullToRefreshWrapper onRefresh={onRefresh} refreshing={refreshing}>
         <View className="gap-5 relative p-5 pt-0">
           <Overall />
           <TodayLesson
-            courseId={courseId}
+            // courseId={courseId}
             onLearn={handlePushDetail}
             onOverview={handlePushOverview}
           />
           <LearningPath
-            courseId={courseId}
-            onLearn={handlePushDetail}
-            onReview={handlePushDetail}
+            // courseId={courseId}
+            onLearn={handlePushOverview}
+            onReview={handlePushOverview}
           />
         </View>
       </PullToRefreshWrapper>

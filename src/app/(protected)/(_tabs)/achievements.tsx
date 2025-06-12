@@ -28,7 +28,6 @@ const Achievements = () => {
 
   const renderItem = ({ item }: { item: Badge; index: number }) => {
     const isDone = item.progress >= item.total;
-
     return (
       <Pressable
         onPress={() => handleSelectBadge(item)}

@@ -1,17 +1,16 @@
-import { useLearningStore } from '~/stores/learning.store';
-import { Course, LessonGroup } from '~/types/lesson.type';
+import { useGetCompletedLessons } from '~/feature/lesson/hooks/use-get-completed-lessons';
+import { useGetLessonsByCourse } from '~/feature/lesson/hooks/use-get-lessons-by-course';
+import { CourseRecord, LessonRecord } from '~/lib/powersync/app-schema';
 
-export function useNextLesson(course?: Course | null) {
-  const { learnedLessons: completedUnit } = useLearningStore();
-  // const { data: levelTestLesson } = useGetLessonGroup('level-test');
+export function useNextLesson(course?: CourseRecord | null) {
+  const { data: completedUnit } = useGetCompletedLessons();
+  const { data: courseLessons } = useGetLessonsByCourse(course?.id || '');
 
   const checkIsCompleted = (lessonId: string) =>
-    completedUnit?.some((unit) => unit.lessonId === lessonId);
+    completedUnit?.some((unit) => unit.lesson_id === lessonId);
 
-  // const hasCompletedLevelTest = checkIsCompleted("level-test");
-
-  const lessonGroups = (course?.lessonGroups ?? [])
-    .filter((lesson) => lesson.courseId === course?.id)
+  const lessonGroups = (courseLessons ?? [])
+    .filter((lesson) => lesson.course_id === course?.id)
     .map((lesson) => ({
       ...lesson,
       isCompleted: checkIsCompleted(lesson.id),
@@ -20,7 +19,7 @@ export function useNextLesson(course?: Course | null) {
   const lastCompletedIndex = lessonGroups.map((lesson) => lesson.isCompleted).lastIndexOf(true);
 
   const nextLesson = (lessonGroups[lastCompletedIndex + 1] ??
-    lessonGroups.find((lesson) => !lesson.isCompleted)) as LessonGroup;
+    lessonGroups.find((lesson) => !lesson.isCompleted)) as LessonRecord;
 
   const totalLessons = lessonGroups.length || 0;
   const progress =

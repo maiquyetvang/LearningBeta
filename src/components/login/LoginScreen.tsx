@@ -29,7 +29,7 @@ export function LoginStep({
 }) {
   // const [loading, setLoading] = useState(false);
   const passwordInputRef = useRef<TextInput>(null);
-  const { user, session, loading, setLoading } = useAuthStore();
+  const { user, setUser, loading, setLoading } = useAuthStore();
 
   const { supabase } = useSystem();
   const {
@@ -39,7 +39,7 @@ export function LoginStep({
     reset,
   } = useForm<LoginForm>({
     defaultValues: {
-      email: session?.user?.email || '',
+      email: user?.email || '',
       password: '',
       remember: user?.remember || false,
       stayLogin: true,
@@ -47,11 +47,15 @@ export function LoginStep({
   });
 
   const onSubmit = async (data: LoginForm) => {
+    const { email, password, stayLogin, remember } = data;
     setLoading(true);
-    // timeout
-    // await new Promise((resolve) => setTimeout(resolve, 2000));
     try {
-      await supabase.login(data.email, data.password);
+      setUser({
+        email: remember ? email : undefined,
+        remember,
+        stayLogin,
+      });
+      await supabase.login(email, password);
       router.replace('/(protected)/(_tabs)');
     } catch (e: any) {
       Alert.alert('Login Failed', e.message);

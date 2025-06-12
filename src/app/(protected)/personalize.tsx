@@ -5,6 +5,7 @@ import StepProgressBar, { ProgressStep } from '~/components/custom-ui/progress';
 import { AnimatedScreenWrapper } from '~/components/login/AnimatedScreenWrapper';
 import PersonalizeStepScreen from '~/components/personalize/PersonalizeStepScreen';
 import { Text } from '~/components/ui/text';
+import { useGetLesson } from '~/feature/lesson/hooks/use-get-lesson';
 import { useUpdateProfile } from '~/feature/profiles/hooks/use-update-profile';
 
 export type PersonalizeStep =
@@ -106,6 +107,8 @@ const PersonalizeScreen: React.FC = () => {
   const [personalizeValues, setPersonalizeValues] = useState<Record<string, string>>({});
   const [progress, setProgress] = useState<ProgressStep[]>([]);
 
+  const { data: lessonTest } = useGetLesson({ levelTest: true });
+
   const { updateProfileAsync } = useUpdateProfile();
 
   console.log({ personalizeValues });
@@ -146,7 +149,7 @@ const PersonalizeScreen: React.FC = () => {
         ui_language: 'en',
       });
       if (value === 'TAKE A TEST') {
-        router.replace('/(protected)/(lesson)?lessonId=level-test');
+        router.replace({ pathname: '/(protected)/(lesson)', params: { id: lessonTest?.id } });
       } else if (value === 'START FROM BEGINNING') {
         router.replace('/(protected)/(_tabs)');
       }

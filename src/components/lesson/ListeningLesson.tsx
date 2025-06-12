@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { QuestionWithParsedContent } from '~/feature/lesson/hooks/use-get-questions';
 import { Volume2 } from '~/lib/icons/Volume2';
-import { useLearningStore } from '~/stores/learning.store';
-import { Lesson } from '~/types/lesson.type';
+import { useLocalLearningStore } from '~/stores/learning.store';
 import { SpeakButton } from '../custom-ui/speak-button';
 import { Text } from '../ui/text';
 import { CannotListenButton } from './CannotListenButton';
@@ -14,12 +14,12 @@ const ListeningLesson = ({
   onSuccess,
   onSkip,
 }: {
-  value: Lesson;
+  value: QuestionWithParsedContent;
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
   onSkip?: () => void;
 }) => {
-  const { setSpeechDisabled } = useLearningStore();
+  const { setSpeechDisabled } = useLocalLearningStore();
   const { question, questionLanguage, selectors, answer, selectorLanguage } = value.value;
   const [selected, setSelected] = useState<string | null>();
   const handleSelectWord = (value: string) => {

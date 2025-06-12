@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { Lesson } from '~/types/lesson.type';
+import { QuestionWithParsedContent } from '~/feature/lesson/hooks/use-get-questions';
 import { SpeakButton } from '../custom-ui/speak-button';
 import { Text } from '../ui/text';
 import { CheckResultButton } from './CheckResultButton';
@@ -10,7 +10,7 @@ const SingleChooseImageLesson = ({
   disabled,
   onSuccess,
 }: {
-  value: Lesson;
+  value: QuestionWithParsedContent;
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {

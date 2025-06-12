@@ -51,7 +51,7 @@ export function RegisterStep({
   const onSubmit = async (data: RegisterForm) => {
     setLoading(true);
     try {
-      console.log({ data });
+      // console.log({ data });
       const { email, password } = data;
       await supabase.register(email, password);
       onNextStep?.(ELoginScreen.LOGIN);

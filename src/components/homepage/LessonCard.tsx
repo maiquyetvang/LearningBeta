@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Pressable, View } from 'react-native';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
-import { useLearningStore } from '~/stores/learning.store';
-import { LessonGroup } from '~/types/lesson.type';
+import { LessonWithParsedContent } from '~/feature/lesson/hooks/use-get-lesson';
+import { useLocalLearningStore } from '~/stores/learning.store';
 import ProgressBar from '../common/ProgressBar';
 import { Button } from '../ui/button';
 import { Text } from '../ui/text';
 import { H4 } from '../ui/typography';
 
 const LessonCard: React.FC<{
-  lesson: LessonGroup;
+  lesson: LessonWithParsedContent;
   onOverview?: (id: string) => void;
   onLearn?: (id: string) => void;
 }> = ({ lesson, onLearn, onOverview }) => {
-  const { inProgressLesson } = useLearningStore();
+  const { inProgressLesson } = useLocalLearningStore();
+  const [imageError, setImageError] = useState(false);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: 1,
@@ -36,15 +37,16 @@ const LessonCard: React.FC<{
         className="bg-neutral-50 dark:bg-neutral-900 rounded-lg"
         onPress={() => onOverview?.(lesson.id)}
       >
-        {lesson.image && (
+        {lesson.image_url && !imageError && (
           <Image
-            source={lesson.image}
+            source={{ uri: lesson.image_url }}
             style={{
               width: '100%',
               aspectRatio: 39 / 28,
               height: undefined,
             }}
             className="rounded-t-lg"
+            onError={() => setImageError(true)}
           />
         )}
         <View className="p-3 gap-2">
@@ -54,7 +56,7 @@ const LessonCard: React.FC<{
           </View>
           <ProgressBar value={progress} />
           <Button
-            onPress={() => onLearn?.(lesson.id)}
+            onPress={() => onOverview?.(lesson.id)}
             variant={inProgressLesson ? 'secondary' : undefined}
             className="w-full"
           >

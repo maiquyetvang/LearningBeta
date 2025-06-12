@@ -111,7 +111,11 @@ const SpeakButton = React.forwardRef<React.ComponentRef<typeof Button>, SpeakBut
             {...props}
           >
             <View className="w-full aspect-square">
-              <Image source={image} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+              <Image
+                source={{ uri: image.toString() }}
+                style={{ width: '100%', height: '100%' }}
+                resizeMode="cover"
+              />
             </View>
 
             <View className="w-full bg-background p-2">

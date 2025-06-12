@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { ChevronLeft } from '~/lib/icons/ChevronLeft';
-import { useLearningStore } from '~/stores/learning.store';
+import { useLocalLearningStore } from '~/stores/learning.store';
 import { LessonGroup } from '~/types/lesson.type';
 import ProgressBar from '../common/ProgressBar';
 import { Text } from '../ui/text';
@@ -14,7 +14,7 @@ export default function LessonOverview({
   lesson: LessonGroup;
   onStart: () => void;
 }) {
-  const { inProgressLesson } = useLearningStore();
+  const { inProgressLesson } = useLocalLearningStore();
   const progress = inProgressLesson
     ? (inProgressLesson.progress.length / inProgressLesson.totalLesson) * 100
     : 0;

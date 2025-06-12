@@ -1,7 +1,7 @@
 import { X } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Lesson } from '~/types/lesson.type';
+import { QuestionWithParsedContent } from '~/feature/lesson/hooks/use-get-questions';
 import { SpeakButton } from '../custom-ui/speak-button';
 import ThemeIcon from '../Icon';
 import { Button } from '../ui/button';
@@ -13,7 +13,7 @@ const SelectLesson = ({
   disabled,
   onSuccess,
 }: {
-  value: Lesson;
+  value: QuestionWithParsedContent;
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {

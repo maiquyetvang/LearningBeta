@@ -19,7 +19,7 @@ export const CheckResultButton = ({
       onPress={onCheck}
       className={cn(!disabled && 'bg-primary-50 dark:bg-primary-900')}
     >
-      <Text className={cn('font-semibold', !disabled && ' text-primary')}>Check</Text>
+      <Text className={cn('font-semibold', !disabled && 'text-primary')}>Check</Text>
     </Button>
   );
 };

@@ -56,7 +56,7 @@ function getTodayString() {
   return now.toISOString().slice(0, 10);
 }
 
-export const useLearningStore = create<LearningState & LearningActions>()(
+export const useLocalLearningStore = create<LearningState & LearningActions>()(
   persist(
     (set) => ({
       currentCourse: null,

@@ -2,7 +2,7 @@ import { ImageSourcePropType } from 'react-native';
 import { LANGUAGE_CODES_MAP } from './../configs/default-language';
 export type LanguageCode = keyof typeof LANGUAGE_CODES_MAP;
 export enum ELessonType {
-  Speaking = 'voice',
+  Speaking = 'speaking',
   Select = 'select',
   Sentence = 'sentence',
   SingleChoose = 'single-choose',

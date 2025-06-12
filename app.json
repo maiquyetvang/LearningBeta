@@ -2,7 +2,7 @@
   "expo": {
     "name": "Kindo",
     "slug": "LearningBeta",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "kindo",
@@ -84,7 +84,7 @@
         "projectId": "290c425c-3fac-4a88-a78d-0279015a00c2"
       }
     },
-    "owner": "dudaji"
+    "owner": "maiquyetvang"
   },
   "build": {
     "production": {

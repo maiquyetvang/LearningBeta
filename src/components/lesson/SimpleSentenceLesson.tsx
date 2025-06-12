@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { Text } from '../ui/text';
+import { QuestionWithParsedContent } from '~/feature/lesson/hooks/use-get-questions';
 import { cn } from '~/lib/utils';
-import { Lesson } from '~/types/lesson.type';
 import { SpeakButton } from '../custom-ui/speak-button';
+import { Text } from '../ui/text';
 import { H3 } from '../ui/typography';
 import { CheckResultButton } from './CheckResultButton';
 
@@ -12,7 +12,7 @@ const SimpleSentenceLesson = ({
   disabled,
   onSuccess,
 }: {
-  value: Lesson;
+  value: QuestionWithParsedContent;
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {

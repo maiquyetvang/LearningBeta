@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LoginStep } from '~/components/login/LoginScreen';
+import SignInWithGoogleButton from '~/components/login/SignInWithGoogleButton';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { useLessonBottomSheet } from '~/hooks/useLessonBottomSheet';
@@ -78,23 +79,7 @@ export default function LoginScreen() {
           <Button onPress={openBottomSheet} className="w-full">
             <Text>Sign in with Kindo Account</Text>
           </Button>
-          <Button
-            variant="neutral"
-            onPress={openBottomSheet}
-            className="w-full flex-row align-middle gap-2 items-center  flex justify-center"
-          >
-            <Image
-              source={AppImages.google_icon}
-              height={20}
-              width={20}
-              style={{
-                width: 20,
-                height: 20,
-              }}
-              resizeMode="contain"
-            />
-            <Text>Sign in with Google</Text>
-          </Button>
+          <SignInWithGoogleButton />
         </View>
         <BottomSheet
           index={-1}

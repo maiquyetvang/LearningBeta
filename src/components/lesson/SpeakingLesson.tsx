@@ -2,32 +2,45 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
+import { QuestionWithParsedContent } from '~/feature/lesson/hooks/use-get-questions';
 import { useVoiceRecognition } from '~/hooks/useVoiceRecognition';
 import { Mic } from '~/lib/icons/Mic';
 import { Volume2 } from '~/lib/icons/Volume2';
 import { cn } from '~/lib/utils';
-import { useLearningStore } from '~/stores/learning.store';
-import { Lesson } from '~/types/lesson.type';
+import { useLocalLearningStore } from '~/stores/learning.store';
 import { playResultSound } from '~/utils/playSound';
 import { SpeakButton } from '../custom-ui/speak-button';
 import { CannotSpeakButton } from './CannotSpeakButton';
 import { CheckResultButton } from './CheckResultButton';
+import { convert as romanize } from 'hangul-romanization';
 const SpeakingLesson = ({
-  value: sampleText,
+  value,
   disabled,
   onSuccess,
   onSkip,
 }: {
-  value: Lesson;
+  value: QuestionWithParsedContent;
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
   onSkip?: () => void;
 }) => {
-  const { setAudioDisabled } = useLearningStore();
-  const { question, answer, questionLanguage } = sampleText.value;
+  const { setAudioDisabled } = useLocalLearningStore();
+  const { question, answer, questionLanguage } = value.value;
+  const [romanizedQuestion, setRomanizedQuestion] = React.useState<string | undefined>(undefined);
+  useEffect(() => {
+    try {
+      if (questionLanguage === 'ko' && !!question) {
+        const romanized = romanize(question);
+        setRomanizedQuestion(romanized);
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  }, [question, questionLanguage]);
+
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [isReady, setIsReady] = React.useState(false);
-  const [textDetected, setTextDetection] = React.useState<string | undefined>();
+  const [textDetected, setTextDetection] = React.useState<string | undefined>('');
   const { state, startListening, stopListening } = useVoiceRecognition(questionLanguage);
   const sampleWords =
     question
@@ -46,21 +59,25 @@ const SpeakingLesson = ({
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      return;
-    }
-    setTextDetection(state.results?.[0] || '');
-    const isMatchEnough = checkMatchPercent();
-    if (isMatchEnough) {
-      setIsSuccess(true);
-      stopListening();
-      // setIsSuccess(false);
-      onSuccess?.(!isMatchEnough);
-    } else {
-      setIsSuccess(false);
-    }
+    const runEffect = () => {
+      if (isSuccess) {
+        return;
+      }
+      setTextDetection(state.results?.[0] || '');
+      const isMatchEnough = checkMatchPercent();
+      if (isMatchEnough) {
+        setIsSuccess(true);
+        onSuccess?.(!isMatchEnough);
+        stopListening();
+        // setIsSuccess(false);
+      } else {
+        setIsSuccess(false);
+      }
+    };
+    runEffect();
     const timer = setTimeout(() => {
       if (state.isRecording) {
+        const isMatchEnough = checkMatchPercent();
         stopListening();
         setIsSuccess(false);
         if (!isMatchEnough) playResultSound(!isMatchEnough);
@@ -88,7 +105,7 @@ const SpeakingLesson = ({
         }}
         className={cn(
           'text-foreground',
-          isMatch ? 'text-success' : spokenWord ? 'text-error' : 'text-gray-400',
+          isMatch ? 'text-success' : spokenWord ? 'text-error' : 'text-gray-500 dark:text-gray-400',
         )}
       >
         {word}
@@ -131,19 +148,23 @@ const SpeakingLesson = ({
         >
           {renderWords}
         </View>
-
-        <Text className="text-neutral-500">{textDetected}</Text>
+        {!!romanizedQuestion && (
+          <Text className="text-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+            {romanizedQuestion}
+          </Text>
+        )}
+        <Text className="text-gray-500 dark:text-gray-400">{textDetected}</Text>
         <SpeakButton
           label={answer}
-          className="w-fit "
           showIcon
           language={questionLanguage}
           variant={'neutral'}
           disabled={disabled || (!isReady && state.isRecording)}
-          buttonClassName="justify-center text-xl font-bold"
+          buttonClassName="justify-center w-fit text-xl font-bold"
           hideLabel
           customLabel="Play Sample"
           leftIcon={<Volume2 size={20} className="text-foreground" />}
+          customSpeed
         />
       </View>
 

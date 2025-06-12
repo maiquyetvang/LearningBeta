@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import { X } from 'lucide-react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -17,22 +16,26 @@ import SpeakingLesson from '~/components/lesson/SpeakingLesson';
 import WriteOnlyWordLesson from '~/components/lesson/WriteOnlyWordLesson';
 import WriteWordLesson from '~/components/lesson/WriteWordLesson';
 import { Text } from '~/components/ui/text';
-import { useGetLessonGroup } from '~/hooks/useGetLessonById';
-import { useLearningStore } from '~/stores/learning.store';
-import { ELessonType, Lesson } from '~/types/lesson.type';
+import { useMarkCompleteLesson } from '~/feature/lesson/hooks/use-add-complete-lesson';
+import { useAddLearningTime } from '~/feature/lesson/hooks/use-add-user-learning-time';
+import { useGetLesson } from '~/feature/lesson/hooks/use-get-lesson';
+import {
+  QuestionWithParsedContent,
+  useGetQuestions,
+} from '~/feature/lesson/hooks/use-get-questions';
+import { useLocalLearningStore } from '~/stores/learning.store';
+import { ELessonType } from '~/types/lesson.type';
 import { playResultSound } from '~/utils/playSound';
-import CompleteLesson from './_components/CompleteLesson';
-import CompleteLevelTest from './_components/CompleteLevelTest';
+import CompleteLesson from '../../../feature/lesson/components/CompleteLesson';
+import CompleteLevelTest from '../../../feature/lesson/components/CompleteLevelTest';
+import ReviewNotCorrectLesson from '../../../feature/lesson/components/ReviewNotCorrectLesson';
 import LessonBottomSheet from './_components/LessonBottomSheet';
-import ReviewNotCorrectLesson from './_components/ReviewNotCorrectLesson';
 
 const LessonDetailScreen: React.FC = () => {
   const { id: lessonId } = useLocalSearchParams<{ id: string }>();
-  const queryClient = useQueryClient();
-  const isLevelTest = lessonId === 'level-test';
+
   const bottomSheetRef = useRef<BottomSheet>(null);
   const {
-    markLessonAsLearned,
     saveInProgressLesson,
     inProgressLesson,
     clearInProgressLesson,
@@ -40,11 +43,15 @@ const LessonDetailScreen: React.FC = () => {
     isSpeechDisabled,
     setAudioDisabled,
     setSpeechDisabled,
-    addLearningTime,
-  } = useLearningStore();
+  } = useLocalLearningStore();
 
-  const { data: lessonGroup } = useGetLessonGroup(lessonId);
-  const data = lessonGroup?.lessons;
+  const { mutateAsync: addLearningTime } = useAddLearningTime();
+
+  const { data: questions } = useGetQuestions(lessonId);
+  const { data: lessonDetail } = useGetLesson({ id: lessonId });
+  const isLevelTest = lessonDetail?.is_level_test === 1;
+
+  const { mutateAsync: markLessonAsLearned } = useMarkCompleteLesson();
 
   const [currentIndex, setCurrentIndex] = useState<number>(
     inProgressLesson?.lessonId === lessonId ? inProgressLesson?.currentIndex || 0 : 0,
@@ -56,7 +63,6 @@ const LessonDetailScreen: React.FC = () => {
   const [disabled, setDisabled] = useState<boolean | undefined>();
   const [isFalse, setIsFalse] = useState<boolean | undefined>();
   const [stepStartTime, setStepStartTime] = useState<number>(() => Date.now());
-
   const [reviewMode, setReviewMode] = useState(false);
   const [reviewIndexes, setReviewIndexes] = useState<number[]>([]);
   const [reviewCurrent, setReviewCurrent] = useState(0);
@@ -66,8 +72,8 @@ const LessonDetailScreen: React.FC = () => {
   }, []);
 
   const handleNextStep = () => {
-    closeBottomSheet();
     setDisabled(false);
+    closeBottomSheet();
     if (reviewMode) {
       setReviewCurrent((prevStep) => {
         return prevStep + 1;
@@ -80,11 +86,13 @@ const LessonDetailScreen: React.FC = () => {
   };
 
   const handleSuccess = useCallback(
-    (isFalse?: boolean, isSkip?: boolean) => {
+    async (isFalse?: boolean, isSkip?: boolean) => {
       const now = Date.now();
       const duration = now - stepStartTime;
       const index = reviewMode ? reviewIndexes[reviewCurrent] : currentIndex;
-      addLearningTime(duration);
+      if (!isLevelTest) {
+        await addLearningTime(duration);
+      }
       setProgress((prev) => {
         const exists = prev.some((step) => step.index === index);
         let updated;
@@ -107,10 +115,10 @@ const LessonDetailScreen: React.FC = () => {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data, currentIndex, stepStartTime, reviewCurrent, reviewMode, reviewIndexes],
+    [questions, currentIndex, stepStartTime, reviewCurrent, reviewMode, reviewIndexes],
   );
   const checkIsSkip = (currentIndex: number) => {
-    const type = data && data[currentIndex]?.type;
+    const type = questions && questions[currentIndex]?.type;
     if (!type) return false;
     if (type === ELessonType.Speaking) {
       if (isAudioDisabled) {
@@ -133,7 +141,9 @@ const LessonDetailScreen: React.FC = () => {
     }
   };
   const openBottomSheet = () => {
-    bottomSheetRef.current?.expand();
+    setTimeout(() => {
+      bottomSheetRef.current?.expand();
+    }, 50);
   };
   const closeBottomSheet = () => {
     bottomSheetRef.current?.close();
@@ -152,8 +162,9 @@ const LessonDetailScreen: React.FC = () => {
   };
 
   const renderTitle = (index: number) => {
-    if (!data || index >= data.length || !data[index]) return null;
-    const text = lessonTitleMap[data[index].type];
+    if (!questions || index >= questions.length || !questions[index]) return null;
+    const type = questions[index].type;
+    const text = type ? lessonTitleMap[type as ELessonType] : '';
     return (
       <View key={index} className="flex-row w-full gap-2 items-center justify-center">
         <Image
@@ -180,13 +191,21 @@ const LessonDetailScreen: React.FC = () => {
   };
 
   const renderStep = (index: number) => {
-    if (!data || index >= data.length || !data[index]) return null;
-    const LessonComponent = lessonComponentMap[data[index].type];
-    if (!LessonComponent) return null;
+    if (!questions || index >= questions.length || !questions[index])
+      return (
+        <Text className="text-error font-semibold">
+          Fail render {questions ? questions[index]?.type : 'no data'}
+        </Text>
+      );
+
+    const type = questions[index].type as ELessonType;
+    const LessonComponent = lessonComponentMap[type];
+    if (!LessonComponent)
+      return <Text className="text-error font-semibold">Unknown lesson type: {type}</Text>;
     return (
       <LessonComponent
         key={index}
-        value={data[index]}
+        value={questions[index]}
         onSuccess={handleSuccess}
         disabled={disabled}
         onSkip={() => handleSuccess(true)}
@@ -195,16 +214,21 @@ const LessonDetailScreen: React.FC = () => {
   };
 
   const renderReviewStep = () => {
-    if (!reviewMode || reviewCurrent >= reviewIndexes.length || reviewIndexes.length === 0 || !data)
+    if (
+      !reviewMode ||
+      reviewCurrent >= reviewIndexes.length ||
+      reviewIndexes.length === 0 ||
+      !questions
+    )
       return null;
     const index = reviewIndexes[reviewCurrent];
-    if (index === undefined || !data[index]) return null;
-    const LessonComponent = lessonComponentMap[data[index].type];
+    if (index === undefined || !questions[index]) return null;
+    const LessonComponent = lessonComponentMap[questions[index].type as ELessonType];
     if (!LessonComponent) return null;
     return (
       <LessonComponent
         key={index}
-        value={data[index]}
+        value={questions[index]}
         onSuccess={handleSuccess}
         disabled={disabled}
         onSkip={() => handleSuccess(true)}
@@ -222,6 +246,7 @@ const LessonDetailScreen: React.FC = () => {
   };
 
   const handleReview = () => {
+    setDisabled(false);
     const incorrectIndexes = progress.filter((p) => p.isFalse).map((p) => p.index);
     console.log({ incorrectIndexes });
     setReviewIndexes(incorrectIndexes);
@@ -242,13 +267,13 @@ const LessonDetailScreen: React.FC = () => {
       }
       return;
     }
-    if (data && currentIndex === data.length) {
+    if (questions && currentIndex === questions.length) {
       setIsCompleted(true);
     } else {
       setIsCompleted(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex, data, reviewCurrent, reviewIndexes]);
+  }, [currentIndex, questions, reviewCurrent, reviewIndexes]);
 
   // Check if the lesson is skipped
   useEffect(() => {
@@ -269,32 +294,29 @@ const LessonDetailScreen: React.FC = () => {
 
   //Handle save completed lesson
   useEffect(() => {
-    if (isCompleted && lessonId && (isLevelTest || !progress.some((p) => p.isFalse))) {
-      // const duration = progress.reduce(
-      //   (acc, step) => acc + (step.duration || 0),
-      //   0
-      // );
-      const correctAnswers = progress.filter((p) => !p.isFalse).length;
-      const totalQuestions = progress.length;
-      const courseId = lessonGroup?.courseId;
-
-      queryClient.invalidateQueries({
-        queryKey: ['completedUnits', courseId],
-      });
-      markLessonAsLearned(lessonId, correctAnswers, totalQuestions, courseId);
-      clearInProgressLesson();
-    }
+    const handleComplete = async () => {
+      if (isCompleted && lessonId && (isLevelTest || !progress.some((p) => p.isFalse))) {
+        const totalTimeSpent = progress.reduce((total, step) => total + (step.duration || 0), 0);
+        clearInProgressLesson();
+        await markLessonAsLearned({
+          lesson_id: lessonId,
+          course_id: lessonDetail?.course_id!,
+          time_spent: totalTimeSpent,
+        });
+      }
+    };
+    handleComplete();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCompleted, lessonId, progress]);
 
   // handle saving in-progress lesson
   useEffect(() => {
-    if (lessonId && data && !isCompleted) {
+    if (lessonId && questions && !isCompleted) {
       saveInProgressLesson({
         lessonId,
         currentIndex: progress.length,
         progress,
-        totalLesson: data.length,
+        totalLesson: questions.length,
         reviewIndexes,
       });
     }
@@ -304,8 +326,8 @@ const LessonDetailScreen: React.FC = () => {
   useEffect(() => {
     if (
       inProgressLesson?.progress &&
-      data &&
-      inProgressLesson?.progress.length === data?.length &&
+      questions &&
+      inProgressLesson?.progress.length === questions?.length &&
       inProgressLesson.progress.length > 0
     ) {
       handleReview();
@@ -313,8 +335,13 @@ const LessonDetailScreen: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getDescription = (data: Lesson[], isFalse: boolean | undefined, currentIndex: number) => {
+  const getDescription = (
+    data: QuestionWithParsedContent[],
+    isFalse: boolean | undefined,
+    currentIndex: number,
+  ) => {
     if (data && isFalse && data[currentIndex]) {
+      // Handle special cases for different lesson types
       if (data[currentIndex].type === ELessonType.Mapping) {
         return data[currentIndex].value.selectors?.reduce((acc, selector, idx) => {
           return (
@@ -322,12 +349,11 @@ const LessonDetailScreen: React.FC = () => {
             `\n${idx + 1}. ${selector} - ${data[currentIndex].value.answers?.[idx] || 'No answer'}`
           );
         }, 'Correct answer: ');
-        // return "Please try again to match the correct pairs.";
       }
+      // For other lesson types, we can return the answer directly
       const answer = data[currentIndex].value.answer || data[currentIndex].value.answers?.join(' ');
       return `Correct answer: ${answer}`;
     }
-    return 'Great job!';
   };
 
   return (
@@ -337,23 +363,25 @@ const LessonDetailScreen: React.FC = () => {
           <TouchableOpacity onPress={handleReset}>
             <ThemeIcon Icon={X} size={28} />
           </TouchableOpacity>
-          <StepProgressBar
-            currentIndex={
-              reviewMode
-                ? reviewCurrent < reviewIndexes.length
-                  ? reviewIndexes[reviewCurrent]
-                  : data?.length
-                : currentIndex
-            }
-            progressStep={progress}
-            length={data?.length}
-          />
+          {!isCompleted && (
+            <StepProgressBar
+              currentIndex={
+                reviewMode
+                  ? reviewCurrent < reviewIndexes.length
+                    ? reviewIndexes[reviewCurrent]
+                    : questions?.length
+                  : currentIndex
+              }
+              progressStep={progress}
+              length={questions?.length}
+            />
+          )}
         </View>
       </View>
 
-      {!data || data.length === 0 ? (
+      {!questions || questions.length === 0 ? (
         <View className="flex-1 items-center justify-center">
-          <Text className="text-lg font-semibold">No lessons available</Text>
+          <Text className="text-lg text-center font-semibold">No lessons available</Text>
         </View>
       ) : (
         <>
@@ -371,9 +399,9 @@ const LessonDetailScreen: React.FC = () => {
             isSkip={checkIsSkip(reviewMode ? reviewIndexes[reviewCurrent] : currentIndex)}
             isFalse={isFalse}
             onNextStep={handleNextStep}
-            isLast={data && currentIndex === data.length - 1}
+            isLast={questions && currentIndex === questions.length - 1}
             description={getDescription(
-              data,
+              questions,
               isFalse,
               reviewMode ? reviewIndexes[reviewCurrent] : currentIndex,
             )}

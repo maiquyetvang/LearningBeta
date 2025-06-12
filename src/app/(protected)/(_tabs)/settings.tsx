@@ -5,22 +5,22 @@ import { Image, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PullToRefreshWrapper from '~/components/common/PullToRefreshWrapper';
 import MicrophonePermissionSwitch from '~/components/settings/MicrophonePermissionSwitch';
-import MyCourseCard from '~/components/settings/MyCourseCard';
 import NotificationPermissionSwitch from '~/components/settings/NotificationPermissionSwitch';
 import SettingSection from '~/components/settings/PermissionsSection';
 import ThemeToggle from '~/components/settings/ThemeToggle';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
+import CourseHeader from '~/feature/lesson/components/course-header';
 import { useGetMyProfile } from '~/hooks/use-my-profile';
 import { LogOut } from '~/lib/icons/Logout';
 import { useSystem } from '~/lib/powersync/system';
 import { useAuthStore } from '~/stores/auth.store';
-import { useLearningStore } from '~/stores/learning.store';
+import { useLocalLearningStore } from '~/stores/learning.store';
 
 const Settings = () => {
   const insets = useSafeAreaInsets();
-  const { resetLearning, clearInProgressLesson } = useLearningStore();
-  const { session } = useAuthStore();
+  const { resetLearning, clearInProgressLesson } = useLocalLearningStore();
+  const { session, logout } = useAuthStore();
   const { data: profile, refetch } = useGetMyProfile();
   const [refreshing, setRefreshing] = React.useState(false);
   const [mic, setMic] = React.useState(true);
@@ -42,7 +42,8 @@ const Settings = () => {
   const handleLogout = async () => {
     await powersync.disconnectAndClear();
     await supabase.client.auth.signOut();
-    router.replace('/(auth)/login');
+    logout();
+    // router.replace('/(auth)/login');
   };
   return (
     <SafeAreaView className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
@@ -74,24 +75,26 @@ const Settings = () => {
           <SettingSection title="My Account">
             <View className="flex-row gap-3">
               <TouchableOpacity
-                className="flex-1 flex-row items-center justify-start rounded-lg p-3 gap-3 bg-success-50 dark:bg-success-900"
+                className="flex-1 flex-row items-center justify-start rounded-lg p-3 gap-2 bg-success-50 dark:bg-success-900"
                 onPress={handleEditAccount}
               >
-                <Image source={AppImages.profile} style={{ height: 40, width: 40 }} />
-                <Text className="font-semibold text-foreground ">Edit Account</Text>
+                <Image source={AppImages.profile} style={{ height: 28, width: 28 }} />
+                <Text className="font-semibold text-sm text-foreground ">Edit Account</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                className="flex-1 flex-row items-center justify-start rounded-lg p-3 gap-3 bg-primary-50 dark:bg-primary-900"
+                className="flex-1 flex-row items-center justify-start rounded-lg p-3 gap-2 bg-primary-50 dark:bg-primary-900"
                 onPress={handleChangePassword}
               >
-                <Image source={AppImages.lock} style={{ height: 40, width: 40 }} />
-                <Text className="font-semibold text-foreground">Change{'\n'}Password</Text>
+                <Image source={AppImages.lock} style={{ height: 28, width: 28 }} />
+                <Text className="font-semibold text-sm text-foreground">Change Password</Text>
               </TouchableOpacity>
             </View>
           </SettingSection>
 
           <SettingSection title="My Course">
-            <MyCourseCard />
+            <View className="p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
+              <CourseHeader />
+            </View>
           </SettingSection>
 
           {/* Permissions */}

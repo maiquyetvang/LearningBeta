@@ -1,11 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useLearningStore } from '~/stores/learning.store';
+import { useLocalLearningStore } from '~/stores/learning.store';
 import { AnimatedButton } from '../custom-ui/animate-button';
 import { playCongratsSound } from '~/utils/playSound';
 
 const TestVoice = () => {
-  const { clearInProgressLesson, resetLearning } = useLearningStore();
+  const { clearInProgressLesson, resetLearning } = useLocalLearningStore();
 
   return (
     <View className="gap-3 ">

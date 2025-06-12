@@ -51,7 +51,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       setLoaded: (isLoaded) => set(() => ({ isLoaded })),
       setUser: (user) =>
         set((state) => ({
-          user: state.user ? { ...state.user, ...user } : null,
+          user: state.user ? ({ ...state.user, ...user } as User) : (user as User),
         })),
       setSession: (session) =>
         set(() => ({

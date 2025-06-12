@@ -101,7 +101,7 @@ const LessonBottomSheet = ({
         <View className="px-5 !pt-0 pb-10 ">
           <View className=" flex-col  gap-3  justify-between">
             <View className="flex-row items-center gap-3">
-              <View className="p-1.5 items-center justify-center rounded-full bg-background">
+              <View className="p-2 items-center justify-center rounded-full bg-background">
                 {icon}
               </View>
               <View className="flex-col">

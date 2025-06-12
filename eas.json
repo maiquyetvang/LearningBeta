@@ -8,12 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
-        "simulator": true,
-        "infoPlist": {
-          "NSAppTransportSecurity": {
-            "NSAllowsArbitraryLoads": true
-          }
-        }
+        "simulator": true
       }
     },
     "preview": {
@@ -25,12 +20,7 @@
         "buildType": "app-bundle"
       },
       "ios": {
-        "distribution": "store",
-        "infoPlist": {
-          "NSAppTransportSecurity": {
-            "NSAllowsArbitraryLoads": true
-          }
-        }
+        "distribution": "store"
       }
     }
   },

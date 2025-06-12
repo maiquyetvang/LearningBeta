@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Lesson } from '~/types/lesson.type';
+import { QuestionWithParsedContent } from '~/feature/lesson/hooks/use-get-questions';
 import { Input } from '../ui/input';
 import { Text } from '../ui/text';
 import { H3 } from '../ui/typography';
@@ -11,7 +11,7 @@ const WriteWordLesson = ({
   disabled,
   onSuccess,
 }: {
-  value: Lesson;
+  value: QuestionWithParsedContent;
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {

@@ -44,6 +44,17 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
     return session?.user.id;
   }
 
+  async signinWithGoogle() {
+    const { error } = await this.client.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${POWERSYNC_URL}/auth/callback`,
+      },
+    });
+    if (error) {
+      throw error;
+    }
+  }
   async login(username: string, password: string) {
     const { error } = await this.client.auth.signInWithPassword({
       email: username,

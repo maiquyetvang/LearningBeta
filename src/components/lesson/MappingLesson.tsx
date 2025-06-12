@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { useBoolean } from 'usehooks-ts';
-import { Lesson } from '~/types/lesson.type';
+import { QuestionWithParsedContent } from '~/feature/lesson/hooks/use-get-questions';
 import { playResultSound } from '~/utils/playSound';
 import { SpeakButton } from '../custom-ui/speak-button';
 import { H3, P } from '../ui/typography';
@@ -19,7 +19,7 @@ const MappingLesson = ({
   disabled,
   onSuccess,
 }: {
-  value: Lesson;
+  value: QuestionWithParsedContent;
   disabled?: boolean;
   onSuccess?: (isFail?: boolean) => void;
 }) => {

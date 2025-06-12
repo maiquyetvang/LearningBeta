@@ -8,11 +8,30 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { useLearningStore } from '~/stores/learning.store';
+import { useGetUserLearningStats } from '~/feature/lesson/hooks/use-get-user-learning-stats';
+import { useStreakModal } from '~/contexts/StreakModalContext';
 import { Text } from '../ui/text';
 
 const Overall = () => {
-  const { totalLearningTime, streakDays } = useLearningStore();
+  const { data: userLearningStats } = useGetUserLearningStats();
+  const streakModal = useStreakModal();
+  const prevStreak = React.useRef(userLearningStats?.streak_days);
+
+  React.useEffect(() => {
+    if (
+      typeof userLearningStats?.streak_days === 'number' &&
+      userLearningStats.streak_days > 0 &&
+      prevStreak.current !== undefined &&
+      userLearningStats.streak_days !== prevStreak.current
+    ) {
+      streakModal?.showStreak?.(userLearningStats.streak_days);
+    }
+    prevStreak.current = userLearningStats?.streak_days;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userLearningStats?.streak_days]);
+
+  const totalLearningTime = userLearningStats?.total_learning_time || 0;
+  const streakDays = userLearningStats?.streak_days || 0;
 
   const minute = Math.floor((totalLearningTime || 0) / 60000);
   const animatedMinute = useSharedValue(minute);
@@ -64,12 +83,15 @@ const Overall = () => {
 
   const animatedStreakText = useDerivedValue(() => Math.round(animatedStreak.value));
 
-  const getStreakImage = (streakDays: number) => {
-    if (streakDays === 0) return AppImages.streak_lv1;
-    if (streakDays <= 2) return AppImages.streak_lv2;
-    if (streakDays <= 4) return AppImages.streak_lv3;
-    if (streakDays <= 7) return AppImages.streak_lv4;
-    return AppImages.streak_lv4;
+  const getStreakImage = (last_learned_date?: string | null) => {
+    if (!last_learned_date) return AppImages.streak_lv1;
+    const today = new Date();
+    const learnedDate = new Date(last_learned_date);
+    const isToday =
+      learnedDate.getFullYear() === today.getFullYear() &&
+      learnedDate.getMonth() === today.getMonth() &&
+      learnedDate.getDate() === today.getDate();
+    return isToday ? AppImages.streak_lv4 : AppImages.streak_lv1;
   };
   return (
     <View>
@@ -88,14 +110,19 @@ const Overall = () => {
                 >
                   {minute < 1 ? Math.floor((totalLearningTime || 0) / 1000) : minute}
                 </Animated.Text>
-                <Text className="pt-[6px]">{minute < 1 ? ' Sec' : ' Min'}</Text>
+                <Text className="pt-[6px]">
+                  {minute < 1 ? ` Sec` : minute > 1 ? ' Mins' : ' Min'}
+                </Text>
               </Text>
             </Animated.View>
           </View>
         </View>
       </View>
       <View className="p-3 pb-3 mt-3 gap-3 items-center flex-row rounded-lg bg-primary-50 dark:bg-primary-900">
-        <Image source={getStreakImage(streakDays)} style={{ height: 40, width: 40 }} />
+        <Image
+          source={getStreakImage(userLearningStats?.last_learned_date)}
+          style={{ height: 40, width: 40 }}
+        />
         <View className="justify-center gap-1">
           <Text className="text-primary font-semibold">Streak Days</Text>
           <View className="flex-row gap-2 items-start ">
@@ -107,7 +134,7 @@ const Overall = () => {
                 >
                   {animatedStreakText.value}
                 </Animated.Text>
-                <Text className="pt-[6px]"> Day</Text>
+                <Text className="pt-[6px]">{animatedStreakText.value > 1 ? ' Days' : ' Day'}</Text>
               </Text>
             </Animated.View>
           </View>

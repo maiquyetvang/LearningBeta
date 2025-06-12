@@ -21,7 +21,7 @@ const CompleteLesson = () => {
         <View className="mx-10 gap-2 bg-neutral-50  dark:bg-neutral-900 rounded-2xl p-3 shadow-sm shadow-neutral-500/50">
           <Text className="text-center text-2xl font-semibold text-primary">
             Amazing!
-            <Text className="text-center text-2xl">You’ve finished today lesson</Text>
+            <Text className="text-center text-2xl">You&apos;ve finished today lesson</Text>
           </Text>
         </View>
         <LottieView source={Lottie.cheer} style={{ height: 240, width: '100%' }} autoPlay loop />

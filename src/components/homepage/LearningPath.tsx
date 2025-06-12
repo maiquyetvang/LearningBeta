@@ -1,36 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { ImageSourcePropType, View } from 'react-native';
-import { useGetCourse } from '~/hooks/useGetLessonById';
+import { View } from 'react-native';
+import CourseHeader from '~/feature/lesson/components/course-header';
+import { useGetCourses } from '~/feature/lesson/hooks/use-get-courses';
+import { useGetUserLearningStats } from '~/feature/lesson/hooks/use-get-user-learning-stats';
 import { useNextLesson } from '~/hooks/useNextLesson';
 import { FileText } from '~/lib/icons/FileText';
-import { useLearningStore } from '~/stores/learning.store';
-import ProgressBar from '../common/ProgressBar';
+import { LessonRecord } from '~/lib/powersync/app-schema';
+import { useLocalLearningStore } from '~/stores/learning.store';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Text } from '../ui/text';
 import { H1 } from '../ui/typography';
-type LessonInfo = {
-  id: string;
-  title: string;
-  description: string;
-  image?: ImageSourcePropType;
-  isCompleted?: boolean;
-  learningPathId?: string;
-};
+// type LessonInfo = {
+//   id: string;
+//   title: string;
+//   description: string;
+//   image?: ImageSourcePropType;
+//   isCompleted?: boolean;
+//   learningPathId?: string;
+// };
 
 export default function LearningPath({
-  courseId,
+  // courseId,
   onReview,
   onLearn,
 }: {
-  courseId: string;
+  // courseId: string;
   onReview?: (id: string) => void;
   onLearn?: (id: string) => void;
 }) {
   // const { data } = useGetCompletedUnit();
-  const { data: course } = useGetCourse(courseId);
+  const { data: userLearningStats } = useGetUserLearningStats();
+  const courseId = userLearningStats?.current_course_id || '';
+  const { data: course } = useGetCourses(courseId);
   const { nextLesson, lessonGroups, progress, checkIsCompleted } = useNextLesson(course);
-  const { setCurrentCourse } = useLearningStore();
+
+  // const { data: course } = useGetCourse(userLearningStats?.current_course_id || '');
+  // const { setCurrentCourse } = useLearningStore();
 
   // const checkIsCompleted = (lessonId: string) => {
   //   return completedUnit?.some((unit) => unit.lessonId === lessonId);
@@ -45,10 +51,12 @@ export default function LearningPath({
   const handleLearn = (id: string) => {
     onLearn?.(id);
   };
-  const isCompleted = progress === 100;
+
+  const handleReview = (id: string) => {
+    onReview?.(id);
+  };
   useEffect(() => {
-    setCurrentCourse(course);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // setCurrentCourse(course);
   }, [course]);
   const lastLessonId = lessonGroups && lessonGroups[lessonGroups.length - 1]?.id;
   if (!course) {
@@ -60,34 +68,10 @@ export default function LearningPath({
   }
   return (
     <View className="gap-3">
-      {/* <Text>{JSON.stringify(course, null, 2)}</Text>
-      <Text className='text-red-500'>
-        {JSON.stringify(
-          { title: "completedUnit", completedUnit, courseId },
-          null,
-          2
-        )}
-      </Text> */}
       <Text className="font-semibold  text-neutral-500  dark:text-neutral-300">Learning Path</Text>
       <View className="p-3 gap-5 rounded-lg bg-neutral-50 dark:bg-neutral-900">
         {/* Header */}
-        <View className="gap-3">
-          <View className="gap-3 justify-between items-center flex-row">
-            <Text className="text-neutral-800 font-semibold dark:text-neutral-200">
-              {course.title.toLocaleUpperCase()}
-            </Text>
-            <Text
-              className={` py-1 px-2 rounded-md ${
-                isCompleted
-                  ? 'text-success-500 bg-success-50 dark:bg-success-900'
-                  : 'text-primary bg-primary-50 dark:bg-primary-900'
-              }`}
-            >
-              {isCompleted ? 'Completed' : 'Learning'}
-            </Text>
-          </View>
-          <ProgressBar value={progress} />
-        </View>
+        <CourseHeader />
         {/* Completed Lesson */}
         {/* On Process Lessons */}
         <View className="gap-3">
@@ -103,7 +87,7 @@ export default function LearningPath({
                   lesson={lesson}
                   allowLeaning={isCurrentLesson || isCompleted}
                   onLearn={handleLearn}
-                  onReview={handleLearn}
+                  onReview={handleReview}
                   isFinalLesson={lesson.id === lastLessonId}
                 />
                 {index !== lessonGroups.length - 1 && isCurrentLesson && <Title title="Up Next" />}
@@ -125,14 +109,14 @@ const RenderLesson = ({
   isFinalLesson = false,
 }: {
   index: string;
-  lesson: LessonInfo;
+  lesson: LessonRecord & { isCompleted?: boolean };
   allowLeaning?: boolean;
   isFinalLesson?: boolean;
   onReview?: (id: string) => void;
   onLearn?: (id: string) => void;
 }) => {
   const { id, title, description, isCompleted } = lesson;
-  const { inProgressLesson, clearInProgressLesson } = useLearningStore();
+  const { inProgressLesson, clearInProgressLesson } = useLocalLearningStore();
   const [showDialog, setShowDialog] = useState(false);
 
   const hasOtherInProgress =

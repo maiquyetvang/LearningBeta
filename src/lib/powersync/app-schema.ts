@@ -23,12 +23,9 @@ export const ACHIEVEMENT_TYPES = [
 
 export const BADGE_TYPES = ['bronze', 'silver', 'gold', 'platinum'] as const;
 
-// TABLES
-
 const profiles = new Table(
   {
-    id: column.text, // UUID
-    user_id: column.text, // UUID
+    user_id: column.text,
     username: column.text,
     full_name: column.text,
     avatar_url: column.text,
@@ -53,11 +50,13 @@ const profiles = new Table(
 
 const user_learning_stats = new Table(
   {
-    user_id: column.text, // UUID
+    user_id: column.text,
     total_learning_time: column.integer,
     streak_days: column.integer,
     last_learned_date: column.text,
     updated_at: column.text,
+    current_course_id: column.text,
+    current_lesson_id: column.text,
   },
   {
     indexes: {
@@ -68,14 +67,13 @@ const user_learning_stats = new Table(
 
 const courses = new Table(
   {
-    id: column.text, // UUID
     title: column.text,
     description: column.text,
     cover_image_url: column.text,
     difficulty_level: column.text,
     total_lessons: column.integer,
-    is_featured: column.integer, // boolean as integer (0/1)
-    is_premium: column.integer, // boolean as integer (0/1)
+    is_featured: column.integer,
+    is_premium: column.integer,
     source_language: column.text,
     target_language: column.text,
     created_at: column.text,
@@ -90,16 +88,16 @@ const courses = new Table(
 
 const lessons = new Table(
   {
-    id: column.text, // UUID
-    course_id: column.text, // UUID
+    course_id: column.text,
     title: column.text,
     description: column.text,
     image_url: column.text,
     order_index: column.integer,
     total_question: column.integer,
-    targets: column.text, // JSONB as string
-    vocabulary: column.text, // JSONB as string
-    grammar: column.text, // JSONB as string
+    targets: column.text,
+    vocabulary: column.text,
+    grammar: column.text,
+    is_level_test: column.integer,
     created_at: column.text,
     updated_at: column.text,
   },
@@ -113,11 +111,10 @@ const lessons = new Table(
 
 const questions = new Table(
   {
-    id: column.text, // UUID
-    lesson_id: column.text, // UUID
-    type: column.text, // ENUM as string
+    lesson_id: column.text,
+    type: column.text,
     order_index: column.integer,
-    content: column.text, // JSONB as string
+    content: column.text,
     created_at: column.text,
     updated_at: column.text,
   },
@@ -131,10 +128,9 @@ const questions = new Table(
 
 const completed_lessons = new Table(
   {
-    id: column.text, // UUID
-    user_id: column.text, // UUID
-    lesson_id: column.text, // UUID
-    course_id: column.text, // UUID
+    user_id: column.text,
+    lesson_id: column.text,
+    course_id: column.text,
     completed_at: column.text,
     time_spent: column.integer,
   },
@@ -150,14 +146,13 @@ const completed_lessons = new Table(
 
 const achievements = new Table(
   {
-    id: column.text, // UUID
     name: column.text,
     description: column.text,
     icon_url: column.text,
-    category: column.text, // ENUM as string
+    category: column.text,
     required_value: column.integer,
-    is_hidden: column.integer, // boolean as integer (0/1)
-    badge_type: column.text, // ENUM as string
+    is_hidden: column.integer,
+    badge_type: column.text,
     created_at: column.text,
     updated_at: column.text,
   },
@@ -170,11 +165,10 @@ const achievements = new Table(
 
 const user_achievements = new Table(
   {
-    id: column.text, // UUID
-    user_id: column.text, // UUID
-    achievement_id: column.text, // UUID
+    user_id: column.text,
+    achievement_id: column.text,
     current_value: column.integer,
-    is_completed: column.integer, // boolean as integer (0/1)
+    is_completed: column.integer,
     completed_at: column.text,
     created_at: column.text,
     updated_at: column.text,

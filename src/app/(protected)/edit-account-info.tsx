@@ -26,13 +26,13 @@ import { Pencil } from '~/lib/icons/Pencil';
 import { Trash2 } from '~/lib/icons/Trash2';
 import { useSystem } from '~/lib/powersync';
 import { useAuthStore } from '~/stores/auth.store';
-import { useLearningStore } from '~/stores/learning.store';
+import { useLocalLearningStore } from '~/stores/learning.store';
 
 export default function EditAccount() {
   const insets = useSafeAreaInsets();
   const { supabase } = useSystem();
 
-  const { resetLearning, clearInProgressLesson } = useLearningStore();
+  const { resetLearning, clearInProgressLesson } = useLocalLearningStore();
   const { session, logout, profile } = useAuthStore();
   const { refetch } = useGetMyProfile();
   const [image, setImage] = React.useState<ImagePicker.ImagePickerAsset | null>(null);
